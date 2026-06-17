@@ -19,8 +19,15 @@ Do **not** use this skill for plain CSV exports, raw data summaries, or non-Peli
 
 ### File
 - Single self-contained `.html` file — all CSS, JS, chart data, and logos **inline**
-- No external dependencies except: Google Fonts CDN, Chart.js CDN, html2canvas CDN
-- Filename format: `RKAP{YEAR}_{ReportName}_{Topic}.html`
+- No external dependencies except: Google Fonts CDN, Chart.js CDN, chartjs-plugin-datalabels CDN, html2canvas CDN
+- Filename format: `RKAP{YEAR}_{ReportName}_{Topic}.html` (for non-RKAP operational reports, use a descriptive `{TYPE}{YEAR}_{Unit}_{Topic}.html` instead)
+
+### Executive-First Readability
+The primary reader is an **executive scanning for the "so what" in a few seconds**. Every report must:
+- Lead with a **one-line narrative band** (`.insight`) summarising the headline conclusion in plain language, with the 3–4 key figures bolded.
+- State a conclusion in every chart **subtitle** (e.g. "puncak Mei", "didominasi Tunda 85%") — never a bare data description.
+- End with a **Key Takeaways** status bar (`.sbar`) of 4–5 plain-language bullets, each tied to a green/amber status dot.
+- Prefer **derived insight** (share %, peak, dominance, per-unit yield) over raw dump. Show the number *and* what it means.
 
 ### Page Dimensions
 - `#page` wrapper: **exactly 1400px wide**, `overflow: hidden`
@@ -360,6 +367,7 @@ async function doExport() {
 - The export button and `#toolbar` div must be **outside** `#page` — they must never appear in the exported PNG
 - `scale: 3` is mandatory — lower values produce blurry output
 - Always pass `width/height/windowWidth/windowHeight` matching `el.offsetWidth/offsetHeight` to prevent the capture bleeding into the surrounding page
+- **Tooltips do NOT survive export.** Because the output is a static PNG, every critical chart value (bar heights, segment shares, totals) MUST be rendered on-canvas via data labels (see §7.6). A chart whose meaning depends on hover/tooltip is a broken chart in this skill.
 
 ---
 
@@ -368,13 +376,17 @@ async function doExport() {
 ### 7.1 CDN & Global Setup
 ```html
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 ```
 ```javascript
+Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Outfit', Arial, sans-serif";
 Chart.defaults.devicePixelRatio = window.devicePixelRatio * 2; // Sharp on retina
+Chart.defaults.plugins.datalabels = { display: false };        // off by default; enable per-dataset
 ```
 
 **Always set `devicePixelRatio * 2`** — omitting this produces blurry canvas charts in the export.
+**Always register `ChartDataLabels` and disable it globally**, then turn it on per-dataset only where a value must be visible (see §7.6). Leaving datalabels on everywhere clutters the chart.
 
 ### 7.2 Chart Wrapper HTML
 ```html
@@ -466,6 +478,70 @@ new Chart(document.getElementById('{{ID}}'), {
 | Blue (primary) | `#B6D2F0` → `#6CA4E0` → `#1E62C4` → `#061628` |
 | Green (profit/positive) | `#9EDCCA` → `#48C098` → `#10986A` → `#0A6040` |
 | Multi-period neutral | `#B6D2F0`, `#5888D4`, `#C47B08`, `#020E1C` |
+
+### 7.6 Data Labels — MANDATORY for image export
+
+Reports are exported as **static PNG**. Tooltips are invisible in the export, so every chart must print its key numbers onto the canvas itself. Use `chartjs-plugin-datalabels` (registered in §7.1, globally off), then enable it **per-dataset**.
+
+**Bar (single series) — value on top of each bar:**
+```javascript
+{
+  type: 'bar', data: [/*...*/],
+  datalabels: { display: true, align: 'top', anchor: 'end', offset: 2,
+                color: '#061628', font: { weight: 700, size: 10 },
+                formatter: v => v.toLocaleString('id-ID') }
+}
+```
+
+**Stacked bar — show the stack TOTAL on top (enable on the top dataset only):**
+```javascript
+datalabels: { display: true, align: 'top', anchor: 'end', color: '#061628',
+  font: { weight: 700, size: 9.5 },
+  formatter: (v, ctx) => {
+    const i = ctx.dataIndex;
+    const sum = ctx.chart.data.datasets.reduce((a, d) => a + (d.data[i] || 0), 0);
+    return sum.toLocaleString('id-ID');
+  } }
+```
+
+**Doughnut — percentage inside each segment + center total (combine with the §7.4 center-label plugin):**
+```javascript
+options: { plugins: { datalabels: { display: true, color: '#fff',
+  font: { weight: 700, size: 11 }, textAlign: 'center',
+  formatter: (v, ctx) => Math.round(v / ctx.dataset.data.reduce((a,b)=>a+b,0) * 100) + '%' } } }
+```
+
+**Combo (dual-axis bar + line) — NEVER put both series' labels on the same side.** This is the #1 label bug: a bar and a line share a chart but sit at different heights, so two `align:'top'` label sets collide wherever the two series meet at a similar height. Split them to **opposite sides** and force the series into **different vertical bands**:
+
+```javascript
+// Bar dataset — label ABOVE the bar
+datalabels: { display: true, align: 'top', anchor: 'end', offset: 4,
+  color: '#061628', font: { weight: 700, size: 10 },
+  backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+  padding: { top: 1, bottom: 1, left: 4, right: 4 },
+  formatter: v => v.toLocaleString('id-ID') }
+
+// Line dataset — label BELOW the point (opposite side!)
+datalabels: { display: true, align: 'bottom', anchor: 'point', offset: 6,
+  color: '#0A6040', font: { weight: 700, size: 9.5 },
+  backgroundColor: 'rgba(255,255,255,0.9)', borderRadius: 3,
+  padding: { top: 1, bottom: 1, left: 4, right: 4 },
+  formatter: v => v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) + ' M' }
+```
+
+Then **tune axis `max`** so the line deliberately traces *below* the bar tops:
+- Bar axis `max` ≈ tallest bar + ~20% headroom (room for the above-bar label).
+- Line axis `max` high enough that line points peak at only ~60–75% of chart height.
+- This guarantees the two label bands occupy separate vertical zones and **cannot overlap, whatever the data**.
+- Always add **axis titles** on a dual-axis chart so the reader knows which scale belongs to which series.
+
+**Rules:**
+- Label at most one value per visual stack/segment group — never every sub-segment (clutter).
+- **Two data-label sets on one chart must sit on opposite sides** (`top` vs `bottom`). Never stack two `align:'top'` groups — they collide wherever the two series meet at a similar height (the classic combo bar+line trap).
+- Give labels a **soft white pill** (`backgroundColor:'rgba(255,255,255,0.85)'`, `borderRadius:3`, small `padding`) so they read over gridlines/bars and stay legible.
+- `font.size` 9–11, `weight` 700. Label color contrasts its background (white inside colored segments, dark `#061628` above bars).
+- For partial/incomplete periods, shade that bar a desaturated tint (e.g. `#A8BCD4`) and tag the label with `*` so the reader does not mistake it for a full period.
+- After building any multi-series chart, **mentally render the labels**: if two series can occupy the same height band at the same x position, you have a collision — fix it before delivery (see the VERIFY checklist §12).
 
 ---
 
@@ -753,6 +829,8 @@ for sheet_name in wb.sheetnames:
    - maintainAspectRatio: false on every chart
    - html2canvas scale: 3
    - Filename set correctly in a.download
+   - **No two data-label sets share the same side** on a multi-series chart (combo bar+line: bar=`top`, line=`bottom`); tune axis `max` so series sit in separate height bands (§7.6)
+   - Every chart prints its key values on-canvas (tooltips die in PNG export)
 
 7. OUTPUT a single .html file.
 ```
@@ -772,6 +850,7 @@ for sheet_name in wb.sheetnames:
 | Donut segments overlapping or wrong shape | Always use Chart.js `doughnut` type — never hand-calculate SVG arc paths |
 | Export PNG only captures half the page | Set `height: el.offsetHeight` and `windowHeight: el.offsetHeight` in html2canvas options |
 | Numbers formatted wrong (e.g. 1,449 instead of 1.449) | Use `.toLocaleString('id-ID')` for Indonesian formatting |
+| Data labels overlap in a combo bar+line chart | Put the two label sets on **opposite sides** (bar `align:'top'`, line `align:'bottom'`), add white-pill backgrounds, and tune axis `max` so the line traces below the bar tops (see §7.6) |
 
 ---
 
@@ -783,6 +862,9 @@ for sheet_name in wb.sheetnames:
 
 <!-- Charts -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+
+<!-- Chart Data Labels (on-canvas values; tooltips die in PNG export) -->
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
 <!-- PNG Export -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
