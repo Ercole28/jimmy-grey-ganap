@@ -15,3 +15,7 @@ export const TAB_IDS: TabId[] = ["ARUS", "KINERJA", "UTILISASI", "PRODUKSI"];
 export function csvUrl(tab: TabId): string {
   return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GIDS[tab]}`;
 }
+
+export function editUrl(tab: TabId): string {
+  return `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?gid=${GIDS[tab]}#gid=${GIDS[tab]}`;
+}

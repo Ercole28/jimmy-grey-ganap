@@ -1,14 +1,13 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { MONTH_NAMES_SHORT } from "../lib/months";
 import { formatValue } from "../lib/months";
+import { nodeKey } from "../lib/tree";
 import type { SheetNode } from "../lib/types";
 
 interface HierarchyTreeProps {
   roots: SheetNode[];
-}
-
-function nodeKey(path: number[]): string {
-  return path.join("-");
+  expanded: Set<string>;
+  onToggle: (key: string) => void;
 }
 
 // Highlight only true grand-total rows ("Jumlah kunjungan kapal"), not the
@@ -69,18 +68,7 @@ function TreeRows({
   );
 }
 
-export function HierarchyTree({ roots }: HierarchyTreeProps) {
-  const [expanded, setExpanded] = useState<Set<string>>(() => new Set(roots.map((_, i) => nodeKey([i]))));
-
-  const toggle = (key: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
-  };
-
+export function HierarchyTree({ roots, expanded, onToggle }: HierarchyTreeProps) {
   return (
     <table className="t">
       <thead>
@@ -94,7 +82,7 @@ export function HierarchyTree({ roots }: HierarchyTreeProps) {
         </tr>
       </thead>
       <tbody>
-        <TreeRows nodes={roots} path={[]} depth={0} expanded={expanded} onToggle={toggle} />
+        <TreeRows nodes={roots} path={[]} depth={0} expanded={expanded} onToggle={onToggle} />
       </tbody>
     </table>
   );

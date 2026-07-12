@@ -9,17 +9,32 @@ interface HeaderProps {
   badges: HeaderBadge[];
 }
 
-export function Header({ eyebrow, title, titleAccent, titleSuffix, subtitle, badges }: HeaderProps) {
+export function Header({
+  eyebrow,
+  title,
+  titleAccent,
+  titleSuffix,
+  subtitle,
+  badges,
+}: HeaderProps) {
   return (
     <header className="hdr">
       <div className="hdr-bar">
         <div className="hdr-bar-left">
           <div className="logo-wrapper">
-            <img src="/pelindo-logo.png" alt="Pelindo" className="logo-wrapper__logo" />
+            <img
+              src="/pelindo-logo.png"
+              alt="Pelindo"
+              className="logo-wrapper__logo"
+            />
           </div>
           <span className="bar-sep" />
           <div className="logo-wrapper">
-            <img src="/danantara-indonesia.png" alt="Danantara Indonesia" className="logo-wrapper__logo" />
+            <img
+              src="/danantara-indonesia.png"
+              alt="Danantara Indonesia"
+              className="logo-wrapper__logo"
+            />
           </div>
           <span className="bar-sep" />
           <span className="bar-tagline">
@@ -30,6 +45,10 @@ export function Header({ eyebrow, title, titleAccent, titleSuffix, subtitle, bad
         <div className="hdr-bar-right">
           <span className="bar-chip">Dokumen Internal</span>
           <span className="bar-chip">Executive Summary</span>
+          <span className="bar-chip">
+            <span className="bar-chip__dot"></span>
+            Live
+          </span>
         </div>
       </div>
 

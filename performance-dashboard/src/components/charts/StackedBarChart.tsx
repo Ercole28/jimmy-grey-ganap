@@ -46,7 +46,10 @@ export function StackedBarChart({
             label: ds.label,
             data: ds.data,
             backgroundColor: ds.color,
-            borderRadius: i === lastIdx ? 4 : 0,
+            // Only the top segment gets rounded corners, and only on top —
+            // a uniform radius rounds its bottom corners too, opening a gap
+            // at the seam where it sits flush against the segment below.
+            borderRadius: i === lastIdx ? { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 } : 0,
             borderSkipped: false,
             barPercentage: 0.5,
             categoryPercentage: 0.7,

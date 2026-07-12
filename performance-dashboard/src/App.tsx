@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Header } from "./components/Header";
 import { TabNav } from "./components/TabNav";
 import { Toolbar } from "./components/Toolbar";
+import { useExportImage } from "./hooks/useExportImage";
 import { useSheetData } from "./hooks/useSheetData";
 import { analyzeArus } from "./lib/analysis/arus";
 import { analyzeKinerja } from "./lib/analysis/kinerja";
 import { analyzeProduksi } from "./lib/analysis/produksi";
 import { analyzeUtilisasi } from "./lib/analysis/utilisasi";
 import { latestReportedMonth } from "./lib/months";
+import { reportFileName } from "./lib/reportNames";
 import type { TabId } from "./lib/types";
 import { ArusTab } from "./tabs/ArusTab";
 import { KinerjaTab } from "./tabs/KinerjaTab";
@@ -19,6 +21,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabId>("ARUS");
   const [throughMonth, setThroughMonth] = useState(0);
   const didInit = useRef(false);
+  const { targetRef, exporting, progress, exportPng } = useExportImage();
 
   useEffect(() => {
     if (didInit.current) return;
@@ -50,32 +53,44 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      {header ? (
-        <Header
-          eyebrow={header.eyebrow}
-          title={header.title}
-          titleAccent={header.titleAccent}
-          titleSuffix={header.titleSuffix}
-          subtitle={header.subtitle}
-          badges={header.badges}
+    <>
+      <div className="export-progress" style={{ width: `${progress}%`, opacity: exporting ? 1 : 0 }} />
+      <div className="app-shell" ref={targetRef}>
+        {header ? (
+          <Header
+            eyebrow={header.eyebrow}
+            title={header.title}
+            titleAccent={header.titleAccent}
+            titleSuffix={header.titleSuffix}
+            subtitle={header.subtitle}
+            badges={header.badges}
+          />
+        ) : (
+          <Header eyebrow="Performance Dashboard" title="Memuat" titleAccent=" data…" subtitle="Menghubungkan ke Google Sheets" badges={[]} />
+        )}
+
+        <TabNav active={activeTab} onChange={setActiveTab} />
+        <Toolbar
+          activeTab={activeTab}
+          throughMonth={throughMonth}
+          onThroughMonthChange={setThroughMonth}
+          onRefresh={refresh}
+          loading={loading}
+          lastSynced={lastSynced}
+          exporting={exporting}
+          onExport={() => exportPng(reportFileName(activeTab))}
         />
-      ) : (
-        <Header eyebrow="Performance Dashboard" title="Memuat" titleAccent=" data…" subtitle="Menghubungkan ke Google Sheets" badges={[]} />
-      )}
 
-      <TabNav active={activeTab} onChange={setActiveTab} />
-      <Toolbar throughMonth={throughMonth} onThroughMonthChange={setThroughMonth} onRefresh={refresh} loading={loading} lastSynced={lastSynced} />
+        {error && <div className="app-banner">Gagal memuat data: {error}</div>}
 
-      {error && <div className="app-banner">Gagal memuat data: {error}</div>}
+        <main className="app-body">{body ?? <p className="k-lbl">Memuat data…</p>}</main>
 
-      <main className="app-body">{body ?? <p className="k-lbl">Memuat data…</p>}</main>
-
-      <footer className="ftr">
-        <span>{header?.footerLeft ?? "Performance Dashboard · Cabang Banten"}</span>
-        <span>{header?.footerRight ?? "Sumber data: Google Sheets (live)"}</span>
-      </footer>
-    </div>
+        <footer className="ftr">
+          <span>{header?.footerLeft ?? "Performance Dashboard · Cabang Banten"}</span>
+          <span>{header?.footerRight ?? "Sumber data: Google Sheets (live)"}</span>
+        </footer>
+      </div>
+    </>
   );
 }
 

@@ -1,5 +1,23 @@
 import type { SheetNode } from "./types";
 
+/** Stable identity for a node position in the tree, used to key expand/collapse state. */
+export function nodeKey(path: number[]): string {
+  return path.join("-");
+}
+
+/** Every node-position key that has children (i.e. can be expanded/collapsed). */
+export function collectExpandableKeys(nodes: SheetNode[], path: number[] = []): string[] {
+  const out: string[] = [];
+  nodes.forEach((n, i) => {
+    const childPath = [...path, i];
+    if (n.children.length > 0) {
+      out.push(nodeKey(childPath));
+      out.push(...collectExpandableKeys(n.children, childPath));
+    }
+  });
+  return out;
+}
+
 export function findFirstByLabel(nodes: SheetNode[], match: RegExp): SheetNode | undefined {
   return findAllByLabel(nodes, match)[0];
 }

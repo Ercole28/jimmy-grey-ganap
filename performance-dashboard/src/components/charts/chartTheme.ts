@@ -23,6 +23,21 @@ export function twoLineMonthLabels(monthShortNames: string[], year: string): [st
   return monthShortNames.map((m) => [m, year]);
 }
 
+/**
+ * Per-bar color for a monthly trend: the peak month gets the darkest shade,
+ * the lowest month gets the lightest, everything else gets the middle shade
+ * — mirrors the reference reports' own bar-highlight convention (e.g.
+ * Arus's Tren Bulanan chart: Jan lightest, March/peak darkest, rest medium).
+ */
+export function monthlyPeakColors(data: (number | null)[], shades: [string, string, string] = [BLUE_PROGRESSION[0], BLUE_PROGRESSION[1], BLUE_PROGRESSION[2]]): string[] {
+  const [light, medium, dark] = shades;
+  const reported = data.map((v, i) => (v !== null ? { v, i } : null)).filter((x): x is { v: number; i: number } => x !== null);
+  if (reported.length === 0) return data.map(() => medium);
+  const maxIdx = reported.reduce((a, b) => (b.v > a.v ? b : a)).i;
+  const minIdx = reported.reduce((a, b) => (b.v < a.v ? b : a)).i;
+  return data.map((_, i) => (i === maxIdx ? dark : i === minIdx && minIdx !== maxIdx ? light : medium));
+}
+
 export const barDatalabel = (color = "#061628", decimals = 0) => ({
   display: true,
   align: "top" as const,
