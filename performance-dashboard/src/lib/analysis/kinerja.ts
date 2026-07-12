@@ -2,7 +2,13 @@ import { cumulativeAverage, findAnomaly, firstVsLatest } from "../aggregate";
 import { MONTH_NAMES, MONTH_NAMES_SHORT, formatValue } from "../months";
 import type { RecommendationCard } from "../recommendations";
 import { findAllByCode } from "../tree";
-import type { HeaderBadge, InsightSegment, ReportHeaderData, SheetNode, StatusBarItem } from "../types";
+import type {
+  HeaderBadge,
+  InsightSegment,
+  ReportHeaderData,
+  SheetNode,
+  StatusBarItem,
+} from "../types";
 import type { KpiCardData } from "./arus";
 
 // Stable codes (label text repeats across LN/DN/KONSOLIDASI/terminal groups — codes disambiguate).
@@ -15,9 +21,33 @@ const CODE = {
 };
 
 const TERMINALS = [
-  { label: "Multipurpose", bt: "F130201000000", bwt: "F130202000000", et: "F130203000000", it: "F130204000000", not: "F130205000000", etbt: "F130206000000" },
-  { label: "Curah Cair", bt: "F130301000000", bwt: "F130302000000", et: "F130303000000", it: "F130304000000", not: "F130305000000", etbt: "F130306000000" },
-  { label: "Curah Kering", bt: "F130401000000", bwt: "F130402000000", et: "F130403000000", it: "F130404000000", not: "F130405000000", etbt: "F130406000000" },
+  {
+    label: "Multipurpose",
+    bt: "F130201000000",
+    bwt: "F130202000000",
+    et: "F130203000000",
+    it: "F130204000000",
+    not: "F130205000000",
+    etbt: "F130206000000",
+  },
+  {
+    label: "Curah Cair",
+    bt: "F130301000000",
+    bwt: "F130302000000",
+    et: "F130303000000",
+    it: "F130304000000",
+    not: "F130305000000",
+    etbt: "F130306000000",
+  },
+  {
+    label: "Curah Kering",
+    bt: "F130401000000",
+    bwt: "F130402000000",
+    et: "F130403000000",
+    it: "F130404000000",
+    not: "F130405000000",
+    etbt: "F130406000000",
+  },
 ];
 
 function byCode(roots: SheetNode[], code: string): SheetNode | undefined {
@@ -38,10 +68,18 @@ export interface KinerjaAnalysis extends ReportHeaderData {
   insight: InsightSegment[];
   kpis: KpiCardData[];
   monthLabels: string[][];
-  etbtTrendDatasets: { label: string; data: (number | null)[]; color: string }[];
+  etbtTrendDatasets: {
+    label: string;
+    data: (number | null)[];
+    color: string;
+  }[];
   etbtTrendSubtitle: string;
   btCompositionLabels: string[][];
-  btCompositionDatasets: { label: string; data: (number | null)[]; color: string }[];
+  btCompositionDatasets: {
+    label: string;
+    data: (number | null)[];
+    color: string;
+  }[];
   btCompositionSubtitle: string;
   serviceLabels: string[][];
   serviceAT: (number | null)[];
@@ -54,9 +92,14 @@ export interface KinerjaAnalysis extends ReportHeaderData {
   recommendations: RecommendationCard[];
 }
 
-export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, throughMonth: number): KinerjaAnalysis {
+export function analyzeKinerja(
+  roots: SheetNode[],
+  meta: { tahun: string },
+  throughMonth: number,
+): KinerjaAnalysis {
   const year = meta.tahun || "2026";
-  const periodLabel = throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
+  const periodLabel =
+    throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
   const isPartial = throughMonth < 11;
 
   const wtNode = byCode(roots, CODE.WT_KONSOLIDASI);
@@ -76,13 +119,22 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   })).filter((t) => t.bt !== null);
 
   const etbtValues = terminalsBase.filter((t) => t.etbt !== null);
-  const best = etbtValues.reduce((a, b) => ((b.etbt ?? 0) > (a.etbt ?? 0) ? b : a), etbtValues[0]);
-  const worst = etbtValues.reduce((a, b) => ((b.etbt ?? 0) < (a.etbt ?? 0) ? b : a), etbtValues[0]);
-  const flagship = terminalsBase.find((t) => t.label === "Multipurpose") ?? terminalsBase[0];
+  const best = etbtValues.reduce(
+    (a, b) => ((b.etbt ?? 0) > (a.etbt ?? 0) ? b : a),
+    etbtValues[0],
+  );
+  const worst = etbtValues.reduce(
+    (a, b) => ((b.etbt ?? 0) < (a.etbt ?? 0) ? b : a),
+    etbtValues[0],
+  );
+  const flagship =
+    terminalsBase.find((t) => t.label === "Multipurpose") ?? terminalsBase[0];
 
   const mean = (values: (number | null)[]) => {
     const nums = values.filter((v): v is number => v !== null);
-    return nums.length > 0 ? nums.reduce((a, b) => a + b, 0) / nums.length : null;
+    return nums.length > 0
+      ? nums.reduce((a, b) => a + b, 0) / nums.length
+      : null;
   };
   const terminals: TerminalDetail[] = [
     ...terminalsBase.map((t) => ({ ...t, isBest: t === best })),
@@ -102,20 +154,47 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   // Generic "how far through the year" fill for non-ratio KPI cards — see arus.ts for derivation.
   const yearElapsedPct = ((throughMonth + 1) / 12) * 100;
 
-  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [m, year]);
+  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [
+    m,
+    year,
+  ]);
 
   const etbtTrendDatasets = [
-    { label: "Multipurpose", data: months(byCode(roots, TERMINALS[0].etbt), throughMonth), color: "#1E62C4" },
-    { label: "Curah Cair", data: months(byCode(roots, TERMINALS[1].etbt), throughMonth), color: "#0B8A60" },
-    { label: "Curah Kering", data: months(byCode(roots, TERMINALS[2].etbt), throughMonth), color: "#C07808" },
+    {
+      label: "Multipurpose",
+      data: months(byCode(roots, TERMINALS[0].etbt), throughMonth),
+      color: "#1E62C4",
+    },
+    {
+      label: "Curah Cair",
+      data: months(byCode(roots, TERMINALS[1].etbt), throughMonth),
+      color: "#0B8A60",
+    },
+    {
+      label: "Curah Kering",
+      data: months(byCode(roots, TERMINALS[2].etbt), throughMonth),
+      color: "#C07808",
+    },
   ];
 
   const btCompositionDatasets = [
-    { label: "Effective Time (ET)", data: terminalsBase.map((t) => t.et), color: "#10986A" },
-    { label: "Idle Time (IT)", data: terminalsBase.map((t) => t.it), color: "#BC1E1E" },
+    {
+      label: "Effective Time (ET)",
+      data: terminalsBase.map((t) => t.et),
+      color: "#10986A",
+    },
+    {
+      label: "Idle Time (IT)",
+      data: terminalsBase.map((t) => t.it),
+      color: "#BC1E1E",
+    },
     {
       label: "Not Op Time (NOT)",
-      data: terminalsBase.map((t) => (t.bt !== null && t.et !== null && t.it !== null ? t.bt - t.et - t.it : null)),
+      data: terminalsBase.map((t) =>
+        t.bt !== null && t.et !== null && t.it !== null
+          ? t.bt - t.et - t.it
+          : null,
+      ),
       color: "#7BA8D8",
     },
   ];
@@ -132,7 +211,9 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   ];
 
   // ---- Chart card conclusion subtitles ----
-  let etbtTrendSubtitle = best ? `${best.label} paling efisien (rata-rata ${formatValue(best.etbt ?? 0, { decimals: 1 })}%)` : "Belum ada data efisiensi tambat.";
+  let etbtTrendSubtitle = best
+    ? `${best.label} paling efisien (rata-rata ${formatValue(best.etbt ?? 0, { decimals: 1 })}%)`
+    : "Belum ada data efisiensi tambat.";
   const others = terminalsBase.filter((t) => t !== best);
   if (best && others.length > 0) {
     const otherVals = others.map((t) => t.etbt ?? 0);
@@ -150,27 +231,44 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
       : "Effective / Idle / Not Operation Time rata-rata periode berjalan.";
 
   const wtDescriptor =
-    wtAvg !== null && wtAvg < 0.5 ? `nyaris nol (${formatValue(wtAvg, { decimals: 2 })} jam) — pelayanan prima` : `${formatValue(wtAvg ?? 0, { decimals: 2 })} jam`;
-  const serviceSubtitle = atAvg !== null ? `AT Konsolidasi ${formatValue(atAvg, { decimals: 2 })} jam; WT ${wtDescriptor}` : "Rata-rata Approach Time & Waiting Time per segmen pelayaran.";
+    wtAvg !== null && wtAvg < 0.5
+      ? `nyaris nol (${formatValue(wtAvg, { decimals: 2 })} jam) — pelayanan prima`
+      : `${formatValue(wtAvg ?? 0, { decimals: 2 })} jam`;
+  const serviceSubtitle =
+    atAvg !== null
+      ? `AT Konsolidasi ${formatValue(atAvg, { decimals: 2 })} jam; WT ${wtDescriptor}`
+      : "Rata-rata Approach Time & Waiting Time per segmen pelayaran.";
 
   let productivitySubtitle = productivityTrend
     ? `Tren ${productivityTrend.deltaPct < 0 ? "menurun" : "meningkat"} ${formatValue(productivityTrend.deltaPct, { decimals: 1 })}% (${MONTH_NAMES_SHORT[productivityTrend.firstMonth]}→${MONTH_NAMES_SHORT[productivityTrend.latestMonth]})`
     : "Tren bulanan produktivitas bongkar muat Curah Kering (Konsolidasi).";
-  if (anomaly) productivitySubtitle += `; Curah Cair ada anomali data ${MONTH_NAMES[anomaly.monthIndex]}`;
+  if (anomaly)
+    productivitySubtitle += `; Curah Cair ada anomali data ${MONTH_NAMES[anomaly.monthIndex]}`;
 
   // ---- Insight ----
   const insight: InsightSegment[] = [];
-  const seg = (text: string, emphasis?: "b" | "i") => insight.push({ text, emphasis });
+  const seg = (text: string, emphasis?: "b" | "i") =>
+    insight.push({ text, emphasis });
 
-  seg(`Kinerja pelayanan Regional 2 Banten s.d. ${MONTH_NAMES[throughMonth]} ${year} menunjukkan waktu tunggu kapal `);
-  seg(wtAvg !== null ? `rata-rata ${formatValue(wtAvg, { decimals: 2 })} jam` : "belum tercatat", "b");
+  seg(
+    `Kinerja pelayanan Regional 2 Banten s.d. ${MONTH_NAMES[throughMonth]} ${year} menunjukkan waktu tunggu kapal `,
+  );
+  seg(
+    wtAvg !== null
+      ? `rata-rata ${formatValue(wtAvg, { decimals: 2 })} jam`
+      : "belum tercatat",
+    "b",
+  );
   if (atAvg !== null) {
     seg(" dengan Approach Time ");
     seg(`${formatValue(atAvg, { decimals: 2 })} jam`, "b");
   }
   if (best && worst && best !== worst) {
     seg(". Efisiensi tambat (ET/BT) Konsolidasi berkisar ");
-    seg(`${formatValue(Math.min(best.etbt ?? 0, worst.etbt ?? 0), { decimals: 1 })}%–${formatValue(Math.max(best.etbt ?? 0, worst.etbt ?? 0), { decimals: 1 })}%`, "b");
+    seg(
+      `${formatValue(Math.min(best.etbt ?? 0, worst.etbt ?? 0), { decimals: 1 })}%–${formatValue(Math.max(best.etbt ?? 0, worst.etbt ?? 0), { decimals: 1 })}%`,
+      "b",
+    );
     seg(` — Terminal ${best.label} paling efisien`);
   }
   if (itTrend && itTrend.deltaPct < 0) {
@@ -179,7 +277,10 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   }
   seg(".");
   if (productivityTrend && productivityTrend.deltaPct < -10) {
-    seg(` Produktivitas Curah Kering menurun ${formatValue(productivityTrend.deltaPct, { decimals: 1 })}% (${MONTH_NAMES[productivityTrend.firstMonth]}→${MONTH_NAMES[productivityTrend.latestMonth]})`, "i");
+    seg(
+      ` Produktivitas Curah Kering menurun ${formatValue(productivityTrend.deltaPct, { decimals: 1 })}% (${MONTH_NAMES[productivityTrend.firstMonth]}→${MONTH_NAMES[productivityTrend.latestMonth]})`,
+      "i",
+    );
   }
   if (anomaly) {
     seg(
@@ -192,9 +293,14 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   const kpis: KpiCardData[] = [
     {
       label: "Efisiensi ET/BT",
-      value: flagship?.etbt !== null && flagship ? formatValue(flagship.etbt, { decimals: 1 }) : "—",
+      value:
+        flagship?.etbt !== null && flagship
+          ? formatValue(flagship.etbt, { decimals: 1 })
+          : "—",
       unit: "%",
-      deltaText: best ? `Terminal ${best.label} terefisien (${formatValue(best.etbt ?? 0, { decimals: 1 })}%)` : undefined,
+      deltaText: best
+        ? `Terminal ${best.label} terefisien (${formatValue(best.etbt ?? 0, { decimals: 1 })}%)`
+        : undefined,
       deltaTone: "up",
       color: "green",
       trackPercent: flagship?.etbt ?? undefined,
@@ -219,18 +325,27 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
     },
     {
       label: "Produktivitas Curah Kering",
-      value: cumulativeAverage(tghKeringNode, throughMonth) !== null ? formatValue(cumulativeAverage(tghKeringNode, throughMonth)!, { decimals: 1 }) : "—",
+      value:
+        cumulativeAverage(tghKeringNode, throughMonth) !== null
+          ? formatValue(cumulativeAverage(tghKeringNode, throughMonth)!, {
+              decimals: 1,
+            })
+          : "—",
       unit: "T/G/H",
       deltaText: productivityTrend
         ? `${productivityTrend.deltaPct >= 0 ? "▲" : "▼"} ${formatValue(Math.abs(productivityTrend.deltaPct), { decimals: 1 })}% vs ${MONTH_NAMES[productivityTrend.firstMonth]} ${year}`
         : undefined,
-      deltaTone: productivityTrend && productivityTrend.deltaPct < 0 ? "down" : "up",
+      deltaTone:
+        productivityTrend && productivityTrend.deltaPct < 0 ? "down" : "up",
       color: "amber",
       trackPercent: yearElapsedPct,
     },
     {
       label: "Idle Time (IT) Multipurpose",
-      value: flagship?.it !== null && flagship ? formatValue(flagship.it, { decimals: 1 }) : "—",
+      value:
+        flagship?.it !== null && flagship
+          ? formatValue(flagship.it, { decimals: 1 })
+          : "—",
       unit: "jam",
       deltaText: itTrend
         ? `${itTrend.deltaPct <= 0 ? "▼" : "▲"} ${formatValue(Math.abs(itTrend.deltaPct), { decimals: 1 })}% vs ${MONTH_NAMES[itTrend.firstMonth]} ${year}${itTrend.deltaPct < 0 ? " (membaik)" : ""}`
@@ -243,18 +358,39 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
 
   // ---- Status bar ----
   const status: StatusBarItem[] = [];
-  if (wtAvg !== null) status.push({ text: `WT Konsolidasi rata-rata ${formatValue(wtAvg, { decimals: 2 })} jam — kapal langsung dilayani`, tone: "ok" });
-  if (best) status.push({ text: `${best.label} paling efisien, ET/BT ${formatValue(best.etbt ?? 0, { decimals: 1 })}% (rata-rata periode)`, tone: "ok" });
+  if (wtAvg !== null)
+    status.push({
+      text: `WT Konsolidasi rata-rata ${formatValue(wtAvg, { decimals: 2 })} jam — kapal langsung dilayani`,
+      tone: "ok",
+    });
+  if (best)
+    status.push({
+      text: `${best.label} paling efisien, ET/BT ${formatValue(best.etbt ?? 0, { decimals: 1 })}% (rata-rata periode)`,
+      tone: "ok",
+    });
   if (itTrend && itTrend.deltaPct < 0) {
-    status.push({ text: `Idle Time Multipurpose turun ${formatValue(Math.abs(itTrend.deltaPct), { decimals: 1 })}% (${formatValue(itTrend.first, { decimals: 2 })}→${formatValue(itTrend.latest, { decimals: 2 })} jam)`, tone: "ok" });
+    status.push({
+      text: `Idle Time Multipurpose turun ${formatValue(Math.abs(itTrend.deltaPct), { decimals: 1 })}% (${formatValue(itTrend.first, { decimals: 2 })}→${formatValue(itTrend.latest, { decimals: 2 })} jam)`,
+      tone: "ok",
+    });
   }
   if (productivityTrend && productivityTrend.deltaPct < -10) {
-    status.push({ text: `Produktivitas Curah Kering turun ${formatValue(Math.abs(productivityTrend.deltaPct), { decimals: 1 })}% (${formatValue(productivityTrend.first, { decimals: 1 })}→${formatValue(productivityTrend.latest, { decimals: 1 })} T/G/H)`, tone: "warn" });
+    status.push({
+      text: `Produktivitas Curah Kering turun ${formatValue(Math.abs(productivityTrend.deltaPct), { decimals: 1 })}% (${formatValue(productivityTrend.first, { decimals: 1 })}→${formatValue(productivityTrend.latest, { decimals: 1 })} T/G/H)`,
+      tone: "warn",
+    });
   }
   if (anomaly) {
-    status.push({ text: `Anomali data T/G/H Curah Cair ${MONTH_NAMES[anomaly.monthIndex]} (${formatValue(anomaly.value)}) — perlu validasi`, tone: "warn" });
+    status.push({
+      text: `Anomali data T/G/H Curah Cair ${MONTH_NAMES[anomaly.monthIndex]} (${formatValue(anomaly.value)}) — perlu validasi`,
+      tone: "warn",
+    });
   }
-  if (isPartial) status.push({ text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`, tone: "warn" });
+  if (isPartial)
+    status.push({
+      text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`,
+      tone: "warn",
+    });
 
   // ---- Recommendations ----
   const recommendations: RecommendationCard[] = [];
@@ -288,14 +424,34 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
     title: "Kinerja Pelayanan ",
     titleAccent: "Operasi",
     titleSuffix: `s.d. ${MONTH_NAMES[throughMonth]} ${year}`,
-    subtitle: "Waktu Tunggu, Efisiensi Tambat & Produktivitas — Konsolidasi Regional 2 Banten",
+    subtitle:
+      "Waktu Tunggu, Efisiensi Tambat & Produktivitas — Konsolidasi Regional 2 Banten",
     badges: [
-      flagship?.etbt !== null && flagship ? { value: `${formatValue(flagship.etbt, { decimals: 1 })}%`, label: "ET/BT Konsolidasi" } : null,
-      wtAvg !== null ? { value: formatValue(wtAvg, { decimals: 2 }), label: "Waiting Time (jam)" } : null,
-      cumulativeAverage(tghKeringNode, throughMonth) !== null
-        ? { value: formatValue(cumulativeAverage(tghKeringNode, throughMonth)!, { decimals: 1 }), label: "T/G/H Curah Kering" }
+      flagship?.etbt !== null && flagship
+        ? {
+            value: `${formatValue(flagship.etbt, { decimals: 1 })}%`,
+            label: "ET/BT Konsolidasi",
+          }
         : null,
-      { value: periodLabel, label: `Periode ${year} (${throughMonth + 1} bln)` },
+      wtAvg !== null
+        ? {
+            value: formatValue(wtAvg, { decimals: 2 }),
+            label: "Waiting Time (jam)",
+          }
+        : null,
+      cumulativeAverage(tghKeringNode, throughMonth) !== null
+        ? {
+            value: formatValue(
+              cumulativeAverage(tghKeringNode, throughMonth)!,
+              { decimals: 1 },
+            ),
+            label: "T/G/H Curah Kering",
+          }
+        : null,
+      {
+        value: periodLabel,
+        label: `Periode ${year} (${throughMonth + 1} bln)`,
+      },
     ].filter((b): b is HeaderBadge => b !== null),
     insight,
     kpis,
@@ -328,6 +484,12 @@ export function analyzeKinerja(roots: SheetNode[], meta: { tahun: string }, thro
   };
 }
 
-function months(node: SheetNode | undefined, throughMonth: number): (number | null)[] {
-  return Array.from({ length: throughMonth + 1 }, (_, i) => node?.months[i] ?? null);
+function months(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): (number | null)[] {
+  return Array.from(
+    { length: throughMonth + 1 },
+    (_, i) => node?.months[i] ?? null,
+  );
 }

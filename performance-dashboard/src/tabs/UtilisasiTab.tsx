@@ -48,13 +48,27 @@ export function UtilisasiTab({ analysis: a, roots }: UtilisasiTabProps) {
                 </div>
               ))}
             </div>
-            <GroupedBarChart labels={a.monthLabels} datasets={a.borTrendDatasets} unit="%" yAxisTitle="BOR (%)" height={230} />
+            <GroupedBarChart
+              labels={a.monthLabels}
+              datasets={a.borTrendDatasets}
+              unit="%"
+              yAxisTitle="BOR (%)"
+              height={230}
+            />
           </div>
           <div className="card">
             <p className="card-t">Kesiapan Alat Bongkar Muat</p>
             <p className="card-s">{a.readinessSubtitle}</p>
             {a.readinessRanking.labels.length > 0 ? (
-              <HorizontalBarChart labels={a.readinessRanking.labels} data={a.readinessRanking.data} colors={a.readinessRanking.colors} unit="%" isRatio decimals={1} height={246} />
+              <HorizontalBarChart
+                labels={a.readinessRanking.labels}
+                data={a.readinessRanking.data}
+                colors={a.readinessRanking.colors}
+                unit="%"
+                isRatio
+                decimals={1}
+                height={246}
+              />
             ) : (
               <p className="k-lbl">Belum ada data.</p>
             )}
@@ -63,7 +77,15 @@ export function UtilisasiTab({ analysis: a, roots }: UtilisasiTabProps) {
             <p className="card-t">Utilisasi Alat Bongkar Muat</p>
             <p className="card-s">{a.utilizationSubtitle}</p>
             {a.utilizationRanking.labels.length > 0 ? (
-              <HorizontalBarChart labels={a.utilizationRanking.labels} data={a.utilizationRanking.data} colors={a.utilizationRanking.colors} unit="%" isRatio decimals={1} height={246} />
+              <HorizontalBarChart
+                labels={a.utilizationRanking.labels}
+                data={a.utilizationRanking.data}
+                colors={a.utilizationRanking.colors}
+                unit="%"
+                isRatio
+                decimals={1}
+                height={246}
+              />
             ) : (
               <p className="k-lbl">Belum ada data.</p>
             )}
@@ -74,7 +96,14 @@ export function UtilisasiTab({ analysis: a, roots }: UtilisasiTabProps) {
           <div className="card">
             <p className="card-t">SOR Terminal Curah Kering</p>
             <p className="card-s">{a.sorSubtitle}</p>
-            <BarChart labels={a.monthLabels} data={a.sorTrend} colors={GREEN_PROGRESSION.concat(GREEN_PROGRESSION)} unit="%" decimals={1} height={230} />
+            <BarChart
+              labels={a.monthLabels}
+              data={a.sorTrend}
+              colors={GREEN_PROGRESSION.concat(GREEN_PROGRESSION)}
+              unit="%"
+              decimals={1}
+              height={230}
+            />
           </div>
           <div className="card">
             <p className="card-t">Kinerja Kapal Tunda</p>
@@ -111,7 +140,20 @@ export function UtilisasiTab({ analysis: a, roots }: UtilisasiTabProps) {
           <div className="card">
             <p className="card-t">Konsumsi BBM Kapal Tunda</p>
             <p className="card-s">{a.bbmSubtitle}</p>
-            <BarChart labels={a.monthLabels} data={a.bbmTrend} colors={["#1E62C4", "#1E62C4", "#1E62C4", "#1E62C4", "#1E62C4", "#1E62C4"]} unit="L" height={230} />
+            <BarChart
+              labels={a.monthLabels}
+              data={a.bbmTrend}
+              colors={[
+                "#1E62C4",
+                "#1E62C4",
+                "#1E62C4",
+                "#1E62C4",
+                "#1E62C4",
+                "#1E62C4",
+              ]}
+              unit="L"
+              height={230}
+            />
           </div>
         </div>
       </div>
@@ -122,12 +164,20 @@ export function UtilisasiTab({ analysis: a, roots }: UtilisasiTabProps) {
       <div className="sec-group" data-export-exclude>
         <div className="sec-row">
           <p className="sec">Rincian Lengkap</p>
-          <button type="button" className="sec-toggle-all" onClick={tree.toggleAll}>
+          <button
+            type="button"
+            className="sec-toggle-all"
+            onClick={tree.toggleAll}
+          >
             {tree.allExpanded ? "Tutup Semua" : "Buka Semua"}
           </button>
         </div>
         <div className="card tree-card">
-          <HierarchyTree roots={roots} expanded={tree.expanded} onToggle={tree.toggle} />
+          <HierarchyTree
+            roots={roots}
+            expanded={tree.expanded}
+            onToggle={tree.toggle}
+          />
         </div>
       </div>
     </>

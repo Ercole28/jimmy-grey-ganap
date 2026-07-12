@@ -10,16 +10,38 @@ export const Y_GRID = { color: "#ECF2FA" };
 
 export const BLUE_PROGRESSION = ["#B6D2F0", "#6CA4E0", "#1E62C4", "#061628"];
 export const GREEN_PROGRESSION = ["#9EDCCA", "#48C098", "#10986A", "#0A6040"];
-export const DONUT_COLORS = ["#1358A4", "#0B8A60", "#2478D8", "#5135AE", "#B6D2F0", "#C07808"];
-export const CATEGORY_PROGRESSION = ["#061628", "#1358A4", "#1E62C4", "#3F86D6", "#6CA4E0", "#9CC2EC", "#C2D9F4", "#DCE7F2"];
+export const DONUT_COLORS = [
+  "#1358A4",
+  "#0B8A60",
+  "#2478D8",
+  "#5135AE",
+  "#B6D2F0",
+  "#C07808",
+];
+export const CATEGORY_PROGRESSION = [
+  "#061628",
+  "#1358A4",
+  "#1E62C4",
+  "#3F86D6",
+  "#6CA4E0",
+  "#9CC2EC",
+  "#C2D9F4",
+  "#DCE7F2",
+];
 export const PARTIAL_COLOR = "#A8BCD4";
 
 export function idLocale(v: number | null | undefined, decimals = 0): string {
   if (v === null || v === undefined) return "";
-  return v.toLocaleString("id-ID", { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  return v.toLocaleString("id-ID", {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+  });
 }
 
-export function twoLineMonthLabels(monthShortNames: string[], year: string): [string, string][] {
+export function twoLineMonthLabels(
+  monthShortNames: string[],
+  year: string,
+): [string, string][] {
   return monthShortNames.map((m) => [m, year]);
 }
 
@@ -29,13 +51,24 @@ export function twoLineMonthLabels(monthShortNames: string[], year: string): [st
  * — mirrors the reference reports' own bar-highlight convention (e.g.
  * Arus's Tren Bulanan chart: Jan lightest, March/peak darkest, rest medium).
  */
-export function monthlyPeakColors(data: (number | null)[], shades: [string, string, string] = [BLUE_PROGRESSION[0], BLUE_PROGRESSION[1], BLUE_PROGRESSION[2]]): string[] {
+export function monthlyPeakColors(
+  data: (number | null)[],
+  shades: [string, string, string] = [
+    BLUE_PROGRESSION[0],
+    BLUE_PROGRESSION[1],
+    BLUE_PROGRESSION[2],
+  ],
+): string[] {
   const [light, medium, dark] = shades;
-  const reported = data.map((v, i) => (v !== null ? { v, i } : null)).filter((x): x is { v: number; i: number } => x !== null);
+  const reported = data
+    .map((v, i) => (v !== null ? { v, i } : null))
+    .filter((x): x is { v: number; i: number } => x !== null);
   if (reported.length === 0) return data.map(() => medium);
   const maxIdx = reported.reduce((a, b) => (b.v > a.v ? b : a)).i;
   const minIdx = reported.reduce((a, b) => (b.v < a.v ? b : a)).i;
-  return data.map((_, i) => (i === maxIdx ? dark : i === minIdx && minIdx !== maxIdx ? light : medium));
+  return data.map((_, i) =>
+    i === maxIdx ? dark : i === minIdx && minIdx !== maxIdx ? light : medium,
+  );
 }
 
 export const barDatalabel = (color = "#061628", decimals = 0) => ({

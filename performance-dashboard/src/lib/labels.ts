@@ -7,7 +7,8 @@
 const SHORT_LOCATION: Record<string, string> = {
   "DERMAGA UMUM": "Dermaga Umum",
   "REDE TRANSPORT / LOADING POINT / DOLPHIN / PINGGIRAN": "Rede Transport",
-  "TUKS / TERMINAL KHUSUS / UPP / BUP LAIN / PELABUHAN KHUSUS": "Tuks/Terminal Khusus",
+  "TUKS / TERMINAL KHUSUS / UPP / BUP LAIN / PELABUHAN KHUSUS":
+    "Tuks/Terminal Khusus",
   "LOADING POINT (DI LUAR DLKR)": "Loading Point",
 };
 

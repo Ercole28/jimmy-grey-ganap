@@ -50,7 +50,14 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
                 </div>
               ))}
             </div>
-            <StackedBarChart labels={a.monthLabels} datasets={a.commodityDatasets} unit="Ton" decimals={0} yAxisTitle="Ton" height={264} />
+            <StackedBarChart
+              labels={a.monthLabels}
+              datasets={a.commodityDatasets}
+              unit="Ton"
+              decimals={0}
+              yAxisTitle="Ton"
+              height={264}
+            />
           </div>
           <div className="card">
             <p className="card-t">Komposisi Produksi Barang</p>
@@ -67,8 +74,18 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
             <div className="leg" style={{ justifyContent: "center" }}>
               {a.commodityComposition.labels.map((label, i) => (
                 <div className="li" key={label}>
-                  <span className="ls" style={{ background: ["#6CA4E0", "#1358A4"][i] }} />
-                  {label} {commodityTotal > 0 ? formatValue((a.commodityComposition.data[i] / commodityTotal) * 100, { decimals: 1 }) : "0"}%
+                  <span
+                    className="ls"
+                    style={{ background: ["#6CA4E0", "#1358A4"][i] }}
+                  />
+                  {label}{" "}
+                  {commodityTotal > 0
+                    ? formatValue(
+                        (a.commodityComposition.data[i] / commodityTotal) * 100,
+                        { decimals: 1 },
+                      )
+                    : "0"}
+                  %
                 </div>
               ))}
             </div>
@@ -79,7 +96,13 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
           <div className="card">
             <p className="card-t">Gerakan Pemanduan Bulanan</p>
             <p className="card-s">{a.pemanduanSubtitle}</p>
-            <BarChart labels={a.monthLabels} data={a.pemanduanTrend} colors={BLUE_PROGRESSION.concat(BLUE_PROGRESSION)} unit="gerakan" height={214} />
+            <BarChart
+              labels={a.monthLabels}
+              data={a.pemanduanTrend}
+              colors={BLUE_PROGRESSION.concat(BLUE_PROGRESSION)}
+              unit="gerakan"
+              height={214}
+            />
           </div>
           <div className="card">
             <p className="card-t">Volume GT per Layanan Kapal</p>
@@ -90,7 +113,9 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
               colors={["#1358A4", "#0B8A60", "#5135AE"]}
               unit="GT"
               centerTop="Total GT"
-              centerBottom={formatValue(serviceGTTotal / 1_000_000, { decimals: 1 })}
+              centerBottom={formatValue(serviceGTTotal / 1_000_000, {
+                decimals: 1,
+              })}
               height={214}
             />
           </div>
@@ -118,7 +143,8 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
             <div className="nb">
               <p className="nb-t">Catatan Skala</p>
               <p className="nb-b">
-                Layanan kapal menggunakan satuan volume masing-masing (Gerakan/Kpl Jam/GT Etmal) — tidak dijumlahkan lintas satuan.
+                Layanan kapal menggunakan satuan volume masing-masing
+                (Gerakan/Kpl Jam/GT Etmal) — tidak dijumlahkan lintas satuan.
               </p>
             </div>
           </div>
@@ -131,12 +157,20 @@ export function ProduksiTab({ analysis: a, roots }: ProduksiTabProps) {
       <div className="sec-group" data-export-exclude>
         <div className="sec-row">
           <p className="sec">Rincian Lengkap</p>
-          <button type="button" className="sec-toggle-all" onClick={tree.toggleAll}>
+          <button
+            type="button"
+            className="sec-toggle-all"
+            onClick={tree.toggleAll}
+          >
             {tree.allExpanded ? "Tutup Semua" : "Buka Semua"}
           </button>
         </div>
         <div className="card tree-card">
-          <HierarchyTree roots={roots} expanded={tree.expanded} onToggle={tree.toggle} />
+          <HierarchyTree
+            roots={roots}
+            expanded={tree.expanded}
+            onToggle={tree.toggle}
+          />
         </div>
       </div>
     </>

@@ -6,7 +6,10 @@ export function nodeKey(path: number[]): string {
 }
 
 /** Every node-position key that has children (i.e. can be expanded/collapsed). */
-export function collectExpandableKeys(nodes: SheetNode[], path: number[] = []): string[] {
+export function collectExpandableKeys(
+  nodes: SheetNode[],
+  path: number[] = [],
+): string[] {
   const out: string[] = [];
   nodes.forEach((n, i) => {
     const childPath = [...path, i];
@@ -18,7 +21,10 @@ export function collectExpandableKeys(nodes: SheetNode[], path: number[] = []): 
   return out;
 }
 
-export function findFirstByLabel(nodes: SheetNode[], match: RegExp): SheetNode | undefined {
+export function findFirstByLabel(
+  nodes: SheetNode[],
+  match: RegExp,
+): SheetNode | undefined {
   return findAllByLabel(nodes, match)[0];
 }
 
@@ -55,7 +61,10 @@ export function flattenLeaves(nodes: SheetNode[]): SheetNode[] {
  * not found. Used to locate the "containing section" of a resolved KPI node
  * for share/dominance calculations.
  */
-export function findAncestorChain(roots: SheetNode[], target: SheetNode): SheetNode[] {
+export function findAncestorChain(
+  roots: SheetNode[],
+  target: SheetNode,
+): SheetNode[] {
   function search(nodes: SheetNode[], trail: SheetNode[]): SheetNode[] | null {
     for (const n of nodes) {
       if (n === target) return trail;

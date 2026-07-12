@@ -1,5 +1,11 @@
 :root {
-  --header-gradient: linear-gradient(112deg, #061628 0%, #0b3464 44%, #1358a4 78%, #1c6cc0 100%);
+  --header-gradient: linear-gradient(
+    112deg,
+    #061628 0%,
+    #0b3464 44%,
+    #1358a4 78%,
+    #1c6cc0 100%
+  );
 
   --page-bg: #e8eef7;
   --canvas: #cbd5e8;

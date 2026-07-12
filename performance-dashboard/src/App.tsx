@@ -27,7 +27,9 @@ function App() {
     if (didInit.current) return;
     const loaded = Object.values(sheets).filter((s) => s !== null);
     if (loaded.length === 0) return;
-    setThroughMonth(Math.max(...loaded.map((s) => latestReportedMonth(s!.roots))));
+    setThroughMonth(
+      Math.max(...loaded.map((s) => latestReportedMonth(s!.roots))),
+    );
     didInit.current = true;
   }, [sheets]);
 
@@ -35,26 +37,45 @@ function App() {
   let body = null;
 
   if (activeTab === "ARUS" && sheets.ARUS) {
-    const analysis = analyzeArus(sheets.ARUS.roots, sheets.ARUS.meta, throughMonth);
+    const analysis = analyzeArus(
+      sheets.ARUS.roots,
+      sheets.ARUS.meta,
+      throughMonth,
+    );
     header = analysis;
     body = <ArusTab analysis={analysis} roots={sheets.ARUS.roots} />;
   } else if (activeTab === "KINERJA" && sheets.KINERJA) {
-    const analysis = analyzeKinerja(sheets.KINERJA.roots, sheets.KINERJA.meta, throughMonth);
+    const analysis = analyzeKinerja(
+      sheets.KINERJA.roots,
+      sheets.KINERJA.meta,
+      throughMonth,
+    );
     header = analysis;
     body = <KinerjaTab analysis={analysis} roots={sheets.KINERJA.roots} />;
   } else if (activeTab === "UTILISASI" && sheets.UTILISASI) {
-    const analysis = analyzeUtilisasi(sheets.UTILISASI.roots, sheets.UTILISASI.meta, throughMonth);
+    const analysis = analyzeUtilisasi(
+      sheets.UTILISASI.roots,
+      sheets.UTILISASI.meta,
+      throughMonth,
+    );
     header = analysis;
     body = <UtilisasiTab analysis={analysis} roots={sheets.UTILISASI.roots} />;
   } else if (activeTab === "PRODUKSI" && sheets.PRODUKSI) {
-    const analysis = analyzeProduksi(sheets.PRODUKSI.roots, sheets.PRODUKSI.meta, throughMonth);
+    const analysis = analyzeProduksi(
+      sheets.PRODUKSI.roots,
+      sheets.PRODUKSI.meta,
+      throughMonth,
+    );
     header = analysis;
     body = <ProduksiTab analysis={analysis} roots={sheets.PRODUKSI.roots} />;
   }
 
   return (
     <>
-      <div className="export-progress" style={{ width: `${progress}%`, opacity: exporting ? 1 : 0 }} />
+      <div
+        className="export-progress"
+        style={{ width: `${progress}%`, opacity: exporting ? 1 : 0 }}
+      />
       <div className="app-shell" ref={targetRef}>
         {header ? (
           <Header
@@ -66,7 +87,13 @@ function App() {
             badges={header.badges}
           />
         ) : (
-          <Header eyebrow="Performance Dashboard" title="Memuat" titleAccent=" data…" subtitle="Menghubungkan ke Google Sheets" badges={[]} />
+          <Header
+            eyebrow="Performance Dashboard"
+            title="Memuat"
+            titleAccent=" data…"
+            subtitle="Menghubungkan ke Google Sheets"
+            badges={[]}
+          />
         )}
 
         <TabNav active={activeTab} onChange={setActiveTab} />
@@ -83,11 +110,17 @@ function App() {
 
         {error && <div className="app-banner">Gagal memuat data: {error}</div>}
 
-        <main className="app-body">{body ?? <p className="k-lbl">Memuat data…</p>}</main>
+        <main className="app-body">
+          {body ?? <p className="k-lbl">Memuat data…</p>}
+        </main>
 
         <footer className="ftr">
-          <span>{header?.footerLeft ?? "Performance Dashboard · Cabang Banten"}</span>
-          <span>{header?.footerRight ?? "Sumber data: Google Sheets (live)"}</span>
+          <span>
+            {header?.footerLeft ?? "Performance Dashboard · Cabang Banten"}
+          </span>
+          <span>
+            {header?.footerRight ?? "Sumber data: Google Sheets (live)"}
+          </span>
         </footer>
       </div>
     </>

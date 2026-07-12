@@ -37,15 +37,28 @@ function TreeRows({
         const isLeaf = node.unit !== undefined;
         const hasChildren = node.children.length > 0;
         const isExpanded = expanded.has(key);
-        const rowClass = !isLeaf ? "tt" : GRAND_TOTAL_RE.test(node.label) ? "hl" : undefined;
+        const rowClass = !isLeaf
+          ? "tt"
+          : GRAND_TOTAL_RE.test(node.label)
+            ? "hl"
+            : undefined;
 
         return (
           <Fragment key={key}>
             <tr className={rowClass}>
-              <td className="tree-cell" style={{ paddingLeft: 12 + depth * 18 }}>
+              <td
+                className="tree-cell"
+                style={{ paddingLeft: 12 + depth * 18 }}
+              >
                 {hasChildren ? (
-                  <button type="button" className="tree-cell__toggle" onClick={() => onToggle(key)}>
-                    <span className="tree-cell__caret">{isExpanded ? "▾" : "▸"}</span>
+                  <button
+                    type="button"
+                    className="tree-cell__toggle"
+                    onClick={() => onToggle(key)}
+                  >
+                    <span className="tree-cell__caret">
+                      {isExpanded ? "▾" : "▸"}
+                    </span>
                     {node.label}
                   </button>
                 ) : (
@@ -59,7 +72,13 @@ function TreeRows({
               <td>{isLeaf ? formatValue(node.total) : ""}</td>
             </tr>
             {hasChildren && isExpanded && (
-              <TreeRows nodes={node.children} path={childPath} depth={depth + 1} expanded={expanded} onToggle={onToggle} />
+              <TreeRows
+                nodes={node.children}
+                path={childPath}
+                depth={depth + 1}
+                expanded={expanded}
+                onToggle={onToggle}
+              />
             )}
           </Fragment>
         );
@@ -68,7 +87,11 @@ function TreeRows({
   );
 }
 
-export function HierarchyTree({ roots, expanded, onToggle }: HierarchyTreeProps) {
+export function HierarchyTree({
+  roots,
+  expanded,
+  onToggle,
+}: HierarchyTreeProps) {
   return (
     <table className="t">
       <thead>
@@ -82,7 +105,13 @@ export function HierarchyTree({ roots, expanded, onToggle }: HierarchyTreeProps)
         </tr>
       </thead>
       <tbody>
-        <TreeRows nodes={roots} path={[]} depth={0} expanded={expanded} onToggle={onToggle} />
+        <TreeRows
+          nodes={roots}
+          path={[]}
+          depth={0}
+          expanded={expanded}
+          onToggle={onToggle}
+        />
       </tbody>
     </table>
   );

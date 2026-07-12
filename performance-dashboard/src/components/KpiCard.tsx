@@ -26,11 +26,23 @@ interface KpiCardProps {
   trackPercent?: number;
 }
 
-export function KpiCard({ label, value, unit, deltaText, deltaTone = "neutral", color = "blue", trackPercent }: KpiCardProps) {
-  const trendClass = deltaTone === "up" ? "cu" : deltaTone === "down" ? "cd" : "cn";
+export function KpiCard({
+  label,
+  value,
+  unit,
+  deltaText,
+  deltaTone = "neutral",
+  color = "blue",
+  trackPercent,
+}: KpiCardProps) {
+  const trendClass =
+    deltaTone === "up" ? "cu" : deltaTone === "down" ? "cd" : "cn";
 
   return (
-    <div className={`kpi ${VARIANT_CLASS[color]}`} style={{ ["--kpi-color" as string]: COLOR_VARS[color] }}>
+    <div
+      className={`kpi ${VARIANT_CLASS[color]}`}
+      style={{ ["--kpi-color" as string]: COLOR_VARS[color] }}
+    >
       <p className="k-lbl">{label}</p>
       <p className="k-val">
         {value}
@@ -39,7 +51,10 @@ export function KpiCard({ label, value, unit, deltaText, deltaTone = "neutral", 
       {deltaText && <p className={`k-delta ${trendClass}`}>{deltaText}</p>}
       {trackPercent !== undefined && (
         <div className="k-track">
-          <div className="k-fill" style={{ width: `${Math.min(100, Math.max(0, trackPercent))}%` }} />
+          <div
+            className="k-fill"
+            style={{ width: `${Math.min(100, Math.max(0, trackPercent))}%` }}
+          />
         </div>
       )}
     </div>

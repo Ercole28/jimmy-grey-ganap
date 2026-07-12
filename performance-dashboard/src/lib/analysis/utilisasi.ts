@@ -1,8 +1,20 @@
-import { averageUnderMatchingHeaders, cumulativeAverage, cumulativeSum, findPeakMonth, rankUnderMatchingHeaders } from "../aggregate";
+import {
+  averageUnderMatchingHeaders,
+  cumulativeAverage,
+  cumulativeSum,
+  findPeakMonth,
+  rankUnderMatchingHeaders,
+} from "../aggregate";
 import { MONTH_NAMES, MONTH_NAMES_SHORT, formatValue } from "../months";
 import type { RecommendationCard } from "../recommendations";
 import { findAllByCode } from "../tree";
-import type { HeaderBadge, InsightSegment, ReportHeaderData, SheetNode, StatusBarItem } from "../types";
+import type {
+  HeaderBadge,
+  InsightSegment,
+  ReportHeaderData,
+  SheetNode,
+  StatusBarItem,
+} from "../types";
 import type { KpiCardData } from "./arus";
 
 const CODE = {
@@ -20,8 +32,14 @@ function byCode(roots: SheetNode[], code: string): SheetNode | undefined {
   return findAllByCode(roots, code)[0];
 }
 
-function months(node: SheetNode | undefined, throughMonth: number): (number | null)[] {
-  return Array.from({ length: throughMonth + 1 }, (_, i) => node?.months[i] ?? null);
+function months(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): (number | null)[] {
+  return Array.from(
+    { length: throughMonth + 1 },
+    (_, i) => node?.months[i] ?? null,
+  );
 }
 
 export interface UtilisasiAnalysis extends ReportHeaderData {
@@ -45,16 +63,44 @@ export interface UtilisasiAnalysis extends ReportHeaderData {
   recommendations: RecommendationCard[];
 }
 
-export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, throughMonth: number): UtilisasiAnalysis {
+export function analyzeUtilisasi(
+  roots: SheetNode[],
+  meta: { tahun: string },
+  throughMonth: number,
+): UtilisasiAnalysis {
   const year = meta.tahun || "2026";
-  const periodLabel = throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
+  const periodLabel =
+    throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
   const isPartial = throughMonth < 11;
 
-  const readinessAvg = averageUnderMatchingHeaders(roots, /^Kesiapan alat bongkar muat$/i, "%", throughMonth);
-  const utilizationAvg = averageUnderMatchingHeaders(roots, /^Utilisasi alat bongkar muat$/i, "%", throughMonth);
-  const readinessRanking = rankUnderMatchingHeaders(roots, /^Kesiapan alat bongkar muat$/i, "%", throughMonth);
-  const utilizationRanking = rankUnderMatchingHeaders(roots, /^Utilisasi alat bongkar muat$/i, "%", throughMonth);
-  const equipmentUnion = new Set([...readinessRanking.map((r) => r.label), ...utilizationRanking.map((r) => r.label)]);
+  const readinessAvg = averageUnderMatchingHeaders(
+    roots,
+    /^Kesiapan alat bongkar muat$/i,
+    "%",
+    throughMonth,
+  );
+  const utilizationAvg = averageUnderMatchingHeaders(
+    roots,
+    /^Utilisasi alat bongkar muat$/i,
+    "%",
+    throughMonth,
+  );
+  const readinessRanking = rankUnderMatchingHeaders(
+    roots,
+    /^Kesiapan alat bongkar muat$/i,
+    "%",
+    throughMonth,
+  );
+  const utilizationRanking = rankUnderMatchingHeaders(
+    roots,
+    /^Utilisasi alat bongkar muat$/i,
+    "%",
+    throughMonth,
+  );
+  const equipmentUnion = new Set([
+    ...readinessRanking.map((r) => r.label),
+    ...utilizationRanking.map((r) => r.label),
+  ]);
 
   const borTerminals = [
     { label: "Multipurpose", code: CODE.BOR_MULTIPURPOSE, color: "#B6D2F0" },
@@ -62,16 +108,37 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
     { label: "Curah Cair", code: CODE.BOR_CURAH_CAIR, color: "#1E62C4" },
   ];
   const borAverages = borTerminals
-    .map((t) => ({ label: t.label, avg: cumulativeAverage(byCode(roots, t.code), throughMonth) }))
+    .map((t) => ({
+      label: t.label,
+      avg: cumulativeAverage(byCode(roots, t.code), throughMonth),
+    }))
     .filter((t): t is { label: string; avg: number } => t.avg !== null);
-  const topBOR = borAverages.reduce((a, b) => (b.avg > a.avg ? b : a), borAverages[0]);
+  const topBOR = borAverages.reduce(
+    (a, b) => (b.avg > a.avg ? b : a),
+    borAverages[0],
+  );
 
-  const kapalTundaUtilAvg = cumulativeAverage(byCode(roots, CODE.UTILISASI_KAPAL_TUNDA), throughMonth);
-  const kapalTundaReadyAvg = cumulativeAverage(byCode(roots, CODE.KESIAPAN_KAPAL_TUNDA), throughMonth);
-  const bbmTotal = cumulativeSum(byCode(roots, CODE.BBM_KAPAL_TUNDA), throughMonth);
+  const kapalTundaUtilAvg = cumulativeAverage(
+    byCode(roots, CODE.UTILISASI_KAPAL_TUNDA),
+    throughMonth,
+  );
+  const kapalTundaReadyAvg = cumulativeAverage(
+    byCode(roots, CODE.KESIAPAN_KAPAL_TUNDA),
+    throughMonth,
+  );
+  const bbmTotal = cumulativeSum(
+    byCode(roots, CODE.BBM_KAPAL_TUNDA),
+    throughMonth,
+  );
 
-  const gapPP = readinessAvg !== null && utilizationAvg !== null ? readinessAvg - utilizationAvg : null;
-  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [m, year]);
+  const gapPP =
+    readinessAvg !== null && utilizationAvg !== null
+      ? readinessAvg - utilizationAvg
+      : null;
+  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [
+    m,
+    year,
+  ]);
   // Generic "how far through the year" fill for non-ratio KPI cards — see arus.ts for derivation.
   const yearElapsedPct = ((throughMonth + 1) / 12) * 100;
 
@@ -79,11 +146,23 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
   const READY_GREEN = "#0B8A60";
   const READY_RED = "#BC1E1E";
   const READY_BLUE = "#5888D4";
-  const readinessColors = readinessRanking.map((r, i) => (i === 0 ? READY_GREEN : r.value < 90 ? READY_RED : READY_BLUE));
+  const readinessColors = readinessRanking.map((r, i) =>
+    i === 0 ? READY_GREEN : r.value < 90 ? READY_RED : READY_BLUE,
+  );
 
-  const utilAscending = [...utilizationRanking].sort((a, b) => a.value - b.value);
+  const utilAscending = [...utilizationRanking].sort(
+    (a, b) => a.value - b.value,
+  );
   const UTIL_GRADIENT = ["#A8BCD4", "#6CA4E0", "#1E62C4"];
-  const utilColors = utilAscending.map((_, i) => UTIL_GRADIENT[Math.min(UTIL_GRADIENT.length - 1, Math.floor((i / utilAscending.length) * UTIL_GRADIENT.length))]);
+  const utilColors = utilAscending.map(
+    (_, i) =>
+      UTIL_GRADIENT[
+        Math.min(
+          UTIL_GRADIENT.length - 1,
+          Math.floor((i / utilAscending.length) * UTIL_GRADIENT.length),
+        )
+      ],
+  );
 
   // ---- Chart card conclusion subtitles ----
   const borSpike = borTerminals
@@ -92,11 +171,23 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
       const node = byCode(roots, t.code);
       const peak = findPeakMonth(node, throughMonth);
       const avg = borAverages.find((b) => b.label === t.label)?.avg ?? null;
-      return peak && avg !== null && avg > 0 ? { label: t.label, peak, avg } : null;
+      return peak && avg !== null && avg > 0
+        ? { label: t.label, peak, avg }
+        : null;
     })
-    .filter((x): x is { label: string; peak: { monthIndex: number; value: number }; avg: number } => x !== null)
+    .filter(
+      (
+        x,
+      ): x is {
+        label: string;
+        peak: { monthIndex: number; value: number };
+        avg: number;
+      } => x !== null,
+    )
     .sort((a, b) => b.peak.value / b.avg - a.peak.value / a.avg)[0];
-  let borSubtitle = topBOR ? `${topBOR.label} tersibuk (${formatValue(topBOR.avg, { decimals: 1 })}%)` : "Perbandingan tingkat okupansi dermaga antar terminal.";
+  let borSubtitle = topBOR
+    ? `${topBOR.label} tersibuk (${formatValue(topBOR.avg, { decimals: 1 })}%)`
+    : "Perbandingan tingkat okupansi dermaga antar terminal.";
   if (borSpike && borSpike.peak.value / borSpike.avg > 1.3) {
     borSubtitle += `; ${borSpike.label} melonjak di ${MONTH_NAMES_SHORT[borSpike.peak.monthIndex]} (${formatValue(borSpike.peak.value, { decimals: 1 })}%)`;
   }
@@ -108,7 +199,9 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
 
   const utilTop = utilAscending[utilAscending.length - 1];
   const utilBottomTwo = utilAscending.slice(0, 2);
-  let utilizationSubtitle = utilTop ? `${utilTop.label} tertinggi ${formatValue(utilTop.value, { decimals: 1 })}%` : "Peringkat utilisasi alat, rata-rata periode berjalan.";
+  let utilizationSubtitle = utilTop
+    ? `${utilTop.label} tertinggi ${formatValue(utilTop.value, { decimals: 1 })}%`
+    : "Peringkat utilisasi alat, rata-rata periode berjalan.";
   if (utilBottomTwo.length === 2 && utilBottomTwo[1].value < 10) {
     utilizationSubtitle += `; ${utilBottomTwo.map((u) => u.label).join(" & ")} nyaris idle`;
   }
@@ -135,7 +228,8 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
 
   // ---- Insight ----
   const insight: InsightSegment[] = [];
-  const seg = (text: string, emphasis?: "b" | "i") => insight.push({ text, emphasis });
+  const seg = (text: string, emphasis?: "b" | "i") =>
+    insight.push({ text, emphasis });
 
   if (readinessAvg !== null) {
     seg("Kesiapan alat bongkar muat tercatat sangat tinggi ");
@@ -153,7 +247,9 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
     seg(".");
   }
   if (topBOR) {
-    seg(` Terminal ${topBOR.label} menjadi dermaga tersibuk dengan BOR rata-rata `);
+    seg(
+      ` Terminal ${topBOR.label} menjadi dermaga tersibuk dengan BOR rata-rata `,
+    );
     seg(`${formatValue(topBOR.avg, { decimals: 1 })}%`, "b");
     seg(",");
   }
@@ -172,14 +268,20 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
     seg(` sepanjang periode.`);
   }
   if (isPartial) {
-    seg(` Data mencakup ${periodLabel} ${year} (parsial, ${throughMonth + 1} dari 12 bulan).`, "i");
+    seg(
+      ` Data mencakup ${periodLabel} ${year} (parsial, ${throughMonth + 1} dari 12 bulan).`,
+      "i",
+    );
   }
 
   // ---- KPI strip ----
   const kpis: KpiCardData[] = [
     {
       label: "Kesiapan Alat BM",
-      value: readinessAvg !== null ? formatValue(readinessAvg, { decimals: 1 }) : "—",
+      value:
+        readinessAvg !== null
+          ? formatValue(readinessAvg, { decimals: 1 })
+          : "—",
       unit: "%",
       deltaText: "Rata-rata seluruh alat terpantau",
       deltaTone: "up",
@@ -188,7 +290,10 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
     },
     {
       label: "Utilisasi Alat BM",
-      value: utilizationAvg !== null ? formatValue(utilizationAvg, { decimals: 1 }) : "—",
+      value:
+        utilizationAvg !== null
+          ? formatValue(utilizationAvg, { decimals: 1 })
+          : "—",
       unit: "%",
       deltaText: "Jauh di bawah kesiapan",
       deltaTone: "down",
@@ -199,23 +304,35 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
       label: topBOR ? `BOR Tertinggi (${topBOR.label})` : "BOR Tertinggi",
       value: topBOR ? formatValue(topBOR.avg, { decimals: 1 }) : "—",
       unit: "%",
-      deltaText: borAverages.length > 1 ? `Tersibuk dari ${borAverages.length} terminal` : undefined,
+      deltaText:
+        borAverages.length > 1
+          ? `Tersibuk dari ${borAverages.length} terminal`
+          : undefined,
       deltaTone: "neutral",
       color: "blue",
       trackPercent: topBOR?.avg,
     },
     {
       label: "Utilisasi Kapal Tunda",
-      value: kapalTundaUtilAvg !== null ? formatValue(kapalTundaUtilAvg, { decimals: 1 }) : "—",
+      value:
+        kapalTundaUtilAvg !== null
+          ? formatValue(kapalTundaUtilAvg, { decimals: 1 })
+          : "—",
       unit: "%",
-      deltaText: kapalTundaReadyAvg !== null ? `Kesiapan ${formatValue(kapalTundaReadyAvg, { decimals: 1 })}%` : undefined,
+      deltaText:
+        kapalTundaReadyAvg !== null
+          ? `Kesiapan ${formatValue(kapalTundaReadyAvg, { decimals: 1 })}%`
+          : undefined,
       deltaTone: "neutral",
       color: "purple",
       trackPercent: kapalTundaUtilAvg ?? undefined,
     },
     {
       label: "Total BBM Kapal Tunda",
-      value: bbmTotal !== null ? formatValue(bbmTotal / 1_000_000, { decimals: 2 }) : "—",
+      value:
+        bbmTotal !== null
+          ? formatValue(bbmTotal / 1_000_000, { decimals: 2 })
+          : "—",
       unit: "jt L",
       deltaText: `${throughMonth + 1} bulan (${periodLabel} ${year})`,
       deltaTone: "neutral",
@@ -226,15 +343,33 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
 
   // ---- Status bar ----
   const status: StatusBarItem[] = [];
-  if (readinessAvg !== null) status.push({ text: `Kesiapan alat BM sangat baik — rata-rata ${formatValue(readinessAvg, { decimals: 1 })}%`, tone: "ok" });
+  if (readinessAvg !== null)
+    status.push({
+      text: `Kesiapan alat BM sangat baik — rata-rata ${formatValue(readinessAvg, { decimals: 1 })}%`,
+      tone: "ok",
+    });
   if (kapalTundaReadyAvg !== null && kapalTundaUtilAvg !== null) {
-    status.push({ text: `Kapal Tunda prima — kesiapan ${formatValue(kapalTundaReadyAvg, { decimals: 1 })}% & utilisasi ${formatValue(kapalTundaUtilAvg, { decimals: 1 })}%`, tone: "ok" });
+    status.push({
+      text: `Kapal Tunda prima — kesiapan ${formatValue(kapalTundaReadyAvg, { decimals: 1 })}% & utilisasi ${formatValue(kapalTundaUtilAvg, { decimals: 1 })}%`,
+      tone: "ok",
+    });
   }
   if (gapPP !== null && gapPP > 30) {
-    status.push({ text: `Utilisasi alat BM rendah (${formatValue(utilizationAvg ?? 0, { decimals: 1 })}%) — gap ${formatValue(gapPP, { decimals: 0 })} pp vs kesiapan`, tone: "warn" });
+    status.push({
+      text: `Utilisasi alat BM rendah (${formatValue(utilizationAvg ?? 0, { decimals: 1 })}%) — gap ${formatValue(gapPP, { decimals: 0 })} pp vs kesiapan`,
+      tone: "warn",
+    });
   }
-  if (topBOR) status.push({ text: `Terminal ${topBOR.label} tersibuk — BOR ${formatValue(topBOR.avg, { decimals: 1 })}% tertinggi`, tone: "ok" });
-  if (isPartial) status.push({ text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`, tone: "warn" });
+  if (topBOR)
+    status.push({
+      text: `Terminal ${topBOR.label} tersibuk — BOR ${formatValue(topBOR.avg, { decimals: 1 })}% tertinggi`,
+      tone: "ok",
+    });
+  if (isPartial)
+    status.push({
+      text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`,
+      tone: "warn",
+    });
 
   // ---- Recommendations ----
   const recommendations: RecommendationCard[] = [];
@@ -255,7 +390,11 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
       when: "Segera",
     });
   }
-  if (kapalTundaReadyAvg !== null && kapalTundaUtilAvg !== null && kapalTundaReadyAvg - kapalTundaUtilAvg > 30) {
+  if (
+    kapalTundaReadyAvg !== null &&
+    kapalTundaUtilAvg !== null &&
+    kapalTundaReadyAvg - kapalTundaUtilAvg > 30
+  ) {
     recommendations.push({
       type: "st",
       headline: `Tingkatkan monetisasi Kapal Tunda yang baru ${formatValue(kapalTundaUtilAvg, { decimals: 1 })}%`,
@@ -288,25 +427,55 @@ export function analyzeUtilisasi(roots: SheetNode[], meta: { tahun: string }, th
     subtitle: "Utilisasi Infrastruktur & Suprastruktur — Regional 2 Banten",
     badges: [
       { value: `${periodLabel} ${year}`, label: "Periode Realisasi" },
-      equipmentUnion.size > 0 ? { value: `${equipmentUnion.size} Unit`, label: "Alat Bongkar Muat" } : null,
-      readinessAvg !== null ? { value: `${formatValue(readinessAvg, { decimals: 1 })}%`, label: "Kesiapan Alat (avg)" } : null,
-      utilizationAvg !== null ? { value: `${formatValue(utilizationAvg, { decimals: 1 })}%`, label: "Utilisasi Alat (avg)" } : null,
+      equipmentUnion.size > 0
+        ? { value: `${equipmentUnion.size} Unit`, label: "Alat Bongkar Muat" }
+        : null,
+      readinessAvg !== null
+        ? {
+            value: `${formatValue(readinessAvg, { decimals: 1 })}%`,
+            label: "Kesiapan Alat (avg)",
+          }
+        : null,
+      utilizationAvg !== null
+        ? {
+            value: `${formatValue(utilizationAvg, { decimals: 1 })}%`,
+            label: "Utilisasi Alat (avg)",
+          }
+        : null,
     ].filter((b): b is HeaderBadge => b !== null),
     insight,
     kpis,
     monthLabels,
     borTrendDatasets: borTerminals
       .filter((t) => borAverages.some((b) => b.label === t.label))
-      .map((t) => ({ label: t.label, data: months(byCode(roots, t.code), throughMonth), color: t.color })),
+      .map((t) => ({
+        label: t.label,
+        data: months(byCode(roots, t.code), throughMonth),
+        color: t.color,
+      })),
     borSubtitle,
-    readinessRanking: { labels: readinessRanking.map((r) => r.label), data: readinessRanking.map((r) => r.value), colors: readinessColors },
+    readinessRanking: {
+      labels: readinessRanking.map((r) => r.label),
+      data: readinessRanking.map((r) => r.value),
+      colors: readinessColors,
+    },
     readinessSubtitle,
-    utilizationRanking: { labels: utilAscending.map((r) => r.label), data: utilAscending.map((r) => r.value), colors: utilColors },
+    utilizationRanking: {
+      labels: utilAscending.map((r) => r.label),
+      data: utilAscending.map((r) => r.value),
+      colors: utilColors,
+    },
     utilizationSubtitle,
     sorTrend: months(byCode(roots, CODE.SOR_CURAH_KERING), throughMonth),
     sorSubtitle,
-    kapalTundaUtil: months(byCode(roots, CODE.UTILISASI_KAPAL_TUNDA), throughMonth),
-    kapalTundaReady: months(byCode(roots, CODE.KESIAPAN_KAPAL_TUNDA), throughMonth),
+    kapalTundaUtil: months(
+      byCode(roots, CODE.UTILISASI_KAPAL_TUNDA),
+      throughMonth,
+    ),
+    kapalTundaReady: months(
+      byCode(roots, CODE.KESIAPAN_KAPAL_TUNDA),
+      throughMonth,
+    ),
     kapalTundaSubtitle,
     bbmTrend: months(byCode(roots, CODE.BBM_KAPAL_TUNDA), throughMonth),
     bbmSubtitle,

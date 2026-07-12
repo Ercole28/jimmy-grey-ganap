@@ -43,7 +43,8 @@ export function latestReportedMonth(roots: SheetNode[]): number {
   let latest = 0;
   for (const leaf of leaves) {
     for (let i = 0; i < leaf.months.length; i++) {
-      if (leaf.months[i] !== null && leaf.months[i] !== 0 && i > latest) latest = i;
+      if (leaf.months[i] !== null && leaf.months[i] !== 0 && i > latest)
+        latest = i;
     }
   }
   return latest;
@@ -54,14 +55,20 @@ export interface Delta {
   pct: number | null;
 }
 
-export function computeDelta(current: number | null, previous: number | null): Delta {
+export function computeDelta(
+  current: number | null,
+  previous: number | null,
+): Delta {
   if (current === null || previous === null) return { value: null, pct: null };
   const value = current - previous;
   const pct = previous === 0 ? null : (value / previous) * 100;
   return { value, pct };
 }
 
-export function formatValue(value: number | null, options?: { decimals?: number }): string {
+export function formatValue(
+  value: number | null,
+  options?: { decimals?: number },
+): string {
   if (value === null) return "—";
   const decimals = options?.decimals ?? (Number.isInteger(value) ? 0 : 2);
   return value.toLocaleString("id-ID", {

@@ -11,7 +11,15 @@ interface BarChartProps {
   height?: number;
 }
 
-export function BarChart({ labels, data, colors, unit, decimals = 0, yAxisTitle, height = 260 }: BarChartProps) {
+export function BarChart({
+  labels,
+  data,
+  colors,
+  unit,
+  decimals = 0,
+  yAxisTitle,
+  height = 260,
+}: BarChartProps) {
   // Headroom above the tallest bar so its floating datalabel isn't clipped
   // by the chart area — Chart.js's auto scale otherwise tops out exactly at
   // the max data value with no room for the label box above it.
@@ -42,7 +50,8 @@ export function BarChart({ labels, data, colors, unit, decimals = 0, yAxisTitle,
                 backgroundColor: "rgba(255,255,255,0.82)",
                 borderRadius: 3,
                 padding: { top: 1, bottom: 1, left: 4, right: 4 },
-                formatter: (v: number | null) => (v === null ? "" : idLocale(v, decimals)),
+                formatter: (v: number | null) =>
+                  v === null ? "" : idLocale(v, decimals),
               },
             },
           ],
@@ -55,14 +64,29 @@ export function BarChart({ labels, data, colors, unit, decimals = 0, yAxisTitle,
             y: {
               beginAtZero: true,
               suggestedMax,
-              ticks: { font: { size: 9 }, color: "#7B98B5", callback: (v) => idLocale(Number(v), decimals) },
+              ticks: {
+                font: { size: 9 },
+                color: "#7B98B5",
+                callback: (v) => idLocale(Number(v), decimals),
+              },
               grid: Y_GRID,
-              title: yAxisTitle ? { display: true, text: yAxisTitle, color: "#7B98B5", font: { size: 9, weight: 600 } } : undefined,
+              title: yAxisTitle
+                ? {
+                    display: true,
+                    text: yAxisTitle,
+                    color: "#7B98B5",
+                    font: { size: 9, weight: 600 },
+                  }
+                : undefined,
             },
           },
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: (c) => ` ${idLocale(c.parsed.y, decimals)} ${unit}` } },
+            tooltip: {
+              callbacks: {
+                label: (c) => ` ${idLocale(c.parsed.y, decimals)} ${unit}`,
+              },
+            },
           },
         }}
       />

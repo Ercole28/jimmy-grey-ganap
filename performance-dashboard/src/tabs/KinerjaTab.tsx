@@ -49,7 +49,13 @@ export function KinerjaTab({ analysis: a, roots }: KinerjaTabProps) {
                 </div>
               ))}
             </div>
-            <GroupedBarChart labels={a.monthLabels} datasets={a.etbtTrendDatasets} unit="%" yAxisTitle="ET/BT (%)" yMax={100} />
+            <GroupedBarChart
+              labels={a.monthLabels}
+              datasets={a.etbtTrendDatasets}
+              unit="%"
+              yAxisTitle="ET/BT (%)"
+              yMax={100}
+            />
           </div>
           <div className="card">
             <p className="card-t">Komposisi Waktu Tambat (BT)</p>
@@ -62,7 +68,12 @@ export function KinerjaTab({ analysis: a, roots }: KinerjaTabProps) {
                 </div>
               ))}
             </div>
-            <StackedBarChart labels={a.btCompositionLabels} datasets={a.btCompositionDatasets} unit="jam" yAxisTitle="Jam" />
+            <StackedBarChart
+              labels={a.btCompositionLabels}
+              datasets={a.btCompositionDatasets}
+              unit="jam"
+              yAxisTitle="Jam"
+            />
           </div>
         </div>
 
@@ -99,11 +110,20 @@ export function KinerjaTab({ analysis: a, roots }: KinerjaTabProps) {
           <div className="card">
             <p className="card-t">Produktivitas T/G/H Curah Kering</p>
             <p className="card-s">{a.productivitySubtitle}</p>
-            <BarChart labels={a.monthLabels} data={a.productivityTrend} colors={BLUE_PROGRESSION.concat(BLUE_PROGRESSION)} unit="T/G/H" decimals={1} />
+            <BarChart
+              labels={a.monthLabels}
+              data={a.productivityTrend}
+              colors={BLUE_PROGRESSION.concat(BLUE_PROGRESSION)}
+              unit="T/G/H"
+              decimals={1}
+            />
           </div>
           <div className="card">
             <p className="card-t">Rincian Metrik Tambat per Terminal</p>
-            <p className="card-s">Rata-rata {a.eyebrow.split("·")[1]?.trim() ?? "periode berjalan"} (Konsolidasi) — satuan jam kecuali ET/BT.</p>
+            <p className="card-s">
+              Rata-rata {a.eyebrow.split("·")[1]?.trim() ?? "periode berjalan"}{" "}
+              (Konsolidasi) — satuan jam kecuali ET/BT.
+            </p>
             <table className="t">
               <thead>
                 <tr>
@@ -116,12 +136,17 @@ export function KinerjaTab({ analysis: a, roots }: KinerjaTabProps) {
               </thead>
               <tbody>
                 {a.terminals.map((t) => (
-                  <tr key={t.label} className={t.isAverage ? "tt" : t.isBest ? "hl" : undefined}>
+                  <tr
+                    key={t.label}
+                    className={t.isAverage ? "tt" : t.isBest ? "hl" : undefined}
+                  >
                     <td>{t.label}</td>
                     <td className="r">{formatValue(t.bt, { decimals: 1 })}</td>
                     <td className="r">{formatValue(t.et, { decimals: 1 })}</td>
                     <td className="r">{formatValue(t.it, { decimals: 1 })}</td>
-                    <td className={`r fw${t.isBest ? " bl" : ""}`}>{formatValue(t.etbt, { decimals: 1 })}%</td>
+                    <td className={`r fw${t.isBest ? " bl" : ""}`}>
+                      {formatValue(t.etbt, { decimals: 1 })}%
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -136,12 +161,20 @@ export function KinerjaTab({ analysis: a, roots }: KinerjaTabProps) {
       <div className="sec-group" data-export-exclude>
         <div className="sec-row">
           <p className="sec">Rincian Lengkap</p>
-          <button type="button" className="sec-toggle-all" onClick={tree.toggleAll}>
+          <button
+            type="button"
+            className="sec-toggle-all"
+            onClick={tree.toggleAll}
+          >
             {tree.allExpanded ? "Tutup Semua" : "Buka Semua"}
           </button>
         </div>
         <div className="card tree-card">
-          <HierarchyTree roots={roots} expanded={tree.expanded} onToggle={tree.toggle} />
+          <HierarchyTree
+            roots={roots}
+            expanded={tree.expanded}
+            onToggle={tree.toggle}
+          />
         </div>
       </div>
     </>

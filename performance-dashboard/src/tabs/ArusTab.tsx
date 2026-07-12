@@ -76,16 +76,28 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
               colors={["#0B8A60", "#1358A4", "#B6D2F0"]}
               unit="kunjungan"
               centerTop="Total"
-              centerBottom={formatValue(a.voyageComposition.data.reduce((x, y) => x + y, 0))}
+              centerBottom={formatValue(
+                a.voyageComposition.data.reduce((x, y) => x + y, 0),
+              )}
             />
             <div className="dl">
               {a.voyageComposition.labels.map((label, i) => {
-                const total = a.voyageComposition.data.reduce((x, y) => x + y, 0);
-                const pct = total > 0 ? (a.voyageComposition.data[i] / total) * 100 : 0;
+                const total = a.voyageComposition.data.reduce(
+                  (x, y) => x + y,
+                  0,
+                );
+                const pct =
+                  total > 0 ? (a.voyageComposition.data[i] / total) * 100 : 0;
                 return (
                   <div className="li" key={label}>
-                    <span className="ls" style={{ background: ["#0B8A60", "#1358A4", "#B6D2F0"][i] }} />
-                    {label} · {formatValue(a.voyageComposition.data[i])} ({formatValue(pct, { decimals: 1 })}%)
+                    <span
+                      className="ls"
+                      style={{
+                        background: ["#0B8A60", "#1358A4", "#B6D2F0"][i],
+                      }}
+                    />
+                    {label} · {formatValue(a.voyageComposition.data[i])} (
+                    {formatValue(pct, { decimals: 1 })}%)
                   </div>
                 );
               })}
@@ -98,7 +110,11 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
             <p className="card-t">Kunjungan per Jenis Muatan</p>
             <p className="card-s">{a.cargoSubtitle}</p>
             {a.cargoRanking.labels.length > 0 ? (
-              <HorizontalBarChart labels={a.cargoRanking.labels} data={a.cargoRanking.data} unit="kunjungan" />
+              <HorizontalBarChart
+                labels={a.cargoRanking.labels}
+                data={a.cargoRanking.data}
+                unit="kunjungan"
+              />
             ) : (
               <p className="k-lbl">Belum ada data.</p>
             )}
@@ -108,14 +124,25 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
             <p className="card-t">Distribusi per Lokasi Sandar</p>
             <p className="card-s">{a.distribusiSubtitle}</p>
             {a.locations.map((loc) => (
-              <div className={`cbg${loc === a.locations[0] ? " tot" : ""}`} key={loc.label}>
+              <div
+                className={`cbg${loc === a.locations[0] ? " tot" : ""}`}
+                key={loc.label}
+              >
                 <div className="cbg-l">
-                  <span className="cbg-dot" style={{ background: loc === a.locations[0] ? "#1358A4" : "#6CA4E0" }} />
+                  <span
+                    className="cbg-dot"
+                    style={{
+                      background:
+                        loc === a.locations[0] ? "#1358A4" : "#6CA4E0",
+                    }}
+                  />
                   <span className="cbg-n">{loc.label}</span>
                 </div>
                 <div>
                   <span className="cbg-v">{formatValue(loc.call)}</span>
-                  <span className="cbg-p">{formatValue(loc.sharePct, { decimals: 1 })}%</span>
+                  <span className="cbg-p">
+                    {formatValue(loc.sharePct, { decimals: 1 })}%
+                  </span>
                 </div>
               </div>
             ))}
@@ -127,14 +154,20 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
                     <div key={loc.label}>
                       <p className="ins-l">{loc.label} (GT juta)</p>
                       <p className="ins-v">
-                        {formatValue(loc.gt / 1_000_000, { decimals: 2 })} jt · {formatValue(loc.gtPerCall, { decimals: 0 })}
+                        {formatValue(loc.gt / 1_000_000, { decimals: 2 })} jt ·{" "}
+                        {formatValue(loc.gtPerCall, { decimals: 0 })}
                       </p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
-            {a.biggerShipNote && <NoteBox title={a.biggerShipNote.title} body={a.biggerShipNote.body} />}
+            {a.biggerShipNote && (
+              <NoteBox
+                title={a.biggerShipNote.title}
+                body={a.biggerShipNote.body}
+              />
+            )}
           </div>
 
           <div className="card">
@@ -150,15 +183,27 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
               </thead>
               <tbody>
                 {a.crossRows.map((row) => (
-                  <tr key={row.label} className={row.isTotal ? "tt" : undefined}>
+                  <tr
+                    key={row.label}
+                    className={row.isTotal ? "tt" : undefined}
+                  >
                     <td>{row.label}</td>
-                    <td className={`r${row.isTotal ? "" : " fw"}`}>{formatValue(row.call)}</td>
-                    <td className="r">{formatValue(row.sharePct, { decimals: 1 })}%</td>
+                    <td className={`r${row.isTotal ? "" : " fw"}`}>
+                      {formatValue(row.call)}
+                    </td>
+                    <td className="r">
+                      {formatValue(row.sharePct, { decimals: 1 })}%
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {a.segmentationNote && <NoteBox title={a.segmentationNote.title} body={a.segmentationNote.body} />}
+            {a.segmentationNote && (
+              <NoteBox
+                title={a.segmentationNote.title}
+                body={a.segmentationNote.body}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -169,12 +214,20 @@ export function ArusTab({ analysis: a, roots }: ArusTabProps) {
       <div className="sec-group" data-export-exclude>
         <div className="sec-row">
           <p className="sec">Rincian Lengkap</p>
-          <button type="button" className="sec-toggle-all" onClick={tree.toggleAll}>
+          <button
+            type="button"
+            className="sec-toggle-all"
+            onClick={tree.toggleAll}
+          >
             {tree.allExpanded ? "Tutup Semua" : "Buka Semua"}
           </button>
         </div>
         <div className="card tree-card">
-          <HierarchyTree roots={roots} expanded={tree.expanded} onToggle={tree.toggle} />
+          <HierarchyTree
+            roots={roots}
+            expanded={tree.expanded}
+            onToggle={tree.toggle}
+          />
         </div>
       </div>
     </>

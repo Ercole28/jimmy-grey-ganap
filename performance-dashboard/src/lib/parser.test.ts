@@ -15,7 +15,10 @@ function loadFixture(name: string): string[][] {
 }
 
 function findByLabel(nodes: SheetNode[], label: string): SheetNode | undefined {
-  return findFirstByLabel(nodes, new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
+  return findFirstByLabel(
+    nodes,
+    new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`),
+  );
 }
 
 describe("parseSheet — ARUS excerpt", () => {
@@ -61,7 +64,10 @@ describe("parseSheet — ARUS excerpt", () => {
   });
 
   it("treats a label-less subtotal row as a leaf at its section's level", () => {
-    const jumlahDermaga = findByLabel(parsed.roots, "Jumlah kunjungan kapal di DERMAGA UMUM");
+    const jumlahDermaga = findByLabel(
+      parsed.roots,
+      "Jumlah kunjungan kapal di DERMAGA UMUM",
+    );
     expect(jumlahDermaga).toBeDefined();
     expect(jumlahDermaga!.unit).toBe("Call");
     expect(jumlahDermaga!.total).toBe(774);

@@ -24,7 +24,8 @@ export function useTreeExpansion(roots: SheetNode[]): TreeExpansion {
     });
   }, []);
 
-  const allExpanded = allKeys.length > 0 && allKeys.every((k) => expanded.has(k));
+  const allExpanded =
+    allKeys.length > 0 && allKeys.every((k) => expanded.has(k));
 
   const toggleAll = useCallback(() => {
     setExpanded(allExpanded ? new Set() : new Set(allKeys));

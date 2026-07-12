@@ -2,7 +2,12 @@ import { Bar } from "react-chartjs-2";
 import { X_GRID, X_TICKS, Y_GRID, idLocale } from "./chartTheme";
 
 // SKILL.md §7.3 spacing formula
-const BAR_PERCENTAGE_BY_COUNT: Record<number, number> = { 1: 0.62, 2: 0.36, 3: 0.72, 4: 0.68 };
+const BAR_PERCENTAGE_BY_COUNT: Record<number, number> = {
+  1: 0.62,
+  2: 0.36,
+  3: 0.72,
+  4: 0.68,
+};
 
 export interface GroupedBarDataset {
   label: string;
@@ -20,12 +25,24 @@ interface GroupedBarChartProps {
   height?: number;
 }
 
-export function GroupedBarChart({ labels, datasets, unit, decimals = 1, yAxisTitle, yMax, height = 260 }: GroupedBarChartProps) {
+export function GroupedBarChart({
+  labels,
+  datasets,
+  unit,
+  decimals = 1,
+  yAxisTitle,
+  yMax,
+  height = 260,
+}: GroupedBarChartProps) {
   const barPercentage = BAR_PERCENTAGE_BY_COUNT[datasets.length] ?? 0.68;
   // Headroom above the tallest bar so its floating datalabel isn't clipped —
   // only applied when the caller hasn't already pinned an explicit yMax.
-  const maxValue = Math.max(0, ...datasets.flatMap((ds) => ds.data.filter((v): v is number => v !== null)));
-  const suggestedMax = yMax === undefined && maxValue > 0 ? maxValue * 1.18 : undefined;
+  const maxValue = Math.max(
+    0,
+    ...datasets.flatMap((ds) => ds.data.filter((v): v is number => v !== null)),
+  );
+  const suggestedMax =
+    yMax === undefined && maxValue > 0 ? maxValue * 1.18 : undefined;
 
   return (
     <div className="cw" style={{ height }}>
@@ -50,7 +67,8 @@ export function GroupedBarChart({ labels, datasets, unit, decimals = 1, yAxisTit
               backgroundColor: "rgba(255,255,255,0.82)",
               borderRadius: 3,
               padding: { top: 1, bottom: 1, left: 3, right: 3 },
-              formatter: (v: number | null) => (v === null ? "" : idLocale(v, decimals)),
+              formatter: (v: number | null) =>
+                v === null ? "" : idLocale(v, decimals),
             },
           })),
         }}
@@ -63,14 +81,28 @@ export function GroupedBarChart({ labels, datasets, unit, decimals = 1, yAxisTit
               beginAtZero: true,
               max: yMax,
               suggestedMax,
-              ticks: { font: { size: 9 }, color: "#7B98B5", callback: (v) => idLocale(Number(v), decimals) },
+              ticks: {
+                font: { size: 9 },
+                color: "#7B98B5",
+                callback: (v) => idLocale(Number(v), decimals),
+              },
               grid: Y_GRID,
-              title: { display: true, text: yAxisTitle, color: "#7B98B5", font: { size: 9, weight: 600 } },
+              title: {
+                display: true,
+                text: yAxisTitle,
+                color: "#7B98B5",
+                font: { size: 9, weight: 600 },
+              },
             },
           },
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${idLocale(c.parsed.y, decimals)} ${unit}` } },
+            tooltip: {
+              callbacks: {
+                label: (c) =>
+                  ` ${c.dataset.label}: ${idLocale(c.parsed.y, decimals)} ${unit}`,
+              },
+            },
           },
         }}
       />

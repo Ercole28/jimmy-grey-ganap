@@ -2,7 +2,10 @@ import { findAllByLabel, flattenLeaves } from "./tree";
 import type { SheetNode } from "./types";
 
 /** Sum of months[0..throughMonth], skipping nulls (SUM() semantics). Null iff nothing reported at all in range. */
-export function cumulativeSum(node: SheetNode | undefined, throughMonth: number): number | null {
+export function cumulativeSum(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): number | null {
   if (!node) return null;
   let sum = 0;
   let any = false;
@@ -17,7 +20,10 @@ export function cumulativeSum(node: SheetNode | undefined, throughMonth: number)
 }
 
 /** Mean of non-null months[0..throughMonth] — for %, jam, T/G/H, bph style metrics where summing is meaningless. */
-export function cumulativeAverage(node: SheetNode | undefined, throughMonth: number): number | null {
+export function cumulativeAverage(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): number | null {
   if (!node) return null;
   let sum = 0;
   let count = 0;
@@ -44,7 +50,9 @@ export function sumByLabelAcrossTree(
   unit: string,
   throughMonth: number,
 ): number | null {
-  const leaves = flattenLeaves(roots).filter((n) => n.unit === unit && match.test(n.label));
+  const leaves = flattenLeaves(roots).filter(
+    (n) => n.unit === unit && match.test(n.label),
+  );
   let sum = 0;
   let any = false;
   for (const leaf of leaves) {
@@ -98,7 +106,9 @@ export function averageUnderMatchingHeaders(
 ): number | null {
   const headers = findAllByLabel(roots, headerMatch);
   const leaves = flattenLeaves(headers).filter((n) => n.unit === unit);
-  const averages = leaves.map((l) => cumulativeAverage(l, throughMonth)).filter((v): v is number => v !== null);
+  const averages = leaves
+    .map((l) => cumulativeAverage(l, throughMonth))
+    .filter((v): v is number => v !== null);
   if (averages.length === 0) return null;
   return averages.reduce((a, b) => a + b, 0) / averages.length;
 }
@@ -119,12 +129,16 @@ export function rankUnderMatchingHeaders(
 }
 
 /** Peak month (0-11) within [0..throughMonth] with the highest positive value. */
-export function findPeakMonth(node: SheetNode | undefined, throughMonth: number): { monthIndex: number; value: number } | null {
+export function findPeakMonth(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): { monthIndex: number; value: number } | null {
   if (!node) return null;
   let best: { monthIndex: number; value: number } | null = null;
   for (let i = 0; i <= throughMonth && i < node.months.length; i++) {
     const v = node.months[i];
-    if (v !== null && v > 0 && (best === null || v > best.value)) best = { monthIndex: i, value: v };
+    if (v !== null && v > 0 && (best === null || v > best.value))
+      best = { monthIndex: i, value: v };
   }
   return best;
 }
@@ -133,7 +147,13 @@ export function findPeakMonth(node: SheetNode | undefined, throughMonth: number)
 export function firstVsLatest(
   node: SheetNode | undefined,
   throughMonth: number,
-): { first: number; firstMonth: number; latest: number; latestMonth: number; deltaPct: number } | null {
+): {
+  first: number;
+  firstMonth: number;
+  latest: number;
+  latestMonth: number;
+  deltaPct: number;
+} | null {
   if (!node) return null;
   let first: { value: number; monthIndex: number } | null = null;
   let latest: { value: number; monthIndex: number } | null = null;
@@ -143,7 +163,13 @@ export function firstVsLatest(
     if (!first) first = { value: v, monthIndex: i };
     latest = { value: v, monthIndex: i };
   }
-  if (!first || !latest || first.monthIndex === latest.monthIndex || first.value === 0) return null;
+  if (
+    !first ||
+    !latest ||
+    first.monthIndex === latest.monthIndex ||
+    first.value === 0
+  )
+    return null;
   return {
     first: first.value,
     firstMonth: first.monthIndex,
@@ -162,7 +188,12 @@ export function findAnomaly(
   node: SheetNode | undefined,
   throughMonth: number,
   threshold = 0.4,
-): { monthIndex: number; value: number; meanOthers: number; deviationPct: number } | null {
+): {
+  monthIndex: number;
+  value: number;
+  meanOthers: number;
+  deviationPct: number;
+} | null {
   if (!node) return null;
   const reported: { monthIndex: number; value: number }[] = [];
   for (let i = 0; i <= throughMonth && i < node.months.length; i++) {
@@ -171,21 +202,40 @@ export function findAnomaly(
   }
   if (reported.length < 3) return null;
 
-  let worst: { monthIndex: number; value: number; meanOthers: number; deviationPct: number } | null = null;
+  let worst: {
+    monthIndex: number;
+    value: number;
+    meanOthers: number;
+    deviationPct: number;
+  } | null = null;
   for (const candidate of reported) {
-    const others = reported.filter((r) => r.monthIndex !== candidate.monthIndex);
+    const others = reported.filter(
+      (r) => r.monthIndex !== candidate.monthIndex,
+    );
     const meanOthers = others.reduce((a, b) => a + b.value, 0) / others.length;
     if (meanOthers === 0) continue;
-    const deviationPct = ((candidate.value - meanOthers) / Math.abs(meanOthers)) * 100;
-    if (Math.abs(deviationPct) >= threshold * 100 && (!worst || Math.abs(deviationPct) > Math.abs(worst.deviationPct))) {
-      worst = { monthIndex: candidate.monthIndex, value: candidate.value, meanOthers, deviationPct };
+    const deviationPct =
+      ((candidate.value - meanOthers) / Math.abs(meanOthers)) * 100;
+    if (
+      Math.abs(deviationPct) >= threshold * 100 &&
+      (!worst || Math.abs(deviationPct) > Math.abs(worst.deviationPct))
+    ) {
+      worst = {
+        monthIndex: candidate.monthIndex,
+        value: candidate.value,
+        meanOthers,
+        deviationPct,
+      };
     }
   }
   return worst;
 }
 
 /** Share of `value` within `total`, or null if total isn't positive. */
-export function shareOf(value: number | null, total: number | null): number | null {
+export function shareOf(
+  value: number | null,
+  total: number | null,
+): number | null {
   if (value === null || total === null || total <= 0) return null;
   return (value / total) * 100;
 }

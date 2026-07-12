@@ -56,14 +56,24 @@ export function ComboBarLineChart({
 }: ComboBarLineChartProps) {
   // Headroom above the tallest bar so its floating datalabel isn't clipped —
   // only applied when the caller hasn't already pinned an explicit barMax.
-  const maxBarValue = Math.max(0, ...barData.filter((v): v is number => v !== null));
-  const suggestedBarMax = barMax === undefined && maxBarValue > 0 ? maxBarValue * 1.18 : undefined;
+  const maxBarValue = Math.max(
+    0,
+    ...barData.filter((v): v is number => v !== null),
+  );
+  const suggestedBarMax =
+    barMax === undefined && maxBarValue > 0 ? maxBarValue * 1.18 : undefined;
 
   // Same headroom logic for the line axis — a hard `max` (e.g. 100 for a %
   // metric) clips the datalabel whenever the line itself touches that
   // ceiling, so treat lineMax as a floor and let the axis extend past it.
-  const maxLineValue = Math.max(0, ...lineData.filter((v): v is number => v !== null));
-  const suggestedLineMax = maxLineValue > 0 ? Math.max(maxLineValue * lineHeadroomRatio, lineMax ?? 0) : lineMax;
+  const maxLineValue = Math.max(
+    0,
+    ...lineData.filter((v): v is number => v !== null),
+  );
+  const suggestedLineMax =
+    maxLineValue > 0
+      ? Math.max(maxLineValue * lineHeadroomRatio, lineMax ?? 0)
+      : lineMax;
 
   return (
     <div className="cw" style={{ height }}>
@@ -92,7 +102,10 @@ export function ComboBarLineChart({
                 backgroundColor: "rgba(255,255,255,0.85)",
                 borderRadius: 3,
                 padding: { top: 1, bottom: 1, left: 5, right: 5 },
-                formatter: (v: number | null) => (v === null ? "" : `${idLocale(v, barDecimals)}${barDatalabelSuffix}`),
+                formatter: (v: number | null) =>
+                  v === null
+                    ? ""
+                    : `${idLocale(v, barDecimals)}${barDatalabelSuffix}`,
               },
             },
             {
@@ -117,7 +130,10 @@ export function ComboBarLineChart({
                 backgroundColor: "rgba(255,255,255,0.9)",
                 borderRadius: 3,
                 padding: { top: 1, bottom: 1, left: 4, right: 4 },
-                formatter: (v: number | null) => (v === null ? "" : `${idLocale(v, lineDecimals)}${lineDatalabelSuffix}`),
+                formatter: (v: number | null) =>
+                  v === null
+                    ? ""
+                    : `${idLocale(v, lineDecimals)}${lineDatalabelSuffix}`,
               },
             },
           ],
@@ -133,18 +149,36 @@ export function ComboBarLineChart({
               max: barMax,
               suggestedMax: suggestedBarMax,
               beginAtZero: true,
-              ticks: { font: { size: 9 }, color: "#7B98B5", callback: (v) => idLocale(Number(v), barDecimals) },
+              ticks: {
+                font: { size: 9 },
+                color: "#7B98B5",
+                callback: (v) => idLocale(Number(v), barDecimals),
+              },
               grid: Y_GRID,
-              title: { display: true, text: `${barAxisTitle} (${barUnit})`, color: "#8AAAC2", font: { size: 9.5, weight: 600 } },
+              title: {
+                display: true,
+                text: `${barAxisTitle} (${barUnit})`,
+                color: "#8AAAC2",
+                font: { size: 9.5, weight: 600 },
+              },
             },
             yLine: {
               type: "linear",
               position: "right",
               suggestedMax: suggestedLineMax,
               beginAtZero: true,
-              ticks: { font: { size: 9 }, color: "#0A6040", callback: (v) => idLocale(Number(v), lineDecimals) },
+              ticks: {
+                font: { size: 9 },
+                color: "#0A6040",
+                callback: (v) => idLocale(Number(v), lineDecimals),
+              },
               grid: { display: false },
-              title: { display: true, text: `${lineAxisTitle} (${lineUnit})`, color: "#0A6040", font: { size: 9.5, weight: 600 } },
+              title: {
+                display: true,
+                text: `${lineAxisTitle} (${lineUnit})`,
+                color: "#0A6040",
+                font: { size: 9.5, weight: 600 },
+              },
             },
           },
           plugins: {

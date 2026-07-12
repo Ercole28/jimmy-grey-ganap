@@ -12,7 +12,15 @@ interface HorizontalBarChartProps {
   decimals?: number;
 }
 
-export function HorizontalBarChart({ labels, data, unit, colors = CATEGORY_PROGRESSION, height = 260, isRatio = false, decimals = 0 }: HorizontalBarChartProps) {
+export function HorizontalBarChart({
+  labels,
+  data,
+  unit,
+  colors = CATEGORY_PROGRESSION,
+  height = 260,
+  isRatio = false,
+  decimals = 0,
+}: HorizontalBarChartProps) {
   const total = data.reduce((a, b) => a + b, 0);
   const max = Math.max(...data, 1);
 
@@ -38,7 +46,10 @@ export function HorizontalBarChart({ labels, data, unit, colors = CATEGORY_PROGR
                 color: "#061628",
                 font: { weight: 700, size: 10 },
                 textAlign: "left",
-                formatter: (v: number) => (isRatio ? `${idLocale(v, decimals)}${unit}` : `${idLocale(v)}  (${total > 0 ? Math.round((v / total) * 100) : 0}%)`),
+                formatter: (v: number) =>
+                  isRatio
+                    ? `${idLocale(v, decimals)}${unit}`
+                    : `${idLocale(v)}  (${total > 0 ? Math.round((v / total) * 100) : 0}%)`,
               },
             },
           ],
@@ -52,10 +63,20 @@ export function HorizontalBarChart({ labels, data, unit, colors = CATEGORY_PROGR
             x: {
               max: max * 1.18,
               beginAtZero: true,
-              ticks: { font: { size: 9 }, color: "#7B98B5", callback: (v) => (isRatio ? `${idLocale(Number(v), 0)}${unit}` : idLocale(Number(v))) },
+              ticks: {
+                font: { size: 9 },
+                color: "#7B98B5",
+                callback: (v) =>
+                  isRatio
+                    ? `${idLocale(Number(v), 0)}${unit}`
+                    : idLocale(Number(v)),
+              },
               grid: Y_GRID,
             },
-            y: { ticks: { font: { size: 9.5, weight: 500 }, color: "#284058" }, grid: { display: false } },
+            y: {
+              ticks: { font: { size: 9.5, weight: 500 }, color: "#284058" },
+              grid: { display: false },
+            },
           },
           plugins: {
             legend: { display: false },

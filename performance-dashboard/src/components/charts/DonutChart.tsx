@@ -12,7 +12,15 @@ interface DonutChartProps {
   height?: number;
 }
 
-export function DonutChart({ labels, data, colors = DONUT_COLORS, centerTop, centerBottom, unit, height = 240 }: DonutChartProps) {
+export function DonutChart({
+  labels,
+  data,
+  colors = DONUT_COLORS,
+  centerTop,
+  centerBottom,
+  unit,
+  height = 240,
+}: DonutChartProps) {
   const centerLabelPlugin: Plugin<"doughnut"> = {
     id: "centerLabel",
     afterDraw(chart) {
@@ -62,7 +70,10 @@ export function DonutChart({ labels, data, colors = DONUT_COLORS, centerTop, cen
                 font: { weight: 700, size: 12 },
                 textAlign: "center",
                 formatter: (v: number, ctx) => {
-                  const total = (ctx.dataset.data as number[]).reduce((a, b) => a + b, 0);
+                  const total = (ctx.dataset.data as number[]).reduce(
+                    (a, b) => a + b,
+                    0,
+                  );
                   return total > 0 ? `${Math.round((v / total) * 100)}%` : "";
                 },
               },
@@ -78,8 +89,12 @@ export function DonutChart({ labels, data, colors = DONUT_COLORS, centerTop, cen
             tooltip: {
               callbacks: {
                 label: (c) => {
-                  const total = (c.dataset.data as number[]).reduce((a, b) => a + b, 0);
-                  const pct = total > 0 ? Math.round((c.parsed / total) * 100) : 0;
+                  const total = (c.dataset.data as number[]).reduce(
+                    (a, b) => a + b,
+                    0,
+                  );
+                  const pct =
+                    total > 0 ? Math.round((c.parsed / total) * 100) : 0;
                   return ` ${c.label}: ${idLocale(c.parsed)} ${unit} (${pct}%)`;
                 },
               },

@@ -1,8 +1,19 @@
-import { cumulativeSum, findPeakMonth, firstVsLatest, shareOf } from "../aggregate";
+import {
+  cumulativeSum,
+  findPeakMonth,
+  firstVsLatest,
+  shareOf,
+} from "../aggregate";
 import { MONTH_NAMES, MONTH_NAMES_SHORT, formatValue } from "../months";
 import type { RecommendationCard } from "../recommendations";
 import { findAllByCode } from "../tree";
-import type { HeaderBadge, InsightSegment, ReportHeaderData, SheetNode, StatusBarItem } from "../types";
+import type {
+  HeaderBadge,
+  InsightSegment,
+  ReportHeaderData,
+  SheetNode,
+  StatusBarItem,
+} from "../types";
 import type { KpiCardData } from "./arus";
 
 const CODE = {
@@ -17,19 +28,33 @@ function nodesByCode(roots: SheetNode[], code: string): SheetNode[] {
   return findAllByCode(roots, code);
 }
 
-function byCodeUnit(roots: SheetNode[], code: string, unit: string): SheetNode | undefined {
+function byCodeUnit(
+  roots: SheetNode[],
+  code: string,
+  unit: string,
+): SheetNode | undefined {
   return nodesByCode(roots, code).find((n) => n.unit === unit);
 }
 
-function months(node: SheetNode | undefined, throughMonth: number): (number | null)[] {
-  return Array.from({ length: throughMonth + 1 }, (_, i) => node?.months[i] ?? null);
+function months(
+  node: SheetNode | undefined,
+  throughMonth: number,
+): (number | null)[] {
+  return Array.from(
+    { length: throughMonth + 1 },
+    (_, i) => node?.months[i] ?? null,
+  );
 }
 
 export interface ProduksiAnalysis extends ReportHeaderData {
   insight: InsightSegment[];
   kpis: KpiCardData[];
   monthLabels: string[][];
-  commodityDatasets: { label: string; data: (number | null)[]; color: string }[];
+  commodityDatasets: {
+    label: string;
+    data: (number | null)[];
+    color: string;
+  }[];
   commodityTrendSubtitle: string;
   commodityComposition: { labels: string[]; data: number[] };
   commodityCompositionSubtitle: string;
@@ -43,9 +68,14 @@ export interface ProduksiAnalysis extends ReportHeaderData {
   recommendations: RecommendationCard[];
 }
 
-export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, throughMonth: number): ProduksiAnalysis {
+export function analyzeProduksi(
+  roots: SheetNode[],
+  meta: { tahun: string },
+  throughMonth: number,
+): ProduksiAnalysis {
   const year = meta.tahun || "2026";
-  const periodLabel = throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
+  const periodLabel =
+    throughMonth === 0 ? MONTH_NAMES[0] : `Jan–${MONTH_NAMES[throughMonth]}`;
   const isPartial = throughMonth < 11;
 
   const gcNode = byCodeUnit(roots, CODE.GENERAL_CARGO, "Ton");
@@ -71,14 +101,27 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
 
   const peakGC = findPeakMonth(gcNode, throughMonth);
   const peakCK = findPeakMonth(ckNode, throughMonth);
-  const dominantCommodity = cumCK >= cumGC ? { label: "Curah Kering", peak: peakCK, share: shareCK } : { label: "General Cargo", peak: peakGC, share: shareOf(cumGC, totalProduksi) };
+  const dominantCommodity =
+    cumCK >= cumGC
+      ? { label: "Curah Kering", peak: peakCK, share: shareCK }
+      : {
+          label: "General Cargo",
+          peak: peakGC,
+          share: shareOf(cumGC, totalProduksi),
+        };
 
-  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [m, year]);
+  const monthLabels = MONTH_NAMES_SHORT.slice(0, throughMonth + 1).map((m) => [
+    m,
+    year,
+  ]);
   // Generic "how far through the year" fill for non-ratio KPI cards — see arus.ts for derivation.
   const yearElapsedPct = ((throughMonth + 1) / 12) * 100;
 
   // ---- Chart card conclusion subtitles ----
-  const combinedMonthly = Array.from({ length: throughMonth + 1 }, (_, i) => (gcNode?.months[i] ?? 0) + (ckNode?.months[i] ?? 0));
+  const combinedMonthly = Array.from(
+    { length: throughMonth + 1 },
+    (_, i) => (gcNode?.months[i] ?? 0) + (ckNode?.months[i] ?? 0),
+  );
   let combinedPeakIdx = -1;
   let combinedPeakVal = -Infinity;
   combinedMonthly.forEach((v, i) => {
@@ -87,7 +130,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
       combinedPeakIdx = i;
     }
   });
-  const ckAlwaysLeads = Array.from({ length: throughMonth + 1 }, (_, i) => (ckNode?.months[i] ?? 0) >= (gcNode?.months[i] ?? 0)).every(Boolean);
+  const ckAlwaysLeads = Array.from(
+    { length: throughMonth + 1 },
+    (_, i) => (ckNode?.months[i] ?? 0) >= (gcNode?.months[i] ?? 0),
+  ).every(Boolean);
   const commodityTrendSubtitle =
     combinedPeakIdx >= 0 && combinedPeakVal > 0
       ? `Throughput puncak ${MONTH_NAMES_SHORT[combinedPeakIdx]} ${formatValue(combinedPeakVal, { decimals: 0 })} Ton${ckAlwaysLeads ? " — Curah Kering penggerak utama tiap bulan" : ""}`
@@ -110,7 +156,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
     { label: "Penundaan", gt: cumPenundaanGT },
     { label: "Penambatan", gt: cumPenambatanGT },
   ];
-  const dominantService = serviceGTEntries.reduce((a, b) => (b.gt > a.gt ? b : a), serviceGTEntries[0]);
+  const dominantService = serviceGTEntries.reduce(
+    (a, b) => (b.gt > a.gt ? b : a),
+    serviceGTEntries[0],
+  );
   const shareDominantService = shareOf(dominantService.gt, totalServiceGT);
   const serviceGTSubtitle =
     shareDominantService !== null
@@ -121,18 +170,25 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
 
   // ---- Insight ----
   const insight: InsightSegment[] = [];
-  const seg = (text: string, emphasis?: "b" | "i") => insight.push({ text, emphasis });
+  const seg = (text: string, emphasis?: "b" | "i") =>
+    insight.push({ text, emphasis });
 
   seg("Regional 2 Banten menangani total produksi barang ");
   seg(`${formatValue(totalProduksi)} Ton`, "b");
   seg(` (${periodLabel} ${year})`);
   if (dominantCommodity.share !== null) {
     seg(", didominasi ");
-    seg(`${dominantCommodity.label} ${formatValue(dominantCommodity.share, { decimals: 1 })}%`, "b");
+    seg(
+      `${dominantCommodity.label} ${formatValue(dominantCommodity.share, { decimals: 1 })}%`,
+      "b",
+    );
   }
   if (dominantCommodity.peak) {
     seg(" dengan puncak ");
-    seg(`${MONTH_NAMES[dominantCommodity.peak.monthIndex]} ${formatValue(dominantCommodity.peak.value)} Ton`, "b");
+    seg(
+      `${MONTH_NAMES[dominantCommodity.peak.monthIndex]} ${formatValue(dominantCommodity.peak.value)} Ton`,
+      "b",
+    );
   }
   seg(".");
   if (cumPemanduan !== null) {
@@ -146,7 +202,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
     seg(".");
   }
   if (isPartial) {
-    seg(` Data realisasi s.d. ${MONTH_NAMES[throughMonth]} ${year} — tahun berjalan (${throughMonth + 1} dari 12 bulan).`, "i");
+    seg(
+      ` Data realisasi s.d. ${MONTH_NAMES[throughMonth]} ${year} — tahun berjalan (${throughMonth + 1} dari 12 bulan).`,
+      "i",
+    );
   }
 
   // ---- KPI strip ----
@@ -155,7 +214,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
       label: "Total Produksi Barang",
       value: formatValue(totalProduksi),
       unit: "Ton",
-      deltaText: peakGC || peakCK ? `Puncak ${dominantCommodity.peak ? MONTH_NAMES[dominantCommodity.peak.monthIndex] : "-"}` : undefined,
+      deltaText:
+        peakGC || peakCK
+          ? `Puncak ${dominantCommodity.peak ? MONTH_NAMES[dominantCommodity.peak.monthIndex] : "-"}`
+          : undefined,
       deltaTone: "up",
       color: "blue",
       trackPercent: yearElapsedPct,
@@ -164,7 +226,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
       label: "Curah Kering",
       value: formatValue(cumCK),
       unit: "Ton",
-      deltaText: shareCK !== null ? `${formatValue(shareCK, { decimals: 1 })}% total produksi barang` : undefined,
+      deltaText:
+        shareCK !== null
+          ? `${formatValue(shareCK, { decimals: 1 })}% total produksi barang`
+          : undefined,
       deltaTone: "up",
       color: "green",
       trackPercent: shareCK ?? undefined,
@@ -182,7 +247,10 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
       label: "Volume GT Penundaan",
       value: formatValue(cumPenundaanGT / 1_000_000, { decimals: 1 }),
       unit: "jt GT",
-      deltaText: sharePenundaanGT !== null ? `${formatValue(sharePenundaanGT, { decimals: 1 })}% total GT layanan kapal` : undefined,
+      deltaText:
+        sharePenundaanGT !== null
+          ? `${formatValue(sharePenundaanGT, { decimals: 1 })}% total GT layanan kapal`
+          : undefined,
       deltaTone: "neutral",
       color: "purple",
       trackPercent: sharePenundaanGT ?? undefined,
@@ -192,14 +260,32 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
   // ---- Status bar ----
   const status: StatusBarItem[] = [];
   if (dominantCommodity.share !== null) {
-    status.push({ text: `Throughput ${formatValue(totalProduksi)} Ton — ${dominantCommodity.label} andil ${formatValue(dominantCommodity.share, { decimals: 1 })}%`, tone: "ok" });
+    status.push({
+      text: `Throughput ${formatValue(totalProduksi)} Ton — ${dominantCommodity.label} andil ${formatValue(dominantCommodity.share, { decimals: 1 })}%`,
+      tone: "ok",
+    });
   }
-  if (cumPemanduan !== null) status.push({ text: `Gerakan pemanduan ${formatValue(cumPemanduan)} gerakan periode berjalan`, tone: "ok" });
-  if (sharePenundaanGT !== null) status.push({ text: `Penundaan dominan ${formatValue(sharePenundaanGT, { decimals: 1 })}% dari total GT layanan kapal`, tone: "ok" });
+  if (cumPemanduan !== null)
+    status.push({
+      text: `Gerakan pemanduan ${formatValue(cumPemanduan)} gerakan periode berjalan`,
+      tone: "ok",
+    });
+  if (sharePenundaanGT !== null)
+    status.push({
+      text: `Penundaan dominan ${formatValue(sharePenundaanGT, { decimals: 1 })}% dari total GT layanan kapal`,
+      tone: "ok",
+    });
   if (dominantCommodity.peak) {
-    status.push({ text: `${dominantCommodity.label} puncak di ${MONTH_NAMES[dominantCommodity.peak.monthIndex]} → ${formatValue(dominantCommodity.peak.value)} Ton`, tone: "ok" });
+    status.push({
+      text: `${dominantCommodity.label} puncak di ${MONTH_NAMES[dominantCommodity.peak.monthIndex]} → ${formatValue(dominantCommodity.peak.value)} Ton`,
+      tone: "ok",
+    });
   }
-  if (isPartial) status.push({ text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`, tone: "warn" });
+  if (isPartial)
+    status.push({
+      text: `Data realisasi mencakup ${throughMonth + 1} dari 12 bulan (s.d. ${MONTH_NAMES[throughMonth]} ${year})`,
+      tone: "warn",
+    });
 
   // ---- Recommendations ----
   const recommendations: RecommendationCard[] = [];
@@ -232,22 +318,47 @@ export function analyzeProduksi(roots: SheetNode[], meta: { tahun: string }, thr
     eyebrow: `Produksi & Throughput · Realisasi s.d. ${MONTH_NAMES[throughMonth]} ${year}`,
     title: "Kinerja Produksi ",
     titleAccent: `s.d. ${MONTH_NAMES[throughMonth]} ${year}`,
-    subtitle: "Volume produksi jasa kapal & penanganan barang — Regional 2 Banten",
+    subtitle:
+      "Volume produksi jasa kapal & penanganan barang — Regional 2 Banten",
     badges: [
-      { value: `${formatValue(totalProduksi / 1_000_000, { decimals: 2 })} jt`, label: "Total Produksi (Ton)" },
-      cumPemanduan !== null ? { value: formatValue(cumPemanduan), label: "Gerakan Pemanduan" } : null,
-      { value: `${throughMonth + 1} Bln`, label: `Periode (${periodLabel} ${year})` },
-      shareCK !== null ? { value: `${formatValue(shareCK, { decimals: 1 })}%`, label: "Share Curah Kering" } : null,
+      {
+        value: `${formatValue(totalProduksi / 1_000_000, { decimals: 2 })} jt`,
+        label: "Total Produksi (Ton)",
+      },
+      cumPemanduan !== null
+        ? { value: formatValue(cumPemanduan), label: "Gerakan Pemanduan" }
+        : null,
+      {
+        value: `${throughMonth + 1} Bln`,
+        label: `Periode (${periodLabel} ${year})`,
+      },
+      shareCK !== null
+        ? {
+            value: `${formatValue(shareCK, { decimals: 1 })}%`,
+            label: "Share Curah Kering",
+          }
+        : null,
     ].filter((b): b is HeaderBadge => b !== null),
     insight,
     kpis,
     monthLabels,
     commodityDatasets: [
-      { label: "General Cargo", data: months(gcNode, throughMonth), color: "#6CA4E0" },
-      { label: "Curah Kering", data: months(ckNode, throughMonth), color: "#1E62C4" },
+      {
+        label: "General Cargo",
+        data: months(gcNode, throughMonth),
+        color: "#6CA4E0",
+      },
+      {
+        label: "Curah Kering",
+        data: months(ckNode, throughMonth),
+        color: "#1E62C4",
+      },
     ],
     commodityTrendSubtitle,
-    commodityComposition: { labels: ["General Cargo", "Curah Kering"], data: [cumGC, cumCK] },
+    commodityComposition: {
+      labels: ["General Cargo", "Curah Kering"],
+      data: [cumGC, cumCK],
+    },
     commodityCompositionSubtitle,
     pemanduanTrend: months(pemanduanNode, throughMonth),
     pemanduanSubtitle,

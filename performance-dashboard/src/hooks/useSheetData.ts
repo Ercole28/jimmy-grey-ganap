@@ -6,7 +6,12 @@ import type { ParsedSheet, TabId } from "../lib/types";
 
 export type SheetsById = Record<TabId, ParsedSheet | null>;
 
-const EMPTY_SHEETS: SheetsById = { ARUS: null, KINERJA: null, UTILISASI: null, PRODUKSI: null };
+const EMPTY_SHEETS: SheetsById = {
+  ARUS: null,
+  KINERJA: null,
+  UTILISASI: null,
+  PRODUKSI: null,
+};
 
 async function fetchAndParse(tab: TabId): Promise<ParsedSheet> {
   const res = await fetch(csvUrl(tab));
@@ -47,7 +52,9 @@ export function useSheetData(): UseSheetData {
         setLastSynced(new Date());
       })
       .catch((err: unknown) => {
-        setError(err instanceof Error ? err.message : "Failed to load sheet data");
+        setError(
+          err instanceof Error ? err.message : "Failed to load sheet data",
+        );
       })
       .finally(() => {
         inFlight.current = false;

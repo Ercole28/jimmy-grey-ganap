@@ -22,34 +22,57 @@ import type { SheetNode } from "./types";
 const dir = path.dirname(fileURLToPath(import.meta.url));
 
 function loadSheet(name: string) {
-  const csv = readFileSync(path.join(dir, "__fixtures__", `${name}.full.csv`), "utf-8");
+  const csv = readFileSync(
+    path.join(dir, "__fixtures__", `${name}.full.csv`),
+    "utf-8",
+  );
   const rows = Papa.parse<string[]>(csv, { skipEmptyLines: false }).data;
   return parseSheet(rows);
 }
 
 function findByLabel(nodes: SheetNode[], label: string): SheetNode | undefined {
-  return findFirstByLabel(nodes, new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`));
+  return findFirstByLabel(
+    nodes,
+    new RegExp(`^${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`),
+  );
 }
 
 describe("aggregate — UTILISASI (real data)", () => {
   const parsed = loadSheet("UTILISASI");
 
   it("averageUnderMatchingHeaders(Kesiapan alat bongkar muat) matches hand-computed 95.3%", () => {
-    const avg = averageUnderMatchingHeaders(parsed.roots, /^Kesiapan alat bongkar muat$/i, "%", 4);
+    const avg = averageUnderMatchingHeaders(
+      parsed.roots,
+      /^Kesiapan alat bongkar muat$/i,
+      "%",
+      4,
+    );
     expect(avg).not.toBeNull();
     expect(avg!).toBeCloseTo(95.3, 0);
   });
 
   it("averageUnderMatchingHeaders(Utilisasi alat bongkar muat) matches hand-computed 8.4%", () => {
-    const avg = averageUnderMatchingHeaders(parsed.roots, /^Utilisasi alat bongkar muat$/i, "%", 4);
+    const avg = averageUnderMatchingHeaders(
+      parsed.roots,
+      /^Utilisasi alat bongkar muat$/i,
+      "%",
+      4,
+    );
     expect(avg).not.toBeNull();
     expect(avg!).toBeCloseTo(8.4, 0);
   });
 
   it("rankUnderMatchingHeaders ranks equipment by readiness, Head Truck near the top", () => {
-    const ranked = rankUnderMatchingHeaders(parsed.roots, /^Kesiapan alat bongkar muat$/i, "%", 4);
+    const ranked = rankUnderMatchingHeaders(
+      parsed.roots,
+      /^Kesiapan alat bongkar muat$/i,
+      "%",
+      4,
+    );
     expect(ranked.length).toBeGreaterThan(0);
-    expect(ranked[0].value).toBeGreaterThanOrEqual(ranked[ranked.length - 1].value);
+    expect(ranked[0].value).toBeGreaterThanOrEqual(
+      ranked[ranked.length - 1].value,
+    );
     const headTruck = ranked.find((r) => r.label === "Head Truck");
     expect(headTruck?.value).toBeCloseTo(99.17, 1);
   });
@@ -82,7 +105,12 @@ describe("aggregate — ARUS (real data)", () => {
 
   it("sumByLabelAcrossTree aggregates the same label across multiple locations", () => {
     // "Jumlah kunjungan kapal di X" appears once per location (4 locations)
-    const total = sumByLabelAcrossTree(parsed.roots, /^Jumlah kunjungan kapal di /i, "Call", 4);
+    const total = sumByLabelAcrossTree(
+      parsed.roots,
+      /^Jumlah kunjungan kapal di /i,
+      "Call",
+      4,
+    );
     const grandTotal = findByLabel(parsed.roots, "Jumlah kunjungan kapal")!;
     // grand total leaf's own cumulative sum should equal the sum of its per-branch parts
     expect(total).toBe(cumulativeSum(grandTotal, 4));
@@ -111,18 +139,51 @@ describe("aggregate — ARUS (real data)", () => {
   });
 
   it("sumUnderMatchingHeaders(Luar Negeri + Dalam Negeri + Perintis + Rakyat + Lainnya) reconciles with the grand total", () => {
-    const grandTotal = cumulativeSum(findByLabel(parsed.roots, "Jumlah kunjungan kapal"), 4)!;
-    const ln = sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Luar Negeri$/i, "Call", 4) ?? 0;
-    const dn = sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Dalam Negeri$/i, "Call", 4) ?? 0;
-    const perintis = sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Perintis$/i, "Call", 4) ?? 0;
-    const rakyat = sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Rakyat$/i, "Call", 4) ?? 0;
-    const lainnya = sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Lainnya$/i, "Call", 4) ?? 0;
+    const grandTotal = cumulativeSum(
+      findByLabel(parsed.roots, "Jumlah kunjungan kapal"),
+      4,
+    )!;
+    const ln =
+      sumUnderMatchingHeaders(
+        parsed.roots,
+        /^Pelayaran Luar Negeri$/i,
+        "Call",
+        4,
+      ) ?? 0;
+    const dn =
+      sumUnderMatchingHeaders(
+        parsed.roots,
+        /^Pelayaran Dalam Negeri$/i,
+        "Call",
+        4,
+      ) ?? 0;
+    const perintis =
+      sumUnderMatchingHeaders(
+        parsed.roots,
+        /^Pelayaran Perintis$/i,
+        "Call",
+        4,
+      ) ?? 0;
+    const rakyat =
+      sumUnderMatchingHeaders(parsed.roots, /^Pelayaran Rakyat$/i, "Call", 4) ??
+      0;
+    const lainnya =
+      sumUnderMatchingHeaders(
+        parsed.roots,
+        /^Pelayaran Lainnya$/i,
+        "Call",
+        4,
+      ) ?? 0;
     expect(ln + dn + perintis + rakyat + lainnya).toBe(grandTotal);
   });
 
   it("sumByLabelAcrossTree(General Cargo, Call) is a strict subset of the grand total", () => {
-    const grandTotal = cumulativeSum(findByLabel(parsed.roots, "Jumlah kunjungan kapal"), 4)!;
-    const generalCargo = sumByLabelAcrossTree(parsed.roots, /^General Cargo$/i, "Call", 4) ?? 0;
+    const grandTotal = cumulativeSum(
+      findByLabel(parsed.roots, "Jumlah kunjungan kapal"),
+      4,
+    )!;
+    const generalCargo =
+      sumByLabelAcrossTree(parsed.roots, /^General Cargo$/i, "Call", 4) ?? 0;
     expect(generalCargo).toBeGreaterThan(0);
     expect(generalCargo).toBeLessThan(grandTotal);
   });
@@ -131,6 +192,8 @@ describe("aggregate — ARUS (real data)", () => {
     const node = findByLabel(parsed.roots, "Jumlah kunjungan kapal")!;
     // 325,385,622,401,415 — March is a real peak but not wildly disproportionate; just confirm it doesn't throw
     const result = findAnomaly(node, 4);
-    expect(result === null || typeof result.deviationPct === "number").toBe(true);
+    expect(result === null || typeof result.deviationPct === "number").toBe(
+      true,
+    );
   });
 });

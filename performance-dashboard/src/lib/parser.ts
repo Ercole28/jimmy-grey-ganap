@@ -62,7 +62,8 @@ export function parseSheet(rows: string[][]): ParsedSheet {
     if (cell(row, 1) === "Bulan") continue; // month-number helper row
     if (c2 === "No" && cell(row, 3) === "Uraian") continue; // column header row
     if (cell(row, MONTH_COL_START) === "Januari") continue; // month-name row
-    if (c2 === "1" && cell(row, 3) === "2" && cell(row, UNIT_COL) === "3") continue; // index-hint row
+    if (c2 === "1" && cell(row, 3) === "2" && cell(row, UNIT_COL) === "3")
+      continue; // index-hint row
 
     // --- find the label column: leftmost non-empty cell in C..H ---
     let labelCol = -1;

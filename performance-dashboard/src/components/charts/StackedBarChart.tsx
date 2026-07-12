@@ -33,9 +33,12 @@ export function StackedBarChart({
   // Headroom above the tallest *stacked total* (sum per category, not just a
   // single dataset's max) so the total datalabel isn't clipped — only when
   // the caller hasn't already pinned an explicit yMax.
-  const stackTotals = labels.map((_, i) => datasets.reduce((sum, ds) => sum + (ds.data[i] ?? 0), 0));
+  const stackTotals = labels.map((_, i) =>
+    datasets.reduce((sum, ds) => sum + (ds.data[i] ?? 0), 0),
+  );
   const maxStack = Math.max(0, ...stackTotals);
-  const suggestedMax = yMax === undefined && maxStack > 0 ? maxStack * 1.18 : undefined;
+  const suggestedMax =
+    yMax === undefined && maxStack > 0 ? maxStack * 1.18 : undefined;
 
   return (
     <div className="cw" style={{ height }}>
@@ -49,7 +52,10 @@ export function StackedBarChart({
             // Only the top segment gets rounded corners, and only on top —
             // a uniform radius rounds its bottom corners too, opening a gap
             // at the seam where it sits flush against the segment below.
-            borderRadius: i === lastIdx ? { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 } : 0,
+            borderRadius:
+              i === lastIdx
+                ? { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 }
+                : 0,
             borderSkipped: false,
             barPercentage: 0.5,
             categoryPercentage: 0.7,
@@ -69,7 +75,9 @@ export function StackedBarChart({
                     formatter: (_v: number | null, ctx: Context) => {
                       const idx = ctx.dataIndex;
                       const total = ctx.chart.data.datasets.reduce(
-                        (a: number, d) => a + (Number((d.data[idx] as number | null) ?? 0) || 0),
+                        (a: number, d) =>
+                          a +
+                          (Number((d.data[idx] as number | null) ?? 0) || 0),
                         0,
                       );
                       return idLocale(total, decimals);
@@ -90,12 +98,22 @@ export function StackedBarChart({
               suggestedMax,
               ticks: { font: { size: 9 }, color: "#7B98B5" },
               grid: Y_GRID,
-              title: { display: true, text: yAxisTitle, color: "#7B98B5", font: { size: 9, weight: 600 } },
+              title: {
+                display: true,
+                text: yAxisTitle,
+                color: "#7B98B5",
+                font: { size: 9, weight: 600 },
+              },
             },
           },
           plugins: {
             legend: { display: false },
-            tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${idLocale(c.parsed.y, decimals)} ${unit}` } },
+            tooltip: {
+              callbacks: {
+                label: (c) =>
+                  ` ${c.dataset.label}: ${idLocale(c.parsed.y, decimals)} ${unit}`,
+              },
+            },
           },
         }}
       />
