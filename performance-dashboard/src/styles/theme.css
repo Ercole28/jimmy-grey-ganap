@@ -1,0 +1,42 @@
+:root {
+  --header-gradient: linear-gradient(
+    112deg,
+    #061628 0%,
+    #0b3464 44%,
+    #1358a4 78%,
+    #1c6cc0 100%
+  );
+
+  --page-bg: #e8eef7;
+  --canvas: #cbd5e8;
+  --card: #ffffff;
+  --text-deep: #061628;
+  --text-muted: #7b98b5;
+  --text-faint: #8aaac2;
+  --text-soft: #486480;
+  --text-body: #284058;
+  --line: #ecf2fa;
+  --line-strong: #dce8f4;
+  --thead-bg: #f1f6fc;
+
+  --status-green: #0b8a60;
+  --status-green-soft: #12c278;
+  --status-amber: #c07808;
+  --status-amber-soft: #e5991a;
+  --status-purple: #5135ae;
+  --status-purple-soft: #7258d4;
+  --status-red: #bc1e1e;
+  --status-red-soft: #e03030;
+  --accent-blue: #79b8ff;
+  --accent-blue-soft: #90caff;
+  --brand-blue: #1358a4;
+  --brand-blue-soft: #2878da;
+
+  --font-display: "DM Serif Display", serif;
+  --font-body: "Outfit", system-ui, sans-serif;
+
+  --radius: 14px;
+  --shadow-card: 0 2px 12px rgba(6, 22, 40, 0.09);
+  --shadow-card-hover: 0 6px 24px rgba(6, 22, 40, 0.13);
+  --shadow-page: 0 8px 40px rgba(0, 0, 0, 0.18);
+}

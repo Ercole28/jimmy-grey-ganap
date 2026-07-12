@@ -2,287 +2,137 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>LAP2026_Banten_ArusKapal</title>
+<title>Kinerja Pelayanan Operasi s.d. Mei 2026 — Regional 2 Banten</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background:#cbd5e8; display:flex; flex-direction:column; align-items:center; padding:40px 0 60px; font-family:'Outfit',Arial,sans-serif; -webkit-font-smoothing:antialiased; }
+#toolbar { width:1400px; display:flex; justify-content:flex-end; margin-bottom:16px; }
+#page { width:1400px; background:#E8EEF7; overflow:hidden; font-size:13px; color:#1A2C42; line-height:1.45; box-shadow:0 8px 40px rgba(0,0,0,0.18); }
+.body { padding:24px 36px 32px; }
+.sec { font-size:9px; font-weight:700; letter-spacing:2.8px; text-transform:uppercase; color:#8AAAC2; margin-bottom:12px; }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#cbd5e8;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:40px 0 60px;
-  font-family:'Outfit',Arial,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
+/* Header */
+.hdr { background:linear-gradient(112deg,#061628 0%,#0B3464 44%,#1358A4 78%,#1C6CC0 100%); padding:0; position:relative; overflow:hidden; }
+.hdr::before { content:''; position:absolute; right:-50px; top:-70px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.05); pointer-events:none; }
+.hdr::after { content:''; position:absolute; right:190px; bottom:-90px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); pointer-events:none; }
+.hdr-bar { padding:11px 44px 10px; border-bottom:1px solid rgba(255,255,255,0.13); display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2; }
+.hdr-bar-left { display:flex; align-items:center; gap:14px; }
+.hdr-bar-right { display:flex; align-items:center; gap:8px; }
+.logo-wrapper { padding:5px 8px; background:rgba(255,255,255,0.88); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-radius:8px; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35); }
+.logo-pelindo { height:26px; width:auto; display:block; flex-shrink:0; }
+.logo-danantara { height:26px; width:auto; display:block; flex-shrink:0; }
+.bar-sep { width:1px; height:24px; background:rgba(255,255,255,0.22); flex-shrink:0; }
+.bar-tagline { font-size:10.5px; font-weight:400; color:rgba(255,255,255,0.52); letter-spacing:0.2px; line-height:1.35; }
+.bar-tagline strong { font-weight:700; font-size:11px; color:rgba(255,255,255,0.88); display:block; }
+.bar-chip { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:5px; padding:3px 9px; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.8px; text-transform:uppercase; }
+.hdr-main { padding:18px 44px 20px; display:flex; align-items:center; justify-content:space-between; gap:28px; position:relative; z-index:2; }
+.hdr-left { min-width:0; }
+.eyebrow { font-size:9.5px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#79B8FF; margin-bottom:6px; }
+.hdr-title { font-family:'DM Serif Display',Georgia,serif; font-size:33px; font-weight:400; color:#fff; line-height:1.1; white-space:nowrap; }
+.hdr-title em { color:#90CAFF; font-style:normal; }
+.hdr-sub { font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; }
+.hdr-badges { display:flex; gap:11px; flex-shrink:0; }
+.hdr-badge { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:11px; padding:11px 18px; text-align:center; min-width:124px; }
+.hdr-badge-v { font-size:18px; font-weight:700; color:#fff; line-height:1; }
+.hdr-badge-l { font-size:9.5px; font-weight:500; color:rgba(255,255,255,0.46); margin-top:4px; }
 
-/* ── EXPORT BUTTON (outside #page) ── */
-#toolbar{
-  width:1400px;
-  display:flex;
-  justify-content:flex-end;
-  margin-bottom:16px;
-}
-#exportBtn{
-  display:flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,#0B3868,#1459A8);
-  color:#fff;border:none;border-radius:10px;
-  padding:12px 24px;
-  font-family:'Outfit',Arial,sans-serif;
-  font-size:13px;font-weight:600;
-  cursor:pointer;
-  box-shadow:0 4px 18px rgba(11,56,104,0.45);
-  transition:transform .15s,box-shadow .15s;
-}
-#exportBtn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,56,104,0.55)}
-#exportBtn:disabled{opacity:0.55;cursor:not-allowed;transform:none}
-#progressBar{
-  position:fixed;top:0;left:0;height:3px;width:0%;
-  background:linear-gradient(90deg,#1459A8,#3DD6A0);
-  z-index:9999;transition:width 0.25s ease;
-}
+/* Export button */
+#exportBtn { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,#0B3868,#1459A8); color:#fff; border:none; border-radius:10px; padding:12px 24px; font-family:'Outfit',Arial,sans-serif; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 4px 18px rgba(11,56,104,0.45); transition:transform .15s, box-shadow .15s; }
+#exportBtn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(11,56,104,0.55); }
+#exportBtn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+#progressBar { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,#1459A8,#3DD6A0); z-index:9999; transition:width 0.25s ease; }
 
-/* ══ PAGE — fixed 1400px ══ */
-#page{
-  width:1400px;
-  background:#E8EEF7;
-  border-radius:0;
-  overflow:hidden;
-  font-size:13px;
-  color:#1A2C42;
-  line-height:1.45;
-  box-shadow:0 8px 40px rgba(0,0,0,0.18);
-}
+/* Insight */
+.insight { background:#F1F6FC; border-left:5px solid #1358A4; border-radius:10px; padding:13px 20px; margin-bottom:18px; display:flex; gap:18px; align-items:flex-start; }
+.insight-t { font-size:8.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#1358A4; flex-shrink:0; padding-top:3px; width:96px; }
+.insight-b { font-size:12.5px; color:#284058; line-height:1.62; }
+.insight-b b { color:#061628; font-weight:700; }
+.insight-b i { color:#C07808; font-style:normal; font-weight:600; }
 
-/* ── HEADER ── */
-.hdr{
-  background:linear-gradient(112deg,#061628 0%,#0B3464 44%,#1358A4 78%,#1C6CC0 100%);
-  padding:0;
-  position:relative;
-  overflow:hidden;
-}
-.hdr::before{content:'';position:absolute;right:-50px;top:-70px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none}
-.hdr::after{content:'';position:absolute;right:190px;bottom:-90px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none}
-.hdr-bar{
-  padding:11px 44px 10px;
-  border-bottom:1px solid rgba(255,255,255,0.13);
-  display:flex;align-items:center;justify-content:space-between;
-  position:relative;z-index:2;
-}
-.hdr-bar-left{display:flex;align-items:center;gap:14px;}
-.logo-wrapper{padding:5px 8px;background:rgba(255,255,255,0.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35);}
-.logo-pelindo{height:26px;width:auto;display:block;flex-shrink:0;}
-.logo-danantara{height:26px;width:auto;display:block;flex-shrink:0;}
-.bar-sep{width:1px;height:24px;background:rgba(255,255,255,0.22);flex-shrink:0;}
-.bar-tagline{font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.52);letter-spacing:0.2px;line-height:1.35;}
-.bar-tagline strong{font-weight:700;font-size:11px;color:rgba(255,255,255,0.88);display:block;}
-.hdr-bar-right{display:flex;align-items:center;gap:8px;}
-.bar-chip{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);border-radius:5px;padding:3px 9px;font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.8px;text-transform:uppercase;}
-.hdr-main{
-  padding:18px 44px 20px;
-  display:flex;align-items:center;justify-content:space-between;gap:28px;
-  position:relative;z-index:2;
-}
-.hdr-left{min-width:0;}
-.eyebrow{font-size:9.5px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#79B8FF;margin-bottom:6px;}
-.hdr-title{font-family:'DM Serif Display',Georgia,serif;font-size:33px;font-weight:400;color:#fff;line-height:1.1;white-space:nowrap;}
-.hdr-title em{color:#90CAFF;font-style:normal;}
-.hdr-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-top:6px;}
-.hdr-badges{display:flex;gap:11px;flex-shrink:0;}
-.hdr-badge{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:11px;padding:11px 18px;text-align:center;min-width:124px;}
-.hdr-badge-v{font-size:18px;font-weight:700;color:#fff;line-height:1;}
-.hdr-badge-l{font-size:9.5px;font-weight:500;color:rgba(255,255,255,0.46);margin-top:4px;}
+/* KPI */
+.kpi-row { display:grid; gap:12px; margin-bottom:20px; }
+.kpi-row.n5 { grid-template-columns:repeat(5,1fr); }
+.kpi { background:#fff; border-radius:12px; padding:15px 17px 13px; border-top:3px solid #1358A4; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.kpi.gr { border-top-color:#0B8A60; }
+.kpi.am { border-top-color:#C07808; }
+.kpi.pu { border-top-color:#5135AE; }
+.kpi.rd { border-top-color:#BC1E1E; }
+.k-lbl { font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#7B98B5; margin-bottom:6px; }
+.k-val { font-size:23px; font-weight:700; color:#061628; line-height:1; }
+.k-unit { font-size:10px; font-weight:400; color:#A0BACC; margin-left:2px; }
+.k-delta { font-size:10.5px; font-weight:600; margin-top:5px; }
+.cu{color:#0B8A60;} .cd{color:#BC1E1E;} .cn{color:#8AAAC2;}
+.k-track { height:3px; background:#E8F0F8; border-radius:2px; margin-top:9px; }
+.k-fill { height:3px; border-radius:2px; }
 
-/* ── BODY ── */
-.body{padding:24px 44px 32px}
-.sec{font-size:9px;font-weight:700;letter-spacing:2.8px;text-transform:uppercase;color:#8AAAC2;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#DCE8F4,transparent)}
+/* Layout */
+.row2 { display:grid; grid-template-columns:856px 1fr; gap:14px; margin-bottom:14px; }
+.row-eq3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+.row-1 { margin-bottom:14px; }
 
-/* ── EXEC INSIGHT BAND — "Ringkasan Eksekutif" — always FIRST in .body ── */
-.insight{background:linear-gradient(112deg,#F4F8FD 0%,#EEF3FB 100%);border-left:4px solid #1358A4;border-radius:10px;padding:14px 20px;margin-bottom:20px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 1px 8px rgba(19,88,164,0.07);}
-.insight-t{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#1358A4;flex-shrink:0;padding-top:3px;width:96px;}
-.insight-b{font-size:12.5px;color:#284058;line-height:1.62;}
-.insight-b b{color:#061628;font-weight:700;}
-.insight-b i{color:#C07808;font-style:normal;font-weight:600;}
+/* Card */
+.card { background:#fff; border-radius:14px; padding:18px 20px 16px; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.card-t { font-size:13px; font-weight:600; color:#061628; margin-bottom:2px; }
+.card-s { font-size:10.5px; color:#8AAAC2; margin-bottom:13px; }
+.cw { position:relative; width:100%; }
+.leg { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:10px; }
+.li { display:flex; align-items:center; gap:5px; font-size:10.5px; font-weight:500; color:#486480; }
+.ls { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
 
-/* ── KPI STRIP — N columns, driven by data count ── */
-/* Always add a column-count modifier class: n2 n3 n4 n5 n6 */
-.kpi-row{display:grid;gap:12px;margin-bottom:20px;}
-.kpi-row.n2{grid-template-columns:repeat(2,1fr);}
-.kpi-row.n3{grid-template-columns:repeat(3,1fr);}
-.kpi-row.n4{grid-template-columns:repeat(4,1fr);}
-.kpi-row.n5{grid-template-columns:repeat(5,1fr);}
-.kpi-row.n6{grid-template-columns:repeat(6,1fr);}
-.kpi{background:linear-gradient(145deg,#fff 55%,#F5F9FF 100%);border-radius:13px;padding:15px 17px 14px;border-top:3px solid #1358A4;box-shadow:0 2px 12px rgba(6,22,40,0.10);transition:box-shadow .18s,transform .18s}
-.kpi:hover{box-shadow:0 5px 20px rgba(6,22,40,0.15);transform:translateY(-1px)}
-.kpi.gr{border-top-color:#0B8A60}.kpi.am{border-top-color:#C07808}.kpi.rd{border-top-color:#BC1E1E}.kpi.pu{border-top-color:#5135AE}
-.k-lbl{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#7B98B5;margin-bottom:6px}
-.k-val{font-size:23px;font-weight:700;color:#061628;line-height:1}
-.k-unit{font-size:10px;font-weight:400;color:#A0BACC;margin-left:2px}
-.k-delta{font-size:10.5px;font-weight:600;margin-top:5px}
-.cu{color:#0B8A60}.cd{color:#BC1E1E}.cn{color:#8AAAC2}
-.k-track{height:5px;background:#EBF1FA;border-radius:3px;margin-top:10px}
-.k-fill{height:5px;border-radius:3px;background:linear-gradient(90deg,#1358A4,#2878DA)}
-.kpi.gr .k-fill{background:linear-gradient(90deg,#0B8A60,#12C278)}
-.kpi.am .k-fill{background:linear-gradient(90deg,#C07808,#E5991A)}
-.kpi.rd .k-fill{background:linear-gradient(90deg,#BC1E1E,#E03030)}
-.kpi.pu .k-fill{background:linear-gradient(90deg,#5135AE,#7258D4)}
+/* Table */
+.t { width:100%; border-collapse:collapse; font-size:11.5px; }
+.t thead th { background:#F1F6FC; color:#7B98B5; font-weight:700; font-size:9.5px; text-transform:uppercase; letter-spacing:.5px; padding:7px 9px; text-align:left; border-bottom:1.5px solid #DCE8F4; }
+.t thead th.r { text-align:right; }
+.t tbody td { padding:6.5px 9px; border-bottom:1px solid #ECF2FA; color:#284058; vertical-align:middle; }
+.t tbody td.r { text-align:right; }
+.t tbody tr:last-child td { border-bottom:none; }
+.t .tt td { background:#E8F1FB; font-weight:700; color:#061628; }
+.t .hl td { background:#DCEFFE; color:#061628; }
+.fw{font-weight:700;} .red{color:#BC1E1E;} .bl{color:#0E4A90;}
 
-/* ── CONTENT ROW GRIDS — choose based on card count ── */
-/* 1 card — full width */
-.row-1{margin-bottom:14px;}
-/* 2-col variants */
-.row2  {display:grid;grid-template-columns:856px 1fr;gap:14px;margin-bottom:14px;}
-.row-2 {display:grid;grid-template-columns:854px 1fr;gap:14px;margin-bottom:14px;}
-.row-eq2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-/* 3-col variants */
-.row3  {display:grid;grid-template-columns:430px 370px 1fr;gap:14px;margin-bottom:20px;}
-.row-3 {display:grid;grid-template-columns:430px 350px 1fr;gap:14px;margin-bottom:20px;}
-.row-eq3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+/* Status bar */
+.sbar { background:#061628; border-radius:12px; padding:14px 24px 16px; }
+.sbar-ttl { font-size:8.5px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#68ACEE; display:block; margin-bottom:11px; }
+.sbar-list { display:grid; grid-template-columns:1fr 1fr; gap:7px 28px; }
+.si { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:500; padding:5px 8px; border-radius:8px; background:rgba(255,255,255,0.05); }
+.ok{color:#45D099;} .wn{color:#FFBB38;}
+.dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dok{background:#45D099;} .dwn{background:#FFBB38;}
 
-/* ── CARD ── */
-.card{background:#fff;border-radius:14px;padding:18px 20px 16px;box-shadow:0 2px 12px rgba(6,22,40,0.09);transition:box-shadow .18s,transform .18s}
-.card:hover{box-shadow:0 6px 24px rgba(6,22,40,0.13);transform:translateY(-1px)}
-.card-t{font-size:13px;font-weight:600;color:#061628;margin-bottom:2px}
-.card-s{font-size:10.5px;color:#8AAAC2;margin-bottom:13px}
+/* Recommendations */
+.rec { border-radius:14px; overflow:hidden; box-shadow:0 3px 18px rgba(6,22,40,0.16); margin-top:14px; margin-bottom:14px; }
+.rec-hdr { background:linear-gradient(112deg,#061628 0%,#0B3464 60%,#1358A4 100%); padding:16px 28px; display:flex; align-items:baseline; justify-content:space-between; position:relative; overflow:hidden; }
+.rec-hdr::before { content:''; position:absolute; right:-30px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,0.04); pointer-events:none; }
+.rec-title { font-family:'DM Serif Display',Georgia,serif; font-size:20px; font-weight:400; color:#fff; }
+.rec-sub { font-size:10px; color:rgba(255,255,255,0.42); font-style:italic; }
+.rec-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; }
+.rec-col { padding:18px 22px; display:flex; flex-direction:column; gap:10px; }
+.rc-op { background:#F6FCF9; }
+.rc-st { background:#F4F8FE; }
+.rc-rk { background:#FFFBF3; }
+.rec-col-hdr { font-size:8.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding-bottom:10px; border-bottom:2px solid; margin-bottom:4px; }
+.rc-op .rec-col-hdr { color:#0B8A60; border-bottom-color:#0B8A60; }
+.rc-st .rec-col-hdr { color:#1358A4; border-bottom-color:#1358A4; }
+.rc-rk .rec-col-hdr { color:#C07808; border-bottom-color:#C07808; }
+.rec-card { background:#fff; border-radius:10px; padding:13px 15px; border-left:4px solid; display:flex; flex-direction:column; gap:5px; box-shadow:0 1px 4px rgba(6,22,40,0.07); }
+.rc-op .rec-card { border-left-color:#0B8A60; }
+.rc-st .rec-card { border-left-color:#1358A4; }
+.rc-rk .rec-card { border-left-color:#C07808; }
+.rec-h { font-size:12px; font-weight:700; color:#061628; line-height:1.35; }
+.rec-p { font-size:10.5px; color:#446280; line-height:1.52; }
+.rec-when { display:inline-block; font-size:8px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 9px; border-radius:99px; margin-top:4px; align-self:flex-start; }
+.rc-op .rec-when { background:#D9F5E8; color:#0A6C3E; }
+.rc-st .rec-when { background:#D9EFFE; color:#094E9E; }
+.rc-rk .rec-when { background:#FEF0D8; color:#985200; }
 
-/* ── LEGEND ── */
-.leg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.li{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;color:#486480;background:#F2F6FB;border-radius:5px;padding:3px 7px 3px 5px}
-.ls{width:10px;height:10px;border-radius:2px;flex-shrink:0}
-
-/* ── CHART WRAP ── */
-.cw{position:relative;width:100%}
-
-/* ── TABLE ── */
-.t{width:100%;border-collapse:collapse;font-size:11.5px}
-.t thead th{background:#F1F6FC;color:#7B98B5;font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;padding:7px 9px;text-align:left;border-bottom:1.5px solid #DCE8F4}
-.t thead th.r{text-align:right}
-.t tbody td{padding:6.5px 9px;border-bottom:1px solid #ECF2FA;color:#284058;vertical-align:middle}
-.t tbody td.r{text-align:right}
-.t tbody tr:last-child td{border-bottom:none}
-.t tbody tr:hover td{background:#F5F9FE}
-.t .tt td{background:#E8F1FB;font-weight:700;color:#061628}
-.t .hl td{background:#DCEFFE;color:#061628}
-.fw{font-weight:700}.red{color:#BC1E1E}.bl{color:#0E4A90}
-
-/* ── BADGE ── */
-.bdg{display:inline-block;padding:2px 8px;border-radius:99px;font-size:9.5px;font-weight:700}
-.b-g{background:#D9F5E8;color:#0A6C3E}.b-a{background:#FEF0D8;color:#985200}.b-b{background:#D9EFFE;color:#094E9E}
-
-/* ── BOPO BOX ── */
-.bopo{margin-top:13px;padding:11px 13px;background:#F1F6FC;border-radius:10px}
-.bopo-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.bopo-h span:first-child{font-size:10.5px;font-weight:600;color:#486480}
-.bopo-h span:last-child{font-size:11.5px;font-weight:700;color:#061628}
-.bopo-track{height:7px;background:#D2E2F2;border-radius:4px;overflow:hidden}
-.bopo-fill{height:7px;border-radius:4px;background:linear-gradient(90deg,#1358A4,#2878DA)}
-.bopo-f{display:flex;justify-content:space-between;margin-top:5px}
-.bopo-f span:first-child{font-size:9.5px;color:#A0BACC}
-.bopo-f span:last-child{font-size:9.5px;color:#C07808;font-weight:600}
-
-/* ── TARIFF BOX ── */
-.tarf{margin-top:13px;padding:10px 12px;background:#FEF0D8;border-radius:10px;border-left:3px solid #C07808}
-.tarf-t{font-size:10px;font-weight:700;color:#985200;margin-bottom:5px}
-.tarf-b{font-size:10px;color:#784000;line-height:1.65}
-
-/* ── DONUT LEGEND ── */
-.dl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:11px}
-
-/* ── STATUS BAR — vertical 2-column list ── */
-.sbar{background:#061628;border-radius:12px;padding:14px 24px 16px;}
-.sbar-ttl{font-size:8.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#68ACEE;display:block;margin-bottom:11px;}
-.sbar-list{display:grid;grid-template-columns:1fr 1fr;gap:7px 28px;}
-.si{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,0.05);}
-.ok{color:#45D099}.wn{color:#FFBB38}
-.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dok{background:#45D099}.dwn{background:#FFBB38}
-
-/* ── PROGRESS BAR ROW ── */
-.pb-row{display:flex;align-items:center;gap:10px;margin-bottom:7px;}
-.pb-l{font-size:10.5px;color:#446280;font-weight:500;width:54px;flex-shrink:0;}
-.pb-trk{flex:1;height:9px;background:#E6EEF8;border-radius:5px;overflow:hidden;}
-.pb-fill{height:9px;border-radius:5px;}
-.pb-v{font-size:10.5px;font-weight:700;color:#020E1C;width:86px;text-align:right;flex-shrink:0;}
-.pb-p{font-size:9px;color:#9EBACE;font-weight:400;margin-left:3px;}
-
-/* ── STAT BOXES (3-up comparison) ── */
-.sg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;}
-.sb{padding:9px 10px;background:#E6F0FB;border-radius:9px;text-align:center;}
-.sl{font-size:9px;color:#7898B4;font-weight:600;margin-bottom:3px;}
-.sv{font-size:13px;font-weight:700;color:#0A6C3E;}
-
-/* ── CABANG ENTITY ROWS ── */
-.cbg{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:#F0F5FC;border-radius:9px;margin-bottom:7px;}
-.cbg.tot{background:#E6F0FB;}
-.cbg-l{display:flex;align-items:center;gap:7px;}
-.cbg-dot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
-.cbg-n{font-size:11.5px;font-weight:600;color:#284058;}
-.cbg-v{font-size:12px;font-weight:700;color:#020E1C;}
-.cbg-p{font-size:9.5px;color:#9EBACE;margin-left:4px;}
-
-/* ── SPLIT PROPORTION BAR ── */
-.splt{margin-bottom:9px;}
-.splt-l{font-size:10.5px;color:#446280;font-weight:500;margin-bottom:5px;}
-.splt-bar{display:flex;height:22px;border-radius:6px;overflow:hidden;}
-.ss{display:flex;align-items:center;justify-content:center;}
-.ss span{font-size:8.5px;color:#fff;font-weight:700;white-space:nowrap;padding:0 4px;}
-
-/* ── INSIGHT BOX (in-card) ── */
-.ins{padding:11px 13px;background:#E6F0FB;border-radius:10px;margin-top:12px;}
-.ins-t{font-size:10.5px;font-weight:700;color:#0D4C9A;margin-bottom:7px;}
-.ins-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.ins-l{font-size:9.5px;color:#88A6C0;margin-bottom:3px;}
-.ins-v{font-size:14px;font-weight:700;color:#0A6C3E;}
-
-/* ── NOTE / CALLOUT BOX ── */
-.nb{margin-top:12px;padding:10px 12px;background:#F1F6FC;border-radius:10px;border-left:3px solid #1358A4;}
-.nb-t{font-size:10px;font-weight:700;color:#1358A4;margin-bottom:3px;}
-.nb-b{font-size:10px;color:#486480;line-height:1.55;}
-
-/* ── SECTION DIVIDER ── */
-.div{height:1px;background:#ECF2FA;margin:11px 0;}
-
-/* ── LEGEND LINE MARKER (combo chart) ── */
-.lsp{width:14px;height:0;border-top:2.5px solid #0B8A60;flex-shrink:0;}
-
-/* ── RECOMMENDATION SECTION — premium 3-column ── */
-.rec{border-radius:14px;overflow:hidden;box-shadow:0 3px 18px rgba(6,22,40,0.16);margin-top:14px;margin-bottom:14px;}
-.rec-hdr{background:linear-gradient(112deg,#061628 0%,#0B3464 60%,#1358A4 100%);padding:16px 28px;display:flex;align-items:baseline;justify-content:space-between;position:relative;overflow:hidden;}
-.rec-hdr::before{content:'';position:absolute;right:-30px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;}
-.rec-title{font-family:'DM Serif Display',Georgia,serif;font-size:20px;font-weight:400;color:#fff;}
-.rec-sub{font-size:10px;color:rgba(255,255,255,0.42);font-style:italic;}
-.rec-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
-.rec-col{padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
-.rc-op{background:#F6FCF9;}
-.rc-st{background:#F4F8FE;}
-.rc-rk{background:#FFFBF3;}
-.rec-col-hdr{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid;margin-bottom:4px;}
-.rc-op .rec-col-hdr{color:#0B8A60;border-bottom-color:#0B8A60;}
-.rc-st .rec-col-hdr{color:#1358A4;border-bottom-color:#1358A4;}
-.rc-rk .rec-col-hdr{color:#C07808;border-bottom-color:#C07808;}
-.rec-card{background:#fff;border-radius:10px;padding:13px 15px;border-left:4px solid;display:flex;flex-direction:column;gap:5px;box-shadow:0 1px 4px rgba(6,22,40,0.07);}
-.rc-op .rec-card{border-left-color:#0B8A60;}
-.rc-st .rec-card{border-left-color:#1358A4;}
-.rc-rk .rec-card{border-left-color:#C07808;}
-.rec-h{font-size:12px;font-weight:700;color:#061628;line-height:1.35;}
-.rec-p{font-size:10.5px;color:#446280;line-height:1.52;}
-.rec-when{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-top:4px;align-self:flex-start;}
-.rc-op .rec-when{background:#D9F5E8;color:#0A6C3E;}
-.rc-st .rec-when{background:#D9EFFE;color:#094E9E;}
-.rc-rk .rec-when{background:#FEF0D8;color:#985200;}
-
-/* ── FOOTER ── */
-.ftr{background:#061628;padding:10px 36px;display:flex;justify-content:space-between;align-items:center}
-.ftr span{font-size:9.5px;color:rgba(255,255,255,0.3)}
-
+/* Footer */
+.ftr { background:#061628; padding:10px 36px; display:flex; justify-content:space-between; align-items:center; }
+.ftr span { font-size:9.5px; color:rgba(255,255,255,0.3); }
 </style>
 </head>
 <body>
+
 <div id="progressBar"></div>
 <div id="toolbar">
   <button id="exportBtn" onclick="doExport()">
@@ -292,8 +142,7 @@ body{
 </div>
 
 <div id="page">
-
-  <!-- ═══════ HEADER ═══════ -->
+  <!-- HEADER -->
   <div class="hdr">
     <div class="hdr-bar">
       <div class="hdr-bar-left">
@@ -313,136 +162,134 @@ body{
     </div>
     <div class="hdr-main">
       <div class="hdr-left">
-        <div class="eyebrow">Kinerja Trafik &middot; Jan&ndash;Mei 2026</div>
-        <div class="hdr-title">Arus Kapal &amp; <em>Trafik</em> Regional 2 Banten</div>
-        <div class="hdr-sub">Realisasi Kunjungan Kapal s.d. Mei 2026 &mdash; Berdasarkan Lokasi Sandar, Jenis Pelayaran &amp; Jenis Muatan</div>
+        <div class="eyebrow">Realisasi Kinerja &middot; Jan&ndash;Mei 2026</div>
+        <div class="hdr-title">Kinerja Pelayanan <em>Operasi</em> s.d. Mei 2026</div>
+        <div class="hdr-sub">Waktu Tunggu, Efisiensi Tambat &amp; Produktivitas &mdash; Konsolidasi Regional 2 Banten</div>
       </div>
       <div class="hdr-badges">
-        <div class="hdr-badge"><div class="hdr-badge-v">2.148</div><div class="hdr-badge-l">Kunjungan Kapal</div></div>
-        <div class="hdr-badge"><div class="hdr-badge-v">19,07 jt</div><div class="hdr-badge-l">Gross Tonnage (GT)</div></div>
-        <div class="hdr-badge"><div class="hdr-badge-v">8.876</div><div class="hdr-badge-l">GT per Kunjungan</div></div>
-        <div class="hdr-badge"><div class="hdr-badge-v">Jan&ndash;Mei</div><div class="hdr-badge-l">Realisasi 2026</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">53,6%</div><div class="hdr-badge-l">ET/BT Konsolidasi</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">0,03</div><div class="hdr-badge-l">Waiting Time (jam)</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">198,7</div><div class="hdr-badge-l">T/G/H Curah Kering</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">Jan&ndash;Mei</div><div class="hdr-badge-l">Periode 2026 (5 bln)</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════ BODY ═══════ -->
+  <!-- BODY -->
   <div class="body">
-
-    <!-- Insight band -->
+    <!-- INSIGHT -->
     <div class="insight">
       <div class="insight-t">Ringkasan Eksekutif</div>
       <div class="insight-b">
-        Regional 2 Banten mencatat <b>2.148 kunjungan kapal</b> dengan total <b>19,07 juta GT</b> selama Jan&ndash;Mei 2026, didominasi pelayaran <b>Dalam Negeri (83,6%)</b> di lokasi <b>Tuks/Terminal Khusus (64%)</b>. Trafik memuncak pada <b>Maret (622 kunjungan)</b> sebelum koreksi tajam di April. <i>Data realisasi mencakup 5 dari 12 bulan (s.d. Mei 2026).</i>
+        Kinerja pelayanan Regional 2 Banten s.d. <b>Mei 2026</b> menunjukkan waktu tunggu kapal nyaris nol
+        (<b>WT 0,03 jam</b>) dengan Approach Time stabil <b>0,63 jam</b>. Efisiensi tambat (ET/BT) Konsolidasi
+        berkisar <b>53,6%&ndash;68,9%</b> &mdash; Terminal Curah Cair paling efisien, sementara Idle Time (IT)
+        Multipurpose berhasil diturunkan <b>34,3%</b>. <i>Produktivitas Curah Kering menurun &minus;30,6%
+        (Jan&rarr;Mei) dan terdapat anomali data T/G/H Curah Cair Mei (195.265) yang perlu validasi.</i>
       </div>
     </div>
 
-    <div class="sec">Indikator Kinerja Trafik</div>
-    <div class="kpi-row n4">
+    <div class="sec">Indikator Kinerja Utama &mdash; Konsolidasi s.d. Mei 2026</div>
+
+    <!-- KPI STRIP (5) -->
+    <div class="kpi-row n5">
       <div class="kpi gr">
-        <div class="k-lbl">Kunjungan Kapal</div>
-        <div class="k-val">2.148<span class="k-unit">Call</span></div>
-        <div class="k-delta cu">Rata-rata 430 kunjungan / bulan</div>
-        <div class="k-track"><div class="k-fill" style="width:41.7%"></div></div>
+        <div class="k-lbl">Efisiensi ET/BT</div>
+        <div class="k-val">53,6<span class="k-unit">%</span></div>
+        <div class="k-delta cu">&#9650; +5,1 pp vs Jan 2026</div>
+        <div class="k-track"><div class="k-fill" style="width:53.6%;background:#0B8A60"></div></div>
+      </div>
+      <div class="kpi gr">
+        <div class="k-lbl">Waiting Time (WT)</div>
+        <div class="k-val">0,03<span class="k-unit">jam</span></div>
+        <div class="k-delta cu">&#9650; 0,07 &rarr; 0,00 jam (Mei)</div>
+        <div class="k-track"><div class="k-fill" style="width:6%;background:#0B8A60"></div></div>
       </div>
       <div class="kpi">
-        <div class="k-lbl">Gross Tonnage</div>
-        <div class="k-val">19,07<span class="k-unit">juta GT</span></div>
-        <div class="k-delta cn">8.876 GT per kunjungan rata-rata</div>
-        <div class="k-track"><div class="k-fill" style="width:67.0%"></div></div>
-      </div>
-      <div class="kpi gr">
-        <div class="k-lbl">Share Dalam Negeri</div>
-        <div class="k-val">83,6<span class="k-unit">%</span></div>
-        <div class="k-delta cu">1.795 dari 2.148 kunjungan</div>
-        <div class="k-track"><div class="k-fill" style="width:83.6%"></div></div>
+        <div class="k-lbl">Approach Time (AT)</div>
+        <div class="k-val">0,63<span class="k-unit">jam</span></div>
+        <div class="k-delta cn">Stabil 0,61&ndash;0,65 jam</div>
+        <div class="k-track"><div class="k-fill" style="width:63%;background:#1358A4"></div></div>
       </div>
       <div class="kpi am">
-        <div class="k-lbl">Puncak Trafik &mdash; Maret</div>
-        <div class="k-val">622<span class="k-unit">kunjungan</span></div>
-        <div class="k-delta cu">+61,6% MoM vs Februari</div>
-        <div class="k-track"><div class="k-fill" style="width:100%"></div></div>
+        <div class="k-lbl">Produktivitas Curah Kering</div>
+        <div class="k-val">198,7<span class="k-unit">T/G/H</span></div>
+        <div class="k-delta cd">&#9660; &minus;30,6% vs Jan 2026</div>
+        <div class="k-track"><div class="k-fill" style="width:66%;background:#C07808"></div></div>
+      </div>
+      <div class="kpi am">
+        <div class="k-lbl">Idle Time (IT) Multipurpose</div>
+        <div class="k-val">9,6<span class="k-unit">jam</span></div>
+        <div class="k-delta cu">&#9660; &minus;34,3% vs Jan 2026 (membaik)</div>
+        <div class="k-track"><div class="k-fill" style="width:40%;background:#C07808"></div></div>
       </div>
     </div>
 
-    <div class="sec">Analisis Trafik &amp; Komposisi</div>
-
-    <!-- ROW 2: combo trend + voyage donut -->
+    <!-- ROW 1: .row2 -->
     <div class="row2">
+      <!-- Card 1: ET/BT trend (wide) -->
       <div class="card">
-        <div class="card-t">Tren Bulanan Kunjungan &amp; Gross Tonnage</div>
-        <div class="card-s">Trafik memuncak di Maret (622 kunjungan / 5,23 jt GT) lalu terkoreksi &minus;35,5% di April.</div>
+        <div class="card-t">Tren Efisiensi Tambat (ET/BT) per Terminal</div>
+        <div class="card-s">Curah Cair paling efisien (rata-rata 68,9%); Multipurpose &amp; Curah Kering stagnan di ~54%</div>
         <div class="leg">
-          <div class="li"><span class="ls" style="background:#1E62C4"></span>Kunjungan (Call)</div>
-          <div class="li"><span class="lsp"></span>Gross Tonnage (juta GT)</div>
+          <div class="li"><span class="ls" style="background:#1E62C4"></span>Multipurpose</div>
+          <div class="li"><span class="ls" style="background:#0B8A60"></span>Curah Cair</div>
+          <div class="li"><span class="ls" style="background:#C07808"></span>Curah Kering</div>
         </div>
-        <div class="cw" style="height:300px"><canvas id="cTrend"></canvas></div>
+        <div class="cw" style="height:288px"><canvas id="c1"></canvas></div>
       </div>
-
+      <!-- Card 2: Composition (narrow) -->
       <div class="card">
-        <div class="card-t">Komposisi Jenis Pelayaran</div>
-        <div class="card-s">Dalam Negeri mendominasi 83,6% trafik kunjungan.</div>
-        <div class="cw" style="height:262px"><canvas id="cVoyage"></canvas></div>
-        <div class="dl">
-          <div class="li"><span class="ls" style="background:#0B8A60"></span>Dalam Negeri &middot; 1.795 (83,6%)</div>
-          <div class="li"><span class="ls" style="background:#1358A4"></span>Luar Negeri &middot; 345 (16,1%)</div>
-          <div class="li"><span class="ls" style="background:#B6D2F0"></span>Lainnya &middot; 8 (0,4%)</div>
+        <div class="card-t">Komposisi Waktu Tambat (BT)</div>
+        <div class="card-s">Hanya ~53% waktu tambat Multipurpose yang produktif; Curah Cair paling efisien</div>
+        <div class="leg">
+          <div class="li"><span class="ls" style="background:#10986A"></span>Effective Time (ET)</div>
+          <div class="li"><span class="ls" style="background:#BC1E1E"></span>Idle Time (IT)</div>
+          <div class="li"><span class="ls" style="background:#7BA8D8"></span>Not Op Time (NOT)</div>
         </div>
+        <div class="cw" style="height:288px"><canvas id="c2"></canvas></div>
       </div>
     </div>
 
-    <!-- ROW EQ3: cargo bar + location + detail table -->
+    <!-- ROW 2: .row-eq3 -->
     <div class="row-eq3">
+      <!-- Card 3: Service times -->
       <div class="card">
-        <div class="card-t">Kunjungan per Jenis Muatan</div>
-        <div class="card-s">Tug Boat/Tongkang (33,5%) &amp; Curah Cair BBM (18%) memimpin trafik.</div>
-        <div class="cw" style="height:300px"><canvas id="cCargo"></canvas></div>
+        <div class="card-t">Waktu Pelayanan Kapal (WT &amp; AT)</div>
+        <div class="card-s">AT Konsolidasi 0,63 jam; WT nyaris nol (0,03 jam) &mdash; pelayanan prima</div>
+        <div class="leg">
+          <div class="li"><span class="ls" style="background:#1E62C4"></span>Approach Time (jam)</div>
+          <div class="li"><span class="ls" style="background:#0B8A60"></span>Waiting Time (jam)</div>
+        </div>
+        <div class="cw" style="height:248px"><canvas id="c3"></canvas></div>
       </div>
-
+      <!-- Card 4: Productivity -->
       <div class="card">
-        <div class="card-t">Distribusi per Lokasi Sandar</div>
-        <div class="card-s">Tuks menangani 64% trafik dengan kapal lebih besar (10.247 GT/kunjungan).</div>
-        <div class="cbg tot" style="background:#E8F1FB">
-          <div class="cbg-l"><span class="cbg-dot" style="background:#1358A4"></span><span class="cbg-n">Tuks/Terminal Khusus</span></div>
-          <div><span class="cbg-v">1.374</span><span class="cbg-p">64,0%</span></div>
-        </div>
-        <div class="cbg" style="background:#F0F5FC">
-          <div class="cbg-l"><span class="cbg-dot" style="background:#6CA4E0"></span><span class="cbg-n">Dermaga Umum</span></div>
-          <div><span class="cbg-v">774</span><span class="cbg-p">36,0%</span></div>
-        </div>
-        <div class="ins">
-          <div class="ins-t">Gross Tonnage per Kunjungan</div>
-          <div class="ins-g">
-            <div><div class="ins-l">Tuks (GT juta)</div><div class="ins-v">14,08 jt &middot; 10.247</div></div>
-            <div><div class="ins-l">Dermaga Umum (GT juta)</div><div class="ins-v">4,98 jt &middot; 6.442</div></div>
-          </div>
-        </div>
-        <div class="nb">
-          <div class="nb-t">Kapal Lebih Besar di Tuks</div>
-          <div class="nb-b">Rata-rata GT/kunjungan di Tuks (10.247) <b>1,6&times; lebih besar</b> dibanding Dermaga Umum (6.442) &mdash; indikasi layanan kapal samudra.</div>
-        </div>
+        <div class="card-t">Produktivitas T/G/H Curah Kering</div>
+        <div class="card-s">Tren menurun &minus;30,6% (Jan&rarr;Mei); Curah Cair ada anomali data Mei</div>
+        <div class="cw" style="height:248px"><canvas id="c4"></canvas></div>
       </div>
-
+      <!-- Card 5: Detail table -->
       <div class="card">
-        <div class="card-t">Rincian Trafik per Lokasi</div>
-        <div class="card-s">Tuks memimpin di kedua jenis pelayaran dengan volume tertinggi.</div>
+        <div class="card-t">Rincian Metrik Tambat per Terminal</div>
+        <div class="card-s">Rata-rata Jan&ndash;Mei 2026 (Konsolidasi) &mdash; satuan jam kecuali ET/BT</div>
         <table class="t">
           <thead>
-            <tr><th>Lokasi &amp; Pelayaran</th><th class="r">Kunjungan</th><th class="r">Share</th></tr>
+            <tr>
+              <th>Terminal</th>
+              <th class="r">BT</th>
+              <th class="r">ET</th>
+              <th class="r">IT</th>
+              <th class="r">ET/BT</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>Tuks &middot; Dalam Negeri</td><td class="r fw">1.127</td><td class="r">52,5%</td></tr>
-            <tr><td>Tuks &middot; Luar Negeri</td><td class="r">247</td><td class="r">11,5%</td></tr>
-            <tr><td>Dermaga Umum &middot; Dalam Negeri</td><td class="r">668</td><td class="r">31,1%</td></tr>
-            <tr><td>Dermaga Umum &middot; Luar Negeri</td><td class="r">98</td><td class="r">4,6%</td></tr>
-            <tr><td>Dermaga Umum &middot; Lainnya</td><td class="r">8</td><td class="r">0,4%</td></tr>
-            <tr class="tt"><td>Total Regional 2 Banten</td><td class="r">2.148</td><td class="r">100%</td></tr>
+            <tr><td>Multipurpose</td><td class="r">80,8</td><td class="r">42,6</td><td class="r">9,6</td><td class="r fw">53,6%</td></tr>
+            <tr class="hl"><td>Curah Cair</td><td class="r">27,4</td><td class="r">20,7</td><td class="r">0,1</td><td class="r fw bl">68,9%</td></tr>
+            <tr><td>Curah Kering</td><td class="r">78,4</td><td class="r">41,5</td><td class="r">16,3</td><td class="r fw">54,1%</td></tr>
+            <tr class="tt"><td>Rata-rata</td><td class="r">62,2</td><td class="r">34,9</td><td class="r">8,7</td><td class="r">58,9%</td></tr>
           </tbody>
         </table>
-        <div class="nb">
-          <div class="nb-t">Catatan Segmentasi</div>
-          <div class="nb-b">Luar Negeri hanya 16,1% kunjungan, namun menyumbang <b>32,9% GT</b> (6,27 jt GT) &mdash; kapal LN berukuran jauh lebih besar per kunjungan.</div>
-        </div>
       </div>
     </div>
 
@@ -450,11 +297,11 @@ body{
     <div class="sbar">
       <span class="sbar-ttl">Key Takeaways</span>
       <div class="sbar-list">
-        <div class="si ok"><span class="dot dok"></span>Dalam Negeri mendominasi 83,6% (1.795 kunjungan) trafik total</div>
-        <div class="si ok"><span class="dot dok"></span>Tuks/Terminal Khusus menangani 64% trafik dengan GT/kunjungan tertinggi (10.247)</div>
-        <div class="si ok"><span class="dot dok"></span>Tug Boat/Tongkang &amp; Curah Cair BBM menyumbang 51,5% kunjungan</div>
-        <div class="si wn"><span class="dot dwn"></span>Trafik April anjlok &minus;35,5% dari puncak Maret (622 &rarr; 401 kunjungan)</div>
-        <div class="si wn"><span class="dot dwn"></span>Data realisasi baru mencakup 5 dari 12 bulan (s.d. Mei 2026)</div>
+        <div class="si ok"><span class="dot dok"></span>WT Konsolidasi nyaris nol (0,03 jam) &mdash; kapal langsung dilayani</div>
+        <div class="si ok"><span class="dot dok"></span>Curah Cair paling efisien, ET/BT 68,9% (rata-rata 5 bulan)</div>
+        <div class="si ok"><span class="dot dok"></span>Idle Time Multipurpose turun 34,3% (10,97 &rarr; 7,20 jam)</div>
+        <div class="si wn"><span class="dot dwn"></span>Produktivitas Curah Kering anjlok &minus;30,6% (247,8 &rarr; 172,0 T/G/H)</div>
+        <div class="si wn"><span class="dot dwn"></span>Anomali data T/G/H Curah Cair Mei (195.265) &mdash; perlu validasi</div>
       </div>
     </div>
 
@@ -468,181 +315,156 @@ body{
         <div class="rec-col rc-op">
           <div class="rec-col-hdr">Operasional</div>
           <div class="rec-card">
-            <div class="rec-h">Antisipasi lonjakan trafik pada periode puncak berikutnya</div>
-            <div class="rec-p">Maret 2026 mencatat 622 kunjungan (29% trafik 5 bulan). Pastikan ketersediaan alat pandu &amp; tunda memadai menjelang kuartal dengan pola serupa.</div>
+            <div class="rec-h">Tindak lanjuti penurunan produktivitas Curah Kering</div>
+            <div class="rec-p">Produktivitas Curah Kering anjlok &minus;30,6% (247,8 &rarr; 172,0 T/G/H) selama Jan&ndash;Mei 2026. Audit jumlah alat/gang, muatan rata-rata per jam, dan hambatan operasi pada terminal.</div>
             <span class="rec-when">Jangka Pendek</span>
           </div>
         </div>
         <div class="rec-col rc-st">
           <div class="rec-col-hdr">Strategis</div>
           <div class="rec-card">
-            <div class="rec-h">Diversifikasi &amp; kembangkan layanan kapal Luar Negeri</div>
-            <div class="rec-p">Pelayaran LN hanya 16,1% kunjungan namun menyumbang 32,9% GT (6,27 jt) &mdash; kapal LN berukuran besar. Tarik kunjungan LN tambahan untuk meningkatkan nilai per layanan.</div>
+            <div class="rec-h">Tingkatkan ET/BT Multipurpose &amp; Curah Kering yang stagnan ~54%</div>
+            <div class="rec-p">ET/BT Multipurpose 53,6% &amp; Curah Kering 54,1% jauh di bawah Curah Cair 68,9%. Reduksi Not Operation Time (NOT 21&ndash;30 jam) berpotensi membebaskan ~15 pp efisiensi tambat.</div>
             <span class="rec-when">Jangka Menengah</span>
           </div>
         </div>
         <div class="rec-col rc-rk">
           <div class="rec-col-hdr">Risiko</div>
           <div class="rec-card">
-            <div class="rec-h">Pantau konsentrasi trafik di Tuks untuk cegah bottleneck</div>
-            <div class="rec-p">64% trafik (1.374 kunjungan) terkonsentrasi di Tuks/Terminal Khusus. Konsentrasi ini berisiko bottleneck kapasitas dermaga saat puncak musim.</div>
-            <span class="rec-when">Monitor</span>
+            <div class="rec-h">Validasi data T/G/H Curah Cair Mei sebelum dipakai</div>
+            <div class="rec-p">Nilai 195.265 T/G/H pada Mei 2026 (vs rentang normal 165&ndash;246) merupakan anomali input. Jangan dijadikan basis proyeksi atau evaluasi sebelum dikoreksi ke sumber data.</div>
+            <span class="rec-when">Validasi</span>
           </div>
         </div>
       </div>
     </div>
 
-  </div><!-- /body -->
+  </div>
 
   <!-- FOOTER -->
   <div class="ftr">
-    <span>LAP2026_Banten_ArusKapal &mdash; PT Pelabuhan Indonesia (Persero), Regional 2 Banten</span>
-    <span>Disiapkan: Juli 2026 &middot; Kunjungan dalam Call, GT dalam satuan Gross Tonnage</span>
+    <span>KPI Kinerja Pelayanan 2026 &mdash; PT Pelabuhan Indonesia (Persero)</span>
+    <span>Disiapkan: Juli 2026 &middot; Satuan jam &amp; T/G/H kecuali disebutkan &middot; Data s.d. Mei 2026 (parsial)</span>
   </div>
+</div>
 
-</div><!-- /page -->
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = "'Outfit', Arial, sans-serif";
 Chart.defaults.devicePixelRatio = window.devicePixelRatio * 2;
 Chart.defaults.plugins.datalabels = { display: false };
 
-const BLUE = '#1E62C4', NAVY = '#061628', GREEN = '#0B8A60';
+const XTICKS = { maxRotation:0, minRotation:0, font:{size:9, family:"'Outfit',Arial,sans-serif"}, color:'#7B98B5' };
+const XGRID = { display:false };
 
-// ── 1. COMBO: monthly Call (bar) + GT juta (line) ──
-new Chart(document.getElementById('cTrend'), {
-  data: {
-    labels: [['Jan','2026'],['Feb','2026'],['Mar','2026'],['Apr','2026'],['Mei','2026']],
-    datasets: [
-      {
-        type:'bar', label:'Kunjungan (Call)',
-        data:[325,385,622,401,415],
-        backgroundColor:['#B6D2F0','#6CA4E0','#1E62C4','#6CA4E0','#6CA4E0'],
-        borderRadius:5, borderSkipped:false,
-        barPercentage:0.42, categoryPercentage:0.7,
-        yAxisID:'yBar',
-        datalabels:{ display:true, align:'top', anchor:'end', offset:4,
-          color:'#061628', font:{weight:700,size:11},
-          backgroundColor:'rgba(255,255,255,0.85)', borderRadius:3,
-          padding:{top:1,bottom:1,left:5,right:5},
-          formatter:v=>v.toLocaleString('id-ID') }
-      },
-      {
-        type:'line', label:'Gross Tonnage (juta GT)',
-        data:[4.07,3.32,5.23,3.14,3.29],
-        borderColor:GREEN, backgroundColor:'rgba(11,138,96,0.10)',
-        borderWidth:2.5, tension:0.35, pointRadius:4, pointBackgroundColor:GREEN,
-        fill:false, yAxisID:'yLine',
-        datalabels:{ display:true, align:'bottom', anchor:'center', offset:6,
-          color:'#0A6040', font:{weight:700,size:9.5},
-          backgroundColor:'rgba(255,255,255,0.9)', borderRadius:3,
-          padding:{top:1,bottom:1,left:4,right:4},
-          formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:2})+' M' }
-      }
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    scales:{
-      x:{ ticks:{ maxRotation:0, minRotation:0, font:{size:10}, color:'#7B98B5' }, grid:{display:false} },
-      yBar:{ position:'left', max:750, beginAtZero:true,
-        ticks:{ font:{size:9}, color:'#7B98B5', callback:v=>v.toLocaleString('id-ID') },
-        grid:{ color:'#ECF2FA' }, title:{ display:true, text:'Kunjungan (Call)', color:'#8AAAC2', font:{size:9.5,weight:600} } },
-      yLine:{ position:'right', max:8.5, beginAtZero:true,
-        ticks:{ font:{size:9}, color:'#0A6040', callback:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1}) },
-        grid:{ display:false }, title:{ display:true, text:'GT (juta)', color:'#0A6040', font:{size:9.5,weight:600} } }
-    },
-    plugins:{
-      legend:{ display:false },
-      tooltip:{ callbacks:{
-        label:c=> c.dataset.yAxisID==='yLine'
-          ? ' '+c.dataset.label+': '+c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:2})+' juta GT'
-          : ' '+c.dataset.label+': '+c.parsed.y.toLocaleString('id-ID')+' kunjungan'
-      } }
-    }
-  }
-});
-
-// ── 2. DONUT: voyage composition ──
-new Chart(document.getElementById('cVoyage'), {
-  type:'doughnut',
-  data:{
-    labels:['Dalam Negeri','Luar Negeri','Lainnya'],
-    datasets:[{
-      data:[1795,345,8],
-      backgroundColor:['#0B8A60','#1358A4','#B6D2F0'],
-      borderWidth:3, borderColor:'#fff', hoverOffset:8,
-      datalabels:{ display:true, color:'#fff', font:{weight:700,size:12}, textAlign:'center',
-        formatter:(v,ctx)=>Math.round(v/ctx.dataset.data.reduce((a,b)=>a+b,0)*100)+'%' }
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false, cutout:'64%',
-    plugins:{
-      legend:{ display:false },
-      tooltip:{ callbacks:{ label:c=>{
-        const t=c.dataset.data.reduce((a,b)=>a+b,0);
-        return ' '+c.label+': '+c.parsed.toLocaleString('id-ID')+' kunjungan ('+Math.round(c.parsed/t*100)+'%)';
-      } } }
-    }
-  },
-  plugins:[{ id:'cl2', afterDraw(chart){
-    const {ctx,chartArea:{left,top,right,bottom}}=chart;
-    const cx=(left+right)/2, cy=(top+bottom)/2;
-    ctx.save(); ctx.textAlign='center';
-    ctx.fillStyle='#9AB4CC'; ctx.font='400 10px Outfit,Arial,sans-serif';
-    ctx.fillText('Total', cx, cy-10);
-    ctx.fillStyle='#061628'; ctx.font='700 18px Outfit,Arial,sans-serif';
-    ctx.fillText('2.148', cx, cy+9);
-    ctx.fillStyle='#9AB4CC'; ctx.font='400 9px Outfit,Arial,sans-serif';
-    ctx.fillText('kunjungan', cx, cy+24);
-    ctx.restore();
-  } }]
-});
-
-// ── 3. HORIZONTAL BAR: cargo type ──
-const cargoLabels=['Tug/Tongkang','Curah BBM','Gas','Ro-Ro','Curah Kering','Curah Non-BBM','General Cargo','Lainnya'];
-const cargoData=[719,387,332,241,197,163,97,12];
-const cargoTotal=cargoData.reduce((a,b)=>a+b,0);
-new Chart(document.getElementById('cCargo'), {
+// ---- Chart 1: ET/BT trend by terminal (grouped bar, 3 datasets) ----
+new Chart(document.getElementById('c1'), {
   type:'bar',
   data:{
-    labels:cargoLabels,
-    datasets:[{
-      label:'Kunjungan',
-      data:cargoData,
-      backgroundColor:['#061628','#1358A4','#1E62C4','#3F86D6','#6CA4E0','#9CC2EC','#C2D9F4','#DCE7F2'],
-      borderRadius:4, borderSkipped:false,
-      barPercentage:0.78, categoryPercentage:0.92,
-      datalabels:{ display:true, align:'end', anchor:'end', offset:5,
-        color:'#061628', font:{weight:700,size:10},
-        textAlign:'left',
-        formatter:(v,ctx)=>v.toLocaleString('id-ID')+'  ('+Math.round(v/cargoTotal*10)/10+'%)' }
-    }]
+    labels:[['Jan','2026'],['Feb','2026'],['Mar','2026'],['Apr','2026'],['Mei','2026']],
+    datasets:[
+      { label:'Multipurpose', data:[51.46,53.71,52.92,53.26,56.56], backgroundColor:'#1E62C4', borderRadius:4, borderSkipped:false, barPercentage:0.72, categoryPercentage:0.88,
+        datalabels:{ display:true, align:'top', anchor:'end', offset:2, color:'#061628', font:{weight:700,size:9}, backgroundColor:'rgba(255,255,255,0.82)', borderRadius:3, padding:{top:1,bottom:1,left:3,right:3}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) } },
+      { label:'Curah Cair', data:[70.62,63.62,76.16,73.32,60.74], backgroundColor:'#0B8A60', borderRadius:4, borderSkipped:false, barPercentage:0.72, categoryPercentage:0.88,
+        datalabels:{ display:true, align:'top', anchor:'end', offset:2, color:'#061628', font:{weight:700,size:9}, backgroundColor:'rgba(255,255,255,0.82)', borderRadius:3, padding:{top:1,bottom:1,left:3,right:3}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) } },
+      { label:'Curah Kering', data:[53.21,49.73,47.89,64.93,54.69], backgroundColor:'#C07808', borderRadius:4, borderSkipped:false, barPercentage:0.72, categoryPercentage:0.88,
+        datalabels:{ display:true, align:'top', anchor:'end', offset:2, color:'#061628', font:{weight:700,size:9}, backgroundColor:'rgba(255,255,255,0.82)', borderRadius:3, padding:{top:1,bottom:1,left:3,right:3}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) } }
+    ]
   },
   options:{
-    indexAxis:'y', responsive:true, maintainAspectRatio:false,
-    layout:{ padding:{ right:64 } },
+    maintainAspectRatio:false, responsive:true,
     scales:{
-      x:{ max:Math.ceil(719*1.18/50)*50, beginAtZero:true,
-        ticks:{ font:{size:9}, color:'#7B98B5', callback:v=>v.toLocaleString('id-ID') },
-        grid:{ color:'#ECF2FA' } },
-      y:{ ticks:{ font:{size:9.5,weight:500}, color:'#284058' }, grid:{display:false} }
+      x:{ ticks:XTICKS, grid:XGRID },
+      y:{ beginAtZero:true, max:92, ticks:{ font:{size:9}, color:'#7B98B5', callback:v=>v+'%' }, grid:{ color:'#EEF3FA' }, title:{ display:true, text:'ET/BT (%)', color:'#7B98B5', font:{size:9,weight:600} } }
     },
     plugins:{
       legend:{ display:false },
-      tooltip:{ callbacks:{ label:c=>' '+c.label+': '+c.parsed.x.toLocaleString('id-ID')+' kunjungan ('+Math.round(c.parsed.x/cargoTotal*100)+'%)' } }
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:1})}%` } }
     }
   }
 });
-</script>
 
-<script>
+// ---- Chart 2: Berth time composition (stacked bar) ----
+new Chart(document.getElementById('c2'), {
+  type:'bar',
+  data:{
+    labels:[['Multi-','purpose'],['Curah','Cair'],['Curah','Kering']],
+    datasets:[
+      { label:'Effective Time (ET)', data:[42.6,20.7,41.5], backgroundColor:'#10986A', borderRadius:0, borderSkipped:false, barPercentage:0.5, categoryPercentage:0.7, stack:'s', datalabels:{ display:false } },
+      { label:'Idle Time (IT)', data:[9.6,0.1,16.3], backgroundColor:'#BC1E1E', borderRadius:0, borderSkipped:false, barPercentage:0.5, categoryPercentage:0.7, stack:'s', datalabels:{ display:false } },
+      { label:'Not Op Time (NOT)', data:[30.1,6.5,21.3], backgroundColor:'#7BA8D8', borderRadius:4, borderSkipped:false, barPercentage:0.5, categoryPercentage:0.7, stack:'s',
+        datalabels:{ display:true, align:'top', anchor:'end', offset:2, color:'#061628', font:{weight:700,size:10}, backgroundColor:'rgba(255,255,255,0.82)', borderRadius:3, padding:{top:1,bottom:1,left:4,right:4},
+          formatter:(v,ctx)=>{ const i=ctx.dataIndex; return ctx.chart.data.datasets.reduce((a,d)=>a+(d.data[i]||0),0).toLocaleString('id-ID',{minimumFractionDigits:1}); } } }
+    ]
+  },
+  options:{
+    maintainAspectRatio:false, responsive:true,
+    scales:{
+      x:{ stacked:true, ticks:XTICKS, grid:XGRID },
+      y:{ stacked:true, beginAtZero:true, max:100, ticks:{ font:{size:9}, color:'#7B98B5' }, grid:{ color:'#EEF3FA' }, title:{ display:true, text:'Jam', color:'#7B98B5', font:{size:9,weight:600} } }
+    },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:1})} jam` } }
+    }
+  }
+});
+
+// ---- Chart 3: Service times WT & AT (combo bar + line, dual axis) ----
+new Chart(document.getElementById('c3'), {
+  data:{
+    labels:[['Luar','Negeri'],['Dalam','Negeri'],['Konsol.','2026']],
+    datasets:[
+      { type:'bar', label:'Approach Time (AT)', data:[0.7505,0.5071,0.6278], backgroundColor:'#1E62C4', borderRadius:4, borderSkipped:false, barPercentage:0.5, categoryPercentage:0.7, yAxisID:'yBar',
+        datalabels:{ display:true, align:'top', anchor:'end', offset:3, color:'#061628', font:{weight:700,size:9.5}, backgroundColor:'rgba(255,255,255,0.85)', borderRadius:3, padding:{top:1,bottom:1,left:3,right:3}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:2})+' j' } },
+      { type:'line', label:'Waiting Time (WT)', data:[0.0064,0.0523,0.0274], borderColor:'#0B8A60', backgroundColor:'#0B8A60', borderWidth:2.5, tension:0.35, pointRadius:4, pointBackgroundColor:'#0B8A60', yAxisID:'yLine',
+        datalabels:{ display:true, align:'bottom', anchor:'center', offset:5, color:'#0A6040', font:{weight:700,size:9}, backgroundColor:'rgba(255,255,255,0.9)', borderRadius:3, padding:{top:1,bottom:1,left:3,right:3}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:3}) } }
+    ]
+  },
+  options:{
+    maintainAspectRatio:false, responsive:true,
+    scales:{
+      x:{ ticks:XTICKS, grid:XGRID },
+      yBar:{ beginAtZero:true, max:0.90, position:'left', ticks:{ font:{size:9}, color:'#7B98B5', callback:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1}) }, grid:{ color:'#EEF3FA' }, title:{ display:true, text:'AT (jam)', color:'#7B98B5', font:{size:9,weight:600} } },
+      yLine:{ beginAtZero:true, max:0.085, position:'right', ticks:{ font:{size:9}, color:'#0B8A60', callback:v=>v.toLocaleString('id-ID',{minimumFractionDigits:2}) }, grid:{ display:false }, title:{ display:true, text:'WT (jam)', color:'#0B8A60', font:{size:9,weight:600} } }
+    },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:3})} jam` } }
+    }
+  }
+});
+
+// ---- Chart 4: Productivity T/G/H Curah Kering (single bar trend) ----
+new Chart(document.getElementById('c4'), {
+  type:'bar',
+  data:{
+    labels:[['Jan','2026'],['Feb','2026'],['Mar','2026'],['Apr','2026'],['Mei','2026']],
+    datasets:[
+      { label:'T/G/H Curah Kering', data:[247.81,208.90,175.13,189.63,171.97], backgroundColor:['#6CA4E0','#5888D4','#A8BCD4','#1E62C4','#061628'], borderRadius:5, borderSkipped:false, barPercentage:0.62, categoryPercentage:0.88,
+        datalabels:{ display:true, align:'top', anchor:'end', offset:2, color:'#061628', font:{weight:700,size:10}, backgroundColor:'rgba(255,255,255,0.82)', borderRadius:3, padding:{top:1,bottom:1,left:4,right:4}, formatter:v=>v.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1}) } }
+    ]
+  },
+  options:{
+    maintainAspectRatio:false, responsive:true,
+    scales:{
+      x:{ ticks:XTICKS, grid:XGRID },
+      y:{ beginAtZero:true, max:295, ticks:{ font:{size:9}, color:'#7B98B5' }, grid:{ color:'#EEF3FA' }, title:{ display:true, text:'T/G/H (ton per gang per jam)', color:'#7B98B5', font:{size:9,weight:600} } }
+    },
+    plugins:{
+      legend:{ display:false },
+      tooltip:{ callbacks:{ label:c=>` ${c.dataset.label}: ${c.parsed.y.toLocaleString('id-ID',{minimumFractionDigits:1})} T/G/H` } }
+    }
+  }
+});
+
 async function doExport() {
   const btn = document.getElementById('exportBtn');
   const bar = document.getElementById('progressBar');
-  btn.disabled = true; btn.textContent = 'Generating…';
+  btn.disabled = true; btn.textContent = 'Generating\u2026';
   let p = 0;
   const t = setInterval(() => { p = Math.min(p+5,85); bar.style.width = p+'%'; }, 120);
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -658,7 +480,7 @@ async function doExport() {
     });
     clearInterval(t); bar.style.width = '100%';
     const a = document.createElement('a');
-    a.download = 'LAP2026_Banten_ArusKapal.png';
+    a.download = 'KPI2026_Banten_KinerjaPelayanan.png';
     a.href = canvas.toDataURL('image/png', 1.0);
     a.click();
   } catch(e) { console.error(e); clearInterval(t); }
