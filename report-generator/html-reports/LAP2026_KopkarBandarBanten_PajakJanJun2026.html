@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Executive Summary Kepatuhan Pajak — Koperasi Konsumen Karyawan Bandar Banten · Jan–Jun 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #cbd5e8; display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px; font-family: 'Outfit', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+#toolbar { width: 1400px; display: flex; justify-content: flex-end; margin-bottom: 16px; }
+#page { width: 1400px; background: #E8EEF7; overflow: hidden; font-size: 13px; color: #1A2C42; line-height: 1.45; box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
+.body { padding: 24px 36px 32px; }
+
+/* Header */
+.hdr { background: linear-gradient(112deg, #061628 0%, #0B3464 44%, #1358A4 78%, #1C6CC0 100%); padding: 0; position: relative; overflow: hidden; }
+.hdr::before { content:''; position:absolute; right:-50px; top:-70px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.05); pointer-events:none; }
+.hdr::after  { content:''; position:absolute; right:190px; bottom:-90px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); pointer-events:none; }
+.hdr-bar { padding:11px 44px 10px; border-bottom:1px solid rgba(255,255,255,0.13); display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2; }
+.hdr-bar-left { display:flex; align-items:center; gap:14px; }
+.hdr-bar-right { display:flex; align-items:center; gap:8px; }
+.logo-wrapper { padding:5px 8px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-radius:9px; box-shadow:inset 0 0 0 1px rgba(201,162,75,0.45); }
+.logo-kkb { height:40px; width:auto; display:block; flex-shrink:0; }
+.bar-sep { width:1px; height:24px; background:rgba(255,255,255,0.22); flex-shrink:0; }
+.bar-tagline { font-size:10.5px; font-weight:400; color:rgba(255,255,255,0.52); letter-spacing:0.2px; line-height:1.35; }
+.bar-tagline strong { font-weight:700; font-size:11px; color:rgba(255,255,255,0.9); display:block; }
+.bar-chip { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:5px; padding:3px 9px; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.8px; text-transform:uppercase; }
+.hdr-main { padding:18px 44px 20px; display:flex; align-items:center; justify-content:space-between; gap:28px; position:relative; z-index:2; }
+.hdr-left { min-width:0; }
+.eyebrow { font-size:9.5px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#79B8FF; margin-bottom:6px; }
+.hdr-title { font-family:'DM Serif Display',Georgia,serif; font-size:33px; font-weight:400; color:#fff; line-height:1.1; white-space:nowrap; }
+.hdr-title em { color:#90CAFF; font-style:normal; }
+.hdr-sub { font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; }
+.hdr-badges { display:flex; gap:11px; flex-shrink:0; }
+.hdr-badge { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:11px; padding:11px 18px; text-align:center; min-width:124px; }
+.hdr-badge-v { font-size:18px; font-weight:700; color:#fff; line-height:1; }
+.hdr-badge-l { font-size:9.5px; font-weight:500; color:rgba(255,255,255,0.46); margin-top:4px; }
+
+/* Insight */
+.insight { background:#F1F6FC; border-left:5px solid #1358A4; border-radius:10px; padding:13px 20px; margin-bottom:18px; display:flex; gap:18px; align-items:flex-start; }
+.insight-t { font-size:8.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#1358A4; flex-shrink:0; padding-top:3px; width:96px; }
+.insight-b { font-size:12.5px; color:#284058; line-height:1.62; }
+.insight-b b { color:#061628; font-weight:700; }
+.insight-b i { color:#C07808; font-style:normal; font-weight:600; }
+
+/* KPI */
+.kpi-row { display:grid; gap:12px; margin-bottom:20px; }
+.kpi-row.n5 { grid-template-columns: repeat(5,1fr); }
+.kpi { background:#fff; border-radius:12px; padding:15px 17px 13px; border-top:3px solid #1358A4; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.kpi.gr { border-top-color:#0B8A60; } .kpi.am { border-top-color:#C07808; } .kpi.pu { border-top-color:#5135AE; } .kpi.rd { border-top-color:#BC1E1E; }
+.k-lbl { font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#7B98B5; margin-bottom:6px; }
+.k-val { font-size:23px; font-weight:700; color:#061628; line-height:1; }
+.k-unit { font-size:10px; font-weight:400; color:#A0BACC; margin-left:2px; }
+.k-delta { font-size:10.5px; font-weight:600; margin-top:5px; }
+.cu{color:#0B8A60;} .cd{color:#BC1E1E;} .cn{color:#8AAAC2;}
+.k-track { height:3px; background:#E8F0F8; border-radius:2px; margin-top:9px; }
+.k-fill { height:3px; border-radius:2px; }
+
+/* Section + cards */
+.sec { font-size:9px; font-weight:700; letter-spacing:2.8px; text-transform:uppercase; color:#8AAAC2; margin-bottom:12px; }
+.row2 { display:grid; grid-template-columns:856px 1fr; gap:14px; margin-bottom:14px; }
+.row-eq3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px; }
+.row-1 { margin-bottom:14px; }
+.card { background:#fff; border-radius:14px; padding:18px 20px 16px; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.card-t { font-size:13px; font-weight:600; color:#061628; margin-bottom:2px; }
+.card-s { font-size:10.5px; color:#8AAAC2; margin-bottom:13px; }
+.cw { position:relative; width:100%; }
+
+/* Table */
+.t { width:100%; border-collapse:collapse; font-size:11.5px; }
+.t thead th { background:#F1F6FC; color:#7B98B5; font-weight:700; font-size:9.5px; text-transform:uppercase; letter-spacing:.5px; padding:7px 9px; text-align:left; border-bottom:1.5px solid #DCE8F4; }
+.t thead th.r { text-align:right; }
+.t thead th.c { text-align:center; }
+.t tbody td { padding:6.5px 9px; border-bottom:1px solid #ECF2FA; color:#284058; vertical-align:middle; }
+.t tbody td.r { text-align:right; }
+.t tbody td.c { text-align:center; }
+.t tbody tr:last-child td { border-bottom:none; }
+.t .tt td { background:#E8F1FB; font-weight:700; color:#061628; }
+.t .hl td { background:#DCEFFE; color:#061628; }
+.fw{font-weight:700;} .red{color:#BC1E1E;} .bl{color:#0E4A90;} .gd{color:#985200;}
+
+/* Legend */
+.leg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+.li{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;color:#486480;}
+.ls{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+
+/* Status bar */
+.sbar { background:#061628; border-radius:12px; padding:14px 24px 16px; }
+.sbar-ttl { font-size:8.5px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#68ACEE; display:block; margin-bottom:11px; }
+.sbar-list { display:grid; grid-template-columns:1fr 1fr; gap:7px 28px; }
+.si { display:flex; align-items:center; gap:6px; font-size:11px; font-weight:500; }
+.ok{color:#45D099;} .wn{color:#FFBB38;}
+.dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.dok{background:#45D099;} .dwn{background:#FFBB38;}
+
+/* Recommendations */
+.rec { border-radius:14px; overflow:hidden; box-shadow:0 3px 18px rgba(6,22,40,0.16); margin-top:14px; margin-bottom:14px; }
+.rec-hdr { background:linear-gradient(112deg,#061628 0%,#0B3464 60%,#1358A4 100%); padding:16px 28px; display:flex; align-items:baseline; justify-content:space-between; position:relative; overflow:hidden; }
+.rec-hdr::before { content:''; position:absolute; right:-30px; top:-40px; width:160px; height:160px; border-radius:50%; background:rgba(255,255,255,0.04); pointer-events:none; }
+.rec-title { font-family:'DM Serif Display',Georgia,serif; font-size:20px; font-weight:400; color:#fff; }
+.rec-sub { font-size:10px; color:rgba(255,255,255,0.42); font-style:italic; }
+.rec-cols { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; }
+.rec-col { padding:18px 22px; display:flex; flex-direction:column; gap:10px; }
+.rc-op{background:#F6FCF9;} .rc-st{background:#F4F8FE;} .rc-rk{background:#FFFBF3;}
+.rec-col-hdr { font-size:8.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding-bottom:10px; border-bottom:2px solid; margin-bottom:4px; }
+.rc-op .rec-col-hdr{color:#0B8A60;border-bottom-color:#0B8A60;}
+.rc-st .rec-col-hdr{color:#1358A4;border-bottom-color:#1358A4;}
+.rc-rk .rec-col-hdr{color:#C07808;border-bottom-color:#C07808;}
+.rec-card { background:#fff; border-radius:10px; padding:13px 15px; border-left:4px solid; display:flex; flex-direction:column; gap:5px; box-shadow:0 1px 4px rgba(6,22,40,0.07); }
+.rc-op .rec-card{border-left-color:#0B8A60;}
+.rc-st .rec-card{border-left-color:#1358A4;}
+.rc-rk .rec-card{border-left-color:#C07808;}
+.rec-h { font-size:12px; font-weight:700; color:#061628; line-height:1.35; }
+.rec-p { font-size:10.5px; color:#446280; line-height:1.52; }
+.rec-when { display:inline-block; font-size:8px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 9px; border-radius:99px; margin-top:4px; align-self:flex-start; }
+.rc-op .rec-when{background:#D9F5E8;color:#0A6C3E;}
+.rc-st .rec-when{background:#D9EFFE;color:#094E9E;}
+.rc-rk .rec-when{background:#FEF0D8;color:#985200;}
+
+/* Footer */
+.ftr { background:#061628; padding:10px 36px; display:flex; justify-content:space-between; align-items:center; }
+.ftr span { font-size:9.5px; color:rgba(255,255,255,0.3); }
+
+/* Export */
+#exportBtn { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,#0B3868,#1459A8); color:#fff; border:none; border-radius:10px; padding:12px 24px; font-family:'Outfit',Arial,sans-serif; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 4px 18px rgba(11,56,104,0.45); transition:transform .15s, box-shadow .15s; }
+#exportBtn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(11,56,104,0.55); }
+#exportBtn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+#progressBar { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,#1459A8,#3DD6A0); z-index:9999; transition:width 0.25s ease; }
+</style>
+</head>
+<body>
+<div id="progressBar"></div>
+<div id="toolbar">
+  <button id="exportBtn" onclick="doExport()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Export High Quality PNG
+  </button>
+</div>
+
+<div id="page">
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-bar">
+      <div class="hdr-bar-left">
+        <div class="logo-wrapper"><img class="logo-kkb" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNDAiIGhlaWdodD0iMjQwIiB2aWV3Qm94PSIwIDAgMjQwIDI0MCI+CiAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iMTIwIiByPSIxMTQiIGZpbGw9IiMwQjM0NjQiLz4KICA8Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjExNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBMjRCIiBzdHJva2Utd2lkdGg9IjUiLz4KICA8Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9Ijk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUEyNEIiIHN0cm9rZS13aWR0aD0iMS40Ii8+CiAgPHRleHQgeD0iMTIwIiB5PSIxMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCAnVGltZXMgTmV3IFJvbWFuJywgc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjRkZGRkZGIj5LS0I8L3RleHQ+CiAgPHRleHQgeD0iMTIwIiB5PSIxNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgbGV0dGVyLXNwYWNpbmc9IjMuNCIgZmlsbD0iI0M5QTI0QiI+QkFOREFSIEJBTlRFTjwvdGV4dD4KICA8dGV4dCB4PSIxMjAiIHk9IjE3MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBsZXR0ZXItc3BhY2luZz0iMi40IiBmaWxsPSIjRDdFM0YzIj5LT1BFUkFTSSBLT05TVU1FTiBLQVJZQVdBTjwvdGV4dD4KICA8cGF0aCBkPSJNNTggMTg4IFExMjAgMjA2IDE4MiAxODgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0M5QTI0QiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=" alt="Kopkar Bandar Banten"></div>
+        <div class="bar-sep"></div>
+        <div class="bar-tagline">
+          <strong>Koperasi Konsumen Karyawan Bandar Banten</strong>
+          WP Badan &middot; KPP Pratama Cilegon &middot; Tahun Pajak 2026
+        </div>
+      </div>
+      <div class="hdr-bar-right">
+        <span class="bar-chip">SPT Masa</span>
+        <span class="bar-chip">Executive Summary</span>
+      </div>
+    </div>
+    <div class="hdr-main">
+      <div class="hdr-left">
+        <div class="eyebrow">Kepatuhan Pajak &middot; Jan&ndash;Jun 2026</div>
+        <div class="hdr-title">Executive Summary <em>Kepatuhan Pajak</em></div>
+        <div class="hdr-sub">Monitoring SPT Masa PPN, PPh 21, PPh 23 &amp; PPh 25 &mdash; Semester I Tahun 2026</div>
+      </div>
+      <div class="hdr-badges">
+        <div class="hdr-badge"><div class="hdr-badge-v">Rp 1,33 M</div><div class="hdr-badge-l">Total Kewajiban Pajak</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">100%</div><div class="hdr-badge-l">Kepatuhan Lapor (6/6)</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">Rp 1,10 M</div><div class="hdr-badge-l">PPh 21 Dipotong</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">Rp 48,1 jt</div><div class="hdr-badge-l">Outstanding PPN (Jun)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- INSIGHT -->
+    <div class="insight">
+      <div class="insight-t">Ringkasan Eksekutif</div>
+      <div class="insight-b">
+        Total kewajiban pajak KOPKAR Bandar Banten s.d. Juni 2026 mencapai <b>Rp 1,33 M</b>, didominasi <b>PPh Pasal 21 sebesar Rp 1,10 M (83%)</b> atas pemotongan 43 karyawan. Kepatuhan pelaporan SPT Masa terjaga <b>100% (6 masa berjalan)</b> untuk seluruh jenis pajak. PPN terutang <b>Rp 179,9 jt</b> dengan outstanding Juni <b>Rp 48,1 jt</b> (sudah dilapor, belum disetor) &mdash; tertinggi sepanjang semester akibat lonjakan Faktur Keluaran. <i>PPh 23 terkonsentrasi pada dua mitra (Kop Mahakarya &amp; Kop Putra Krakatau) yang menyumbang 87% DPP Rp 727 jt; Maret mengalami SPT pembetulan PPN.</i>
+      </div>
+    </div>
+
+    <!-- KPI STRIP -->
+    <div class="sec">Indikator Utama Kepatuhan Pajak</div>
+    <div class="kpi-row n5">
+      <div class="kpi">
+        <div class="k-lbl">PPN Terutang</div>
+        <div class="k-val">179,9<span class="k-unit"> Rp jt</span></div>
+        <div class="k-delta cu">Jan&ndash;Jun 2026 &middot; FP Keluaran Rp 270,5 jt</div>
+        <div class="k-track"><div class="k-fill" style="width:60%;background:#1358A4"></div></div>
+      </div>
+      <div class="kpi gr">
+        <div class="k-lbl">PPh 21 Dipotong</div>
+        <div class="k-val">1.101,9<span class="k-unit"> Rp jt</span></div>
+        <div class="k-delta cu">43 karyawan &middot; 5 masa (Jan&ndash;Mei)</div>
+        <div class="k-track"><div class="k-fill" style="width:100%;background:#0B8A60"></div></div>
+      </div>
+      <div class="kpi">
+        <div class="k-lbl">PPh 23 Dipotong</div>
+        <div class="k-val">14,5<span class="k-unit"> Rp jt</span></div>
+        <div class="k-delta cn">DPP Rp 727,1 jt &middot; 6 lawan transaksi</div>
+        <div class="k-track"><div class="k-fill" style="width:18%;background:#1358A4"></div></div>
+      </div>
+      <div class="kpi pu">
+        <div class="k-lbl">PPh 25 Badan</div>
+        <div class="k-val">31,7<span class="k-unit"> Rp jt</span></div>
+        <div class="k-delta cu">6 cicilan &middot; rata-rata Rp 5,3 jt/bln</div>
+        <div class="k-track"><div class="k-fill" style="width:50%;background:#5135AE"></div></div>
+      </div>
+      <div class="kpi am">
+        <div class="k-lbl">Status Kepatuhan</div>
+        <div class="k-val">100<span class="k-unit"> % Lapor</span></div>
+        <div class="k-delta cd">Outstanding PPN Juni Rp 48,1 jt</div>
+        <div class="k-track"><div class="k-fill" style="width:88%;background:#C07808"></div></div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Composition donut (wide) + PPh 25 stability (narrow) -->
+    <div class="row2">
+      <div class="card">
+        <div class="card-t">Komposisi Kewajiban Pajak per Jenis</div>
+        <div class="card-s">PPh 21 mendominasi 83% total Rp 1,33 M &mdash; beban pajak karyawan menjadi kewajiban terbesar koperasi</div>
+        <div class="leg">
+          <div class="li"><span class="ls" style="background:#1358A4"></span>PPh 21</div>
+          <div class="li"><span class="ls" style="background:#0B8A60"></span>PPN</div>
+          <div class="li"><span class="ls" style="background:#5135AE"></span>PPh 25</div>
+          <div class="li"><span class="ls" style="background:#C47B08"></span>PPh 23</div>
+        </div>
+        <div class="cw" style="height:300px"><canvas id="pajakDonut"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Cicilan PPh 25 Badan Bulanan</div>
+        <div class="card-s">Stabil Rp 5,28&ndash;5,32 jt/bln &middot; Juni dibayar dimuka thn 2025</div>
+        <div class="cw" style="height:300px"><canvas id="pph25Bar"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ROW 3: PPN trend + PPh 21 trend + PPh 23 vendor -->
+    <div class="row-eq3">
+      <div class="card">
+        <div class="card-t">Tren PPN Terutang per Masa</div>
+        <div class="card-s">Juni Rp 48,1 jt &mdash; puncak semester &amp; belum disetor*</div>
+        <div class="cw" style="height:265px"><canvas id="ppnTrend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Tren PPh 21 per Masa</div>
+        <div class="card-s">Maret Rp 334 jt &mdash; puncak ( THR / penyesuaian)</div>
+        <div class="cw" style="height:265px"><canvas id="pph21Trend"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-t">PPh 23 per Lawan Transaksi</div>
+        <div class="card-s">Kop Mahakarya &amp; Putra Krakatau = 87% DPP</div>
+        <div class="cw" style="height:265px"><canvas id="pph23Donut"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ROW 1: Detail table -->
+    <div class="row-1">
+      <div class="card">
+        <div class="card-t">Rincian Kewajiban &amp; Status Kepatuhan per Jenis Pajak</div>
+        <div class="card-s">Rekapitulasi SPT Masa Semester I 2026 &mdash; sumber: Monitoring PPN, PPh 21, 22 &amp; 23 Tahun 2026</div>
+        <table class="t">
+          <thead>
+            <tr>
+              <th style="width:13%">Jenis Pajak</th>
+              <th style="width:13%">Masa</th>
+              <th>Dasar Pemotongan / DPP</th>
+              <th class="r">Pajak Terutang / Dipotong</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw">PPN</td>
+              <td>Jan&ndash;Jun 2026</td>
+              <td>FP Keluaran <b>Rp 270.524.814</b> &middot; FP Masukan Rp 88.927.797</td>
+              <td class="r fw">Rp 179.948.667</td>
+              <td><span class="gd">Dilapor 6/6 &middot; Jun Rp 48,1 jt <b>belum disetor</b></span></td>
+            </tr>
+            <tr>
+              <td class="fw">PPh Pasal 21</td>
+              <td>Jan&ndash;Mei 2026</td>
+              <td>43 karyawan konsisten &middot; pemotongan gaji</td>
+              <td class="r fw">Rp 1.101.921.540</td>
+              <td><span style="color:#0A6C3E">Dilapor &amp; setor 5/5 &middot; ada LB berjalan</span></td>
+            </tr>
+            <tr>
+              <td class="fw">PPh Pasal 23</td>
+              <td>Jan&ndash;Jun 2026</td>
+              <td>DPP <b>Rp 727.052.895</b> &middot; 6 lawan transaksi (jasa)</td>
+              <td class="r fw">Rp 14.541.058</td>
+              <td><span style="color:#0A6C3E">Dilapor 6/6 &middot; bukpot lengkap</span></td>
+            </tr>
+            <tr>
+              <td class="fw">PPh Pasal 25</td>
+              <td>Jan&ndash;Jun 2026</td>
+              <td>Cicilan PPh Badan &middot; tarif dasar</td>
+              <td class="r fw">Rp 31.746.124</td>
+              <td><span class="gd">Disetor 6/6 &middot; Jun dibayar dimuka 2025 (salah kode billing)</span></td>
+            </tr>
+            <tr class="tt">
+              <td colspan="3">TOTAL KEWAJIBAN PAJAK SEMESTER I 2026</td>
+              <td class="r">Rp 1.328.157.389</td>
+              <td>Kepatuhan Lapor <b>100%</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="sbar">
+      <span class="sbar-ttl">Key Takeaways</span>
+      <div class="sbar-list">
+        <div class="si ok"><span class="dot dok"></span>Kepatuhan pelaporan SPT Masa 100% (6/6) untuk PPN, PPh 21, 23 &amp; 25</div>
+        <div class="si ok"><span class="dot dok"></span>PPh 21 Rp 1,10 M (83%) &mdash; dititip setorkan tepat waktu atas 43 karyawan</div>
+        <div class="si wn"><span class="dot dwn"></span>Outstanding PPN Juni Rp 48,1 jt &mdash; sudah dilapor, perlu segera disetor</div>
+        <div class="si wn"><span class="dot dwn"></span>PPN Juni melonjak +61% dari Mei (Rp 29,9 jt) akibat Faktur Keluaran Rp 57,5 jt</div>
+        <div class="si ok"><span class="dot dok"></span>PPh 23 Rp 14,5 jt &mdash; 87% dari 2 mitra (Mahakarya &amp; Putra Krakatau)</div>
+        <div class="si wn"><span class="dot dwn"></span>PPh 25 Juni dibayar dimuka thn 2025 dgn salah kode billing tahun pajak</div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="rec">
+      <div class="rec-hdr">
+        <span class="rec-title">Rekomendasi &amp; Tindak Lanjut</span>
+        <span class="rec-sub">Berdasarkan analisis data kepatuhan pajak Semester I 2026</span>
+      </div>
+      <div class="rec-cols">
+        <div class="rec-col rc-op">
+          <div class="rec-col-hdr">Operasional</div>
+          <div class="rec-card">
+            <div class="rec-h">Segera setor PPN Masa Juni Rp 48,1 jt</div>
+            <div class="rec-p">SPT sudah dilaporkan (BPE-67134) namun setoran belum diterima. Buat kode billing &amp; lakukan SSP sebelum jatuh tempo untuk hindari sanksi bunga.</div>
+            <span class="rec-when">Segera</span>
+          </div>
+          <div class="rec-card">
+            <div class="rec-h">Rekonsiliasi kode billing PPh 25 Juni</div>
+            <div class="rec-p">Cicilan Juni Rp 5.278.654 dibayar dimuka tahun 2025 dengan kode billing tahun pajak salah. Ajukan koreksi/penyesuaian agar tidak salah periode pelaporan.</div>
+            <span class="rec-when">Jangka Pendek</span>
+          </div>
+        </div>
+        <div class="rec-col rc-st">
+          <div class="rec-col-hdr">Strategis</div>
+          <div class="rec-card">
+            <div class="rec-h">Antisipasi lonjakan PPN saat Faktur Keluaran tinggi</div>
+            <div class="rec-p">Juni mencatat FP Keluaran Rp 57,5 jt (tertinggi) memicu PPN Rp 48,1 jt. Optimalkan kredit PPN Masukan &amp; alokasi kas pajak bulanan agar setoran tidak membebani arus kas koperasi.</div>
+            <span class="rec-when">Jangka Menengah</span>
+          </div>
+        </div>
+        <div class="rec-col rc-rk">
+          <div class="rec-col-hdr">Risiko</div>
+          <div class="rec-card">
+            <div class="rec-h">Pantau konsentrasi lawan transaksi PPh 23</div>
+            <div class="rec-p">DPP Rp 727 jt terkonsentrasi 87% pada Kop Mahakarya &amp; Kop Putra Krakatau. Pastikan bukti potong diterima tepat waktu setiap masa untuk hindari selisih pelaporan PPh 23.</div>
+            <span class="rec-when">Monitor</span>
+          </div>
+          <div class="rec-card">
+            <div class="rec-h">Validasi LB &amp; SPT pembetulan PPN</div>
+            <div class="rec-p">Februari&ndash;Maret ada Lebih Bayar berjalan &amp; SPT pembetulan Maret (selisih Rp 887.810). Pastikan kompensasi LB tercatat konsisten lintas masa agar rekonsiliasi tahunan SPT Tahunan aman.</div>
+            <span class="rec-when">Validasi</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ftr">
+    <span>Executive Summary Kepatuhan Pajak &mdash; Koperasi Konsumen Karyawan Bandar Banten</span>
+    <span>Disiapkan: Juli 2026 &middot; Seluruh angka dalam Rupiah penuh &middot; Periode SPT Masa Jan&ndash;Jun 2026</span>
+  </div>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Outfit', Arial, sans-serif";
+Chart.defaults.devicePixelRatio = window.devicePixelRatio * 2;
+Chart.defaults.plugins.datalabels = { display: false };
+
+const axisTickFont = { size: 9, family: "'Outfit', Arial, sans-serif" };
+const tickColor = '#7B98B5';
+
+// ---- 1. Komposisi Pajak (Donut) ----
+new Chart(document.getElementById('pajakDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['PPh Pasal 21','PPN','PPh Pasal 25','PPh Pasal 23'],
+    datasets: [{
+      data: [1101921540, 179948667, 31746124, 14541058],
+      backgroundColor: ['#1358A4','#0B8A60','#5135AE','#C47B08'],
+      borderWidth: 3, borderColor: '#fff', hoverOffset: 10,
+      datalabels: {
+        display: true, color: '#fff', font: { weight: 700, size: 11 }, textAlign: 'center',
+        formatter: (v, ctx) => {
+          const t = ctx.dataset.data.reduce((a,b)=>a+b,0);
+          return Math.round(v/t*100) + '%';
+        }
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '63%',
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: c => ' ' + c.label + ': Rp ' + c.parsed.toLocaleString('id-ID') } }
+    }
+  },
+  plugins: [{ id:'clPjk', afterDraw(chart){
+    const {ctx, chartArea:{left,top,right,bottom}} = chart;
+    const cx=(left+right)/2, cy=(top+bottom)/2;
+    ctx.save(); ctx.textAlign='center';
+    ctx.fillStyle='#9AB4CC'; ctx.font='400 10px Outfit,Arial,sans-serif';
+    ctx.fillText('Total Pajak', cx, cy-12);
+    ctx.fillStyle='#061628'; ctx.font='700 18px Outfit,Arial,sans-serif';
+    ctx.fillText('Rp 1,33 M', cx, cy+8);
+    ctx.fillStyle='#7B98B5'; ctx.font='400 9.5px Outfit,Arial,sans-serif';
+    ctx.fillText('4 jenis pajak', cx, cy+24);
+    ctx.restore();
+  }}]
+});
+
+// ---- 2. PPh 25 Cicilan Bulanan (Bar) ----
+new Chart(document.getElementById('pph25Bar'), {
+  type: 'bar',
+  data: {
+    labels: [['Jan','26'],['Feb','26'],['Mar','26'],['Apr','26'],['Mei','26'],['Jun','26']],
+    datasets: [{
+      label: 'PPh 25 Badan',
+      data: [5278654, 5278654, 5278654, 5315708, 5315800, 5278654],
+      backgroundColor: ['#1E62C4','#1E62C4','#1E62C4','#1E62C4','#1E62C4','#C47B08'],
+      borderRadius: 5, borderSkipped: false,
+      barPercentage: 0.62, categoryPercentage: 0.88,
+      datalabels: {
+        display: true, align: 'top', anchor: 'end', offset: 2,
+        color: '#061628', font: { weight: 700, size: 9.5 },
+        backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+        padding: { top:1, bottom:1, left:4, right:4 },
+        formatter: v => (v/1000000).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2})
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxRotation:0, minRotation:0, font: axisTickFont, color: tickColor }, grid: { display:false } },
+      y: { min: 0, max: 7000000, ticks: { font: axisTickFont, color: tickColor, callback: v => (v/1000000).toLocaleString('id-ID') + ' jt' }, grid: { color:'#EEF3FA' } }
+    },
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: c => ' PPh 25: Rp ' + c.parsed.y.toLocaleString('id-ID') } }
+    }
+  }
+});
+
+// ---- 3. PPN Trend (Bar) ----
+new Chart(document.getElementById('ppnTrend'), {
+  type: 'bar',
+  data: {
+    labels: [['Jan','26'],['Feb','26'],['Mar','26'],['Apr','26'],['Mei','26'],['Jun','26*']],
+    datasets: [{
+      label: 'PPN Terutang',
+      data: [24022832, 25453219, 16514116, 20289466, 29915519, 48127209],
+      backgroundColor: ['#1E62C4','#1E62C4','#1E62C4','#1E62C4','#1E62C4','#C07808'],
+      borderRadius: 5, borderSkipped: false,
+      barPercentage: 0.62, categoryPercentage: 0.88,
+      datalabels: {
+        display: true, align: 'top', anchor: 'end', offset: 2,
+        color: '#061628', font: { weight: 700, size: 9.5 },
+        backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+        padding: { top:1, bottom:1, left:4, right:4 },
+        formatter: v => (v/1000000).toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1})
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxRotation:0, minRotation:0, font: axisTickFont, color: tickColor }, grid: { display:false } },
+      y: { min: 0, max: 60000000, ticks: { font: axisTickFont, color: tickColor, callback: v => (v/1000000).toLocaleString('id-ID') + ' jt' }, grid: { color:'#EEF3FA' } }
+    },
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: c => ' PPN Terutang: Rp ' + c.parsed.y.toLocaleString('id-ID') } }
+    }
+  }
+});
+
+// ---- 4. PPh 21 Trend (Bar) ----
+new Chart(document.getElementById('pph21Trend'), {
+  type: 'bar',
+  data: {
+    labels: [['Jan','26'],['Feb','26'],['Mar','26'],['Apr','26'],['Mei','26']],
+    datasets: [{
+      label: 'PPh 21 Dipotong',
+      data: [184187668, 195715789, 334009244, 194945810, 193063029],
+      backgroundColor: ['#1E62C4','#1E62C4','#061628','#1E62C4','#1E62C4'],
+      borderRadius: 5, borderSkipped: false,
+      barPercentage: 0.62, categoryPercentage: 0.88,
+      datalabels: {
+        display: true, align: 'top', anchor: 'end', offset: 2,
+        color: '#061628', font: { weight: 700, size: 9.5 },
+        backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+        padding: { top:1, bottom:1, left:4, right:4 },
+        formatter: v => (v/1000000).toLocaleString('id-ID',{minimumFractionDigits:0,maximumFractionDigits:0})
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxRotation:0, minRotation:0, font: axisTickFont, color: tickColor }, grid: { display:false } },
+      y: { min: 0, max: 400000000, ticks: { font: axisTickFont, color: tickColor, callback: v => (v/1000000).toLocaleString('id-ID') + ' jt' }, grid: { color:'#EEF3FA' } }
+    },
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: c => ' PPh 21: Rp ' + c.parsed.y.toLocaleString('id-ID') } }
+    }
+  }
+});
+
+// ---- 5. PPh 23 per Vendor (Donut) ----
+new Chart(document.getElementById('pph23Donut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Kop Mahakarya','Kop Putra Krakatau','Kop Putra Selat Sunda','Kap Roza Eko & Boy','Lainnya'],
+    datasets: [{
+      data: [318775734, 315487734, 68107536, 15000000, 9681891],
+      backgroundColor: ['#1358A4','#2478D8','#5888D4','#B6D2F0','#A8BCD4'],
+      borderWidth: 3, borderColor: '#fff', hoverOffset: 8,
+      datalabels: {
+        display: true, color: '#fff', font: { weight: 700, size: 10 }, textAlign: 'center',
+        formatter: (v, ctx) => {
+          const t = ctx.dataset.data.reduce((a,b)=>a+b,0);
+          const pct = v/t*100;
+          return pct >= 5 ? Math.round(pct) + '%' : '';
+        }
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '60%',
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: c => ' ' + c.label + ': DPP Rp ' + c.parsed.toLocaleString('id-ID') } }
+    }
+  },
+  plugins: [{ id:'clP23', afterDraw(chart){
+    const {ctx, chartArea:{left,top,right,bottom}} = chart;
+    const cx=(left+right)/2, cy=(top+bottom)/2;
+    ctx.save(); ctx.textAlign='center';
+    ctx.fillStyle='#9AB4CC'; ctx.font='400 9.5px Outfit,Arial,sans-serif';
+    ctx.fillText('DPP PPh 23', cx, cy-10);
+    ctx.fillStyle='#061628'; ctx.font='700 15px Outfit,Arial,sans-serif';
+    ctx.fillText('Rp 727 jt', cx, cy+8);
+    ctx.restore();
+  }}]
+});
+
+async function doExport() {
+  const btn = document.getElementById('exportBtn');
+  const bar = document.getElementById('progressBar');
+  btn.disabled = true; btn.textContent = 'Generating…';
+  let p = 0;
+  const t = setInterval(() => { p = Math.min(p+5,85); bar.style.width = p+'%'; }, 120);
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 200));
+  try {
+    const el = document.getElementById('page');
+    const canvas = await html2canvas(el, {
+      scale: 3, useCORS: true, allowTaint: true,
+      backgroundColor: '#E8EEF7', logging: false, imageTimeout: 0,
+      width: el.offsetWidth, height: el.offsetHeight,
+      windowWidth: el.offsetWidth, windowHeight: el.offsetHeight,
+      scrollX: 0, scrollY: 0, x: 0, y: 0
+    });
+    clearInterval(t); bar.style.width = '100%';
+    const a = document.createElement('a');
+    a.download = 'LAP2026_KopkarBandarBanten_PajakJanJun2026.png';
+    a.href = canvas.toDataURL('image/png', 1.0);
+    a.click();
+  } catch(e) { console.error(e); clearInterval(t); }
+  setTimeout(() => {
+    bar.style.width = '0'; btn.disabled = false;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export High Quality PNG`;
+  }, 800);
+}
+</script>
+</body>
+</html>

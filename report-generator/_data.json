@@ -1,0 +1,193 @@
+{
+  "months": [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Mei",
+    "Jun"
+  ],
+  "s25": {
+    "monthlyTrend": [
+      {
+        "m": "Jan",
+        "avgBor": 128.34,
+        "bk": 431105,
+        "ships": 50
+      },
+      {
+        "m": "Feb",
+        "avgBor": 114.67,
+        "bk": 447120,
+        "ships": 52
+      },
+      {
+        "m": "Mar",
+        "avgBor": 102.12,
+        "bk": 392591,
+        "ships": 36
+      },
+      {
+        "m": "Apr",
+        "avgBor": 79.99,
+        "bk": 256632,
+        "ships": 37
+      },
+      {
+        "m": "Mei",
+        "avgBor": 92.77,
+        "bk": 292953,
+        "ships": 31
+      },
+      {
+        "m": "Jun",
+        "avgBor": 94.97,
+        "bk": 416841,
+        "ships": 33
+      }
+    ],
+    "agg": {
+      "A": {
+        "ships": 43,
+        "bk": 128789,
+        "muat": 30692,
+        "avgBor": 60,
+        "hours": 2677.6
+      },
+      "B": {
+        "ships": 37,
+        "bk": 294208,
+        "muat": 0,
+        "avgBor": 83.5,
+        "hours": 3729.6
+      },
+      "C1": {
+        "ships": 73,
+        "bk": 539413,
+        "muat": 0,
+        "avgBor": 135.6,
+        "hours": 6055.4
+      },
+      "C2": {
+        "ships": 45,
+        "bk": 374822,
+        "muat": 133,
+        "avgBor": 100.2,
+        "hours": 4474.8
+      },
+      "D": {
+        "ships": 41,
+        "bk": 900010,
+        "muat": 0,
+        "avgBor": 131.3,
+        "hours": 5861.3
+      }
+    },
+    "tot": {
+      "ships": 239,
+      "bk": 2237242,
+      "muat": 30825,
+      "avgBor": 102.1
+    },
+    "cargo": {
+      "Batubara": 1401406,
+      "Baja": 303630,
+      "Gypsum": 180722,
+      "Gula": 84747,
+      "Lainnya": 30945,
+      "Pulp": 25117,
+      "Rolltissue": 676
+    }
+  },
+  "s26": {
+    "monthlyTrend": [
+      {
+        "m": "Jan",
+        "avgBor": 88.35,
+        "bk": 361411,
+        "ships": 28
+      },
+      {
+        "m": "Feb",
+        "avgBor": 103.86,
+        "bk": 303488,
+        "ships": 36
+      },
+      {
+        "m": "Mar",
+        "avgBor": 90.84,
+        "bk": 312276,
+        "ships": 30
+      },
+      {
+        "m": "Apr",
+        "avgBor": 82.83,
+        "bk": 346431,
+        "ships": 37
+      },
+      {
+        "m": "Mei",
+        "avgBor": 86.89,
+        "bk": 322552,
+        "ships": 37
+      },
+      {
+        "m": "Jun",
+        "avgBor": 86.07,
+        "bk": 315868,
+        "ships": 30
+      }
+    ],
+    "agg": {
+      "A": {
+        "ships": 58,
+        "bk": 132520,
+        "muat": 12400,
+        "avgBor": 71.6,
+        "hours": 3197.6
+      },
+      "B": {
+        "ships": 24,
+        "bk": 193847,
+        "muat": 0,
+        "avgBor": 75.2,
+        "hours": 3354.9
+      },
+      "C1": {
+        "ships": 56,
+        "bk": 427106,
+        "muat": 0,
+        "avgBor": 134.5,
+        "hours": 6004
+      },
+      "C2": {
+        "ships": 38,
+        "bk": 297017,
+        "muat": 741,
+        "avgBor": 95.6,
+        "hours": 4269.7
+      },
+      "D": {
+        "ships": 22,
+        "bk": 911535,
+        "muat": 4769,
+        "avgBor": 72.1,
+        "hours": 3218.6
+      }
+    },
+    "tot": {
+      "ships": 198,
+      "bk": 1962025,
+      "muat": 17910,
+      "avgBor": 89.8
+    },
+    "cargo": {
+      "Batubara": 867473,
+      "Baja": 385840,
+      "Gula": 234569,
+      "Gypsum": 223535,
+      "Lainnya": 35602,
+      "Pulp": 19438
+    }
+  }
+}

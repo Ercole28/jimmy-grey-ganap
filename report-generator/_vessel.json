@@ -1,0 +1,84 @@
+{
+  "types": [
+    "Tongkang (BG.)",
+    "Kapal Umum (MV.)",
+    "Kapal Motor (KM.)",
+    "Lainnya"
+  ],
+  "v25": {
+    "calls": {
+      "Tongkang (BG.)": 178,
+      "Kapal Umum (MV.)": 53,
+      "Kapal Motor (KM.)": 7,
+      "Lainnya": 1
+    },
+    "bk": {
+      "Tongkang (BG.)": 1363146.1169999999,
+      "Kapal Umum (MV.)": 663034.853,
+      "Kapal Motor (KM.)": 1062.688,
+      "Lainnya": 0
+    },
+    "hours": {
+      "Tongkang (BG.)": 16789.216666869997,
+      "Kapal Umum (MV.)": 4572.99999985,
+      "Kapal Motor (KM.)": 246.93333334,
+      "Lainnya": 34.41666667
+    },
+    "totCalls": 239,
+    "totBk": 2027243.6579999998
+  },
+  "v26": {
+    "calls": {
+      "Tongkang (BG.)": 114,
+      "Kapal Umum (MV.)": 78,
+      "Kapal Motor (KM.)": 2,
+      "Lainnya": 4
+    },
+    "bk": {
+      "Tongkang (BG.)": 883044.9940000001,
+      "Kapal Umum (MV.)": 879571.8270000003,
+      "Kapal Motor (KM.)": 3831,
+      "Lainnya": 8.114
+    },
+    "hours": {
+      "Tongkang (BG.)": 13178.616666720003,
+      "Kapal Umum (MV.)": 4974.133333410002,
+      "Kapal Motor (KM.)": 435.50000003,
+      "Lainnya": 7.95
+    },
+    "totCalls": 198,
+    "totBk": 1766455.9350000005
+  },
+  "byBerth26": {
+    "A": {
+      "Tongkang (BG.)": 1,
+      "Kapal Umum (MV.)": 53,
+      "Kapal Motor (KM.)": 1,
+      "Lainnya": 3
+    },
+    "B": {
+      "Tongkang (BG.)": 24,
+      "Kapal Umum (MV.)": 0,
+      "Kapal Motor (KM.)": 0,
+      "Lainnya": 0
+    },
+    "C1": {
+      "Tongkang (BG.)": 55,
+      "Kapal Umum (MV.)": 0,
+      "Kapal Motor (KM.)": 0,
+      "Lainnya": 1
+    },
+    "C2": {
+      "Tongkang (BG.)": 34,
+      "Kapal Umum (MV.)": 3,
+      "Kapal Motor (KM.)": 1,
+      "Lainnya": 0
+    },
+    "D": {
+      "Tongkang (BG.)": 0,
+      "Kapal Umum (MV.)": 22,
+      "Kapal Motor (KM.)": 0,
+      "Lainnya": 0
+    }
+  }
+}

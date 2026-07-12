@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Profil SDM &amp; Pendidikan — Unit Cleaning Service · Kopkar Bandar Banten</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #cbd5e8; display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px; font-family: 'Outfit', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+#toolbar { width: 1400px; display: flex; justify-content: flex-end; margin-bottom: 16px; }
+#page { width: 1400px; background: #E8EEF7; overflow: hidden; font-size: 13px; color: #1A2C42; line-height: 1.45; box-shadow: 0 8px 40px rgba(0,0,0,0.18); }
+.body { padding: 24px 36px 32px; }
+
+/* Header */
+.hdr { background: linear-gradient(112deg, #061628 0%, #0B3464 44%, #1358A4 78%, #1C6CC0 100%); padding: 0; position: relative; overflow: hidden; }
+.hdr::before { content:''; position:absolute; right:-50px; top:-70px; width:260px; height:260px; border-radius:50%; background:rgba(255,255,255,0.05); pointer-events:none; }
+.hdr::after  { content:''; position:absolute; right:190px; bottom:-90px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.04); pointer-events:none; }
+.hdr-bar { padding:11px 44px 10px; border-bottom:1px solid rgba(255,255,255,0.13); display:flex; align-items:center; justify-content:space-between; position:relative; z-index:2; }
+.hdr-bar-left { display:flex; align-items:center; gap:14px; }
+.hdr-bar-right { display:flex; align-items:center; gap:8px; }
+.logo-wrapper { padding:5px 8px; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); border-radius:9px; box-shadow:inset 0 0 0 1px rgba(201,162,75,0.45); }
+.logo-kkb { height:40px; width:auto; display:block; flex-shrink:0; }
+.bar-sep { width:1px; height:24px; background:rgba(255,255,255,0.22); flex-shrink:0; }
+.bar-tagline { font-size:10.5px; font-weight:400; color:rgba(255,255,255,0.52); letter-spacing:0.2px; line-height:1.35; }
+.bar-tagline strong { font-weight:700; font-size:11px; color:rgba(255,255,255,0.9); display:block; }
+.bar-chip { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); border-radius:5px; padding:3px 9px; font-size:9px; font-weight:700; color:rgba(255,255,255,0.5); letter-spacing:0.8px; text-transform:uppercase; }
+.hdr-main { padding:18px 44px 20px; display:flex; align-items:center; justify-content:space-between; gap:28px; position:relative; z-index:2; }
+.hdr-left { min-width:0; }
+.eyebrow { font-size:9.5px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#79B8FF; margin-bottom:6px; }
+.hdr-title { font-family:'DM Serif Display',Georgia,serif; font-size:33px; font-weight:400; color:#fff; line-height:1.1; white-space:nowrap; }
+.hdr-title em { color:#90CAFF; font-style:normal; }
+.hdr-sub { font-size:12px; color:rgba(255,255,255,0.5); margin-top:6px; }
+.hdr-badges { display:flex; gap:11px; flex-shrink:0; }
+.hdr-badge { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:11px; padding:11px 18px; text-align:center; min-width:124px; }
+.hdr-badge-v { font-size:18px; font-weight:700; color:#fff; line-height:1; }
+.hdr-badge-l { font-size:9.5px; font-weight:500; color:rgba(255,255,255,0.46); margin-top:4px; }
+
+/* Insight */
+.insight { background:#F1F6FC; border-left:5px solid #1358A4; border-radius:10px; padding:13px 20px; margin-bottom:18px; display:flex; gap:18px; align-items:flex-start; }
+.insight-t { font-size:8.5px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#1358A4; flex-shrink:0; padding-top:3px; width:96px; }
+.insight-b { font-size:12.5px; color:#284058; line-height:1.62; }
+.insight-b b { color:#061628; font-weight:700; }
+.insight-b i { color:#C07808; font-style:normal; font-weight:600; }
+
+/* KPI */
+.kpi-row { display:grid; gap:12px; margin-bottom:20px; }
+.kpi-row.n4 { grid-template-columns: repeat(4,1fr); }
+.kpi { background:#fff; border-radius:12px; padding:15px 17px 13px; border-top:3px solid #1358A4; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.kpi.gr { border-top-color:#0B8A60; } .kpi.am { border-top-color:#C07808; } .kpi.pu { border-top-color:#5135AE; } .kpi.rd { border-top-color:#BC1E1E; }
+.k-lbl { font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase; color:#7B98B5; margin-bottom:6px; }
+.k-val { font-size:23px; font-weight:700; color:#061628; line-height:1; }
+.k-unit { font-size:10px; font-weight:400; color:#A0BACC; margin-left:2px; }
+.k-delta { font-size:10.5px; font-weight:600; margin-top:5px; }
+.cu{color:#0B8A60;} .cd{color:#BC1E1E;} .cn{color:#8AAAC2;}
+.k-track { height:3px; background:#E8F0F8; border-radius:2px; margin-top:9px; }
+.k-fill { height:3px; border-radius:2px; }
+
+/* Section label & grids */
+.sec { font-size:9px; font-weight:700; letter-spacing:2.8px; text-transform:uppercase; color:#8AAAC2; margin-bottom:12px; }
+.row2 { display:grid; grid-template-columns:856px 1fr; gap:14px; margin-bottom:14px; }
+.row-eq2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.row-1 { margin-bottom:14px; }
+
+/* Card */
+.card { background:#fff; border-radius:14px; padding:18px 20px 16px; box-shadow:0 1px 6px rgba(6,22,40,0.09); }
+.card-t { font-size:13px; font-weight:600; color:#061628; margin-bottom:2px; }
+.card-s { font-size:10.5px; color:#8AAAC2; margin-bottom:13px; }
+
+/* Chart wrapper */
+.cw { position:relative; width:100%; }
+
+/* Progress bars */
+.pb-row{display:flex;align-items:center;gap:10px;margin-bottom:9px;}
+.pb-l  {font-size:11px;color:#284058;font-weight:500;width:140px;flex-shrink:0;}
+.pb-trk{flex:1;height:10px;background:#E6EEF8;border-radius:5px;overflow:hidden;}
+.pb-fill{height:10px;border-radius:5px;}
+.pb-v  {font-size:11px;font-weight:700;color:#061628;width:64px;text-align:right;flex-shrink:0;}
+
+/* Legend */
+.leg{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;}
+.li{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;color:#486480;}
+.ls{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+
+/* Table */
+.t { width:100%; border-collapse:collapse; font-size:11.5px; }
+.t thead th { background:#F1F6FC; color:#7B98B5; font-weight:700; font-size:9.5px; text-transform:uppercase; letter-spacing:.5px; padding:8px 10px; text-align:left; border-bottom:1.5px solid #DCE8F4; }
+.t thead th.r { text-align:right; }
+.t thead th.c { text-align:center; }
+.t tbody td { padding:7px 10px; border-bottom:1px solid #ECF2FA; color:#284058; vertical-align:middle; }
+.t tbody td.r { text-align:right; } .t tbody td.c { text-align:center; }
+.t tbody tr:last-child td { border-bottom:none; }
+.t .tt td { background:#E8F1FB; font-weight:700; color:#061628; }
+.fw{font-weight:700;}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:9.5px;font-weight:700;}
+.p-r{background:#FBE3E3;color:#BC1E1E;} .p-a{background:#FEF0D8;color:#985200;} .p-g{background:#D9F5E8;color:#0A6C3E;}
+
+/* Status bar */
+.sbar{background:#061628;border-radius:12px;padding:14px 24px 16px;}
+.sbar-ttl{font-size:8.5px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#68ACEE;display:block;margin-bottom:11px;}
+.sbar-list{display:grid;grid-template-columns:1fr 1fr;gap:7px 28px;}
+.si{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:500;}
+.ok{color:#45D099;} .wn{color:#FFBB38;}
+.dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.dok{background:#45D099;} .dwn{background:#FFBB38;}
+
+/* Recommendation */
+.rec{border-radius:14px;overflow:hidden;box-shadow:0 3px 18px rgba(6,22,40,0.16);margin-top:14px;margin-bottom:14px;}
+.rec-hdr{background:linear-gradient(112deg,#061628 0%,#0B3464 60%,#1358A4 100%);padding:16px 28px;display:flex;align-items:baseline;justify-content:space-between;position:relative;overflow:hidden;}
+.rec-hdr::before{content:'';position:absolute;right:-30px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,0.04);pointer-events:none;}
+.rec-title{font-family:'DM Serif Display',Georgia,serif;font-size:20px;font-weight:400;color:#fff;}
+.rec-sub{font-size:10px;color:rgba(255,255,255,0.42);font-style:italic;}
+.rec-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;}
+.rec-col{padding:18px 22px;display:flex;flex-direction:column;gap:10px;}
+.rc-op{background:#F6FCF9;} .rc-st{background:#F4F8FE;} .rc-rk{background:#FFFBF3;}
+.rec-col-hdr{font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding-bottom:10px;border-bottom:2px solid;margin-bottom:4px;}
+.rc-op .rec-col-hdr{color:#0B8A60;border-bottom-color:#0B8A60;}
+.rc-st .rec-col-hdr{color:#1358A4;border-bottom-color:#1358A4;}
+.rc-rk .rec-col-hdr{color:#C07808;border-bottom-color:#C07808;}
+.rec-card{background:#fff;border-radius:10px;padding:13px 15px;border-left:4px solid;display:flex;flex-direction:column;gap:5px;box-shadow:0 1px 4px rgba(6,22,40,0.07);}
+.rc-op .rec-card{border-left-color:#0B8A60;} .rc-st .rec-card{border-left-color:#1358A4;} .rc-rk .rec-card{border-left-color:#C07808;}
+.rec-h{font-size:12px;font-weight:700;color:#061628;line-height:1.35;}
+.rec-p{font-size:10.5px;color:#446280;line-height:1.52;}
+.rec-when{display:inline-block;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-top:4px;align-self:flex-start;}
+.rc-op .rec-when{background:#D9F5E8;color:#0A6C3E;}
+.rc-st .rec-when{background:#D9EFFE;color:#094E9E;}
+.rc-rk .rec-when{background:#FEF0D8;color:#985200;}
+
+/* Footer */
+.ftr{background:#061628;padding:10px 36px;display:flex;justify-content:space-between;align-items:center;}
+.ftr span{font-size:9.5px;color:rgba(255,255,255,0.3);}
+
+/* Export button */
+#exportBtn { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,#0B3868,#1459A8); color:#fff; border:none; border-radius:10px; padding:12px 24px; font-family:'Outfit',Arial,sans-serif; font-size:13px; font-weight:600; cursor:pointer; box-shadow:0 4px 18px rgba(11,56,104,0.45); transition:transform .15s, box-shadow .15s; }
+#exportBtn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(11,56,104,0.55); }
+#exportBtn:disabled { opacity:0.55; cursor:not-allowed; transform:none; }
+#progressBar { position:fixed; top:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,#1459A8,#3DD6A0); z-index:9999; transition:width 0.25s ease; }
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+<div id="toolbar">
+  <button id="exportBtn" onclick="doExport()">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Export High Quality PNG
+  </button>
+</div>
+
+<div id="page">
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-bar">
+      <div class="hdr-bar-left">
+        <div class="logo-wrapper"><img class="logo-kkb" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNDAiIGhlaWdodD0iMjQwIiB2aWV3Qm94PSIwIDAgMjQwIDI0MCI+CiAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iMTIwIiByPSIxMTQiIGZpbGw9IiMwQjM0NjQiLz4KICA8Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjExNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzlBMjRCIiBzdHJva2Utd2lkdGg9IjUiLz4KICA8Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9Ijk2IiBmaWxsPSJub25lIiBzdHJva2U9IiNDOUEyNEIiIHN0cm9rZS13aWR0aD0iMS40Ii8+CiAgPHRleHQgeD0iMTIwIiB5PSIxMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCAnVGltZXMgTmV3IFJvbWFuJywgc2VyaWYiIGZvbnQtc2l6ZT0iNjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSIjRkZGRkZGIj5LS0I8L3RleHQ+CiAgPHRleHQgeD0iMTIwIiB5PSIxNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgbGV0dGVyLXNwYWNpbmc9IjMuNCIgZmlsbD0iI0M5QTI0QiI+QkFOREFSIEJBTlRFTjwvdGV4dD4KICA8dGV4dCB4PSIxMjAiIHk9IjE3MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLWVyaWYiIGZvbnQtc2l6ZT0iMTAiIGxldHRlci1zcGFjaW5nPSIyLjQiIGZpbGw9IiNEN0UzRjMiPktPUEVSQVNJIEtPTlNVTUVOSEtBUllBV0FOPC90ZXh0Pgo8L3N2Zz4K" alt="Kopkar Bandar Banten"></div>
+        <div class="bar-sep"></div>
+        <div class="bar-tagline">
+          <strong>Koperasi Konsumen Karyawan Bandar Banten</strong>
+          Unit Usaha Jasa &mdash; Cleaning Service
+        </div>
+      </div>
+      <div class="hdr-bar-right">
+        <span class="bar-chip">Executive Summary</span>
+        <span class="bar-chip">HR Analytics</span>
+      </div>
+    </div>
+    <div class="hdr-main">
+      <div class="hdr-left">
+        <div class="eyebrow">Analisis SDM &middot; Profil Pendidikan Personel</div>
+        <div class="hdr-title">Profil <em>Pendidikan</em> &amp; Daya Saing SDM</div>
+        <div class="hdr-sub">Rekomendasi peningkatan kompetensi unit Cleaning Service &mdash; Berbasis Daftar Personel Pelaksana Pekerjaan</div>
+      </div>
+      <div class="hdr-badges">
+        <div class="hdr-badge"><div class="hdr-badge-v">35</div><div class="hdr-badge-l">Total Personel CS</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">51%</div><div class="hdr-badge-l">Data Terdokumentasi</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">88%</div><div class="hdr-badge-l">SLTA ke Atas*</div></div>
+        <div class="hdr-badge"><div class="hdr-badge-v">0</div><div class="hdr-badge-l">Sertifikasi Profesional</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <!-- INSIGHT -->
+    <div class="insight">
+      <div class="insight-t">Ringkasan Eksekutif</div>
+      <div class="insight-b">
+        Unit Cleaning Service Kopkar Bandar Banten menaungi <b>35 personel</b>, namun hanya <b>18 orang (51%)</b> yang memiliki data pendidikan terdokumentasi &mdash; <b>17 personel (49%)</b> tanpa catatan pendidikan, jabatan, maupun pengalaman. Dari yang tercatat, <b>88% berpendidikan maksimal SLTA</b> (SMA/SMK), hanya <b>1 orang S1</b>, <b>tanpa diploma (D1&ndash;D3)</b>, dan <b>0 sertifikasi profesional</b> (BNSP/K3). Rata-rata pengalaman tercatat <b>10,4 tahun</b>, tetapi <b>56% entri berisi angka identik &ldquo;9 tahun&rdquo;</b>. <i>Tanpa perbaikan basis data dan sertifikasi, unit sulit bersaing di pasar cleaning service profesional dan menjawab syarat prakualifikasi tender.</i>
+      </div>
+    </div>
+
+    <div class="sec">Indikator Kunci</div>
+    <!-- KPI STRIP -->
+    <div class="kpi-row n4">
+      <div class="kpi">
+        <div class="k-lbl">Total Personel CS</div>
+        <div class="k-val">35<span class="k-unit">orang</span></div>
+        <div class="k-delta cn">18 terdokumentasi &middot; 17 tanpa data</div>
+        <div class="k-track"><div class="k-fill" style="width:51%;background:#1358A4"></div></div>
+      </div>
+      <div class="kpi am">
+        <div class="k-lbl">Kelengkapan Database</div>
+        <div class="k-val">51<span class="k-unit">%</span></div>
+        <div class="k-delta cd">Gap 49% &mdash; prioritas audit</div>
+        <div class="k-track"><div class="k-fill" style="width:51%;background:#C07808"></div></div>
+      </div>
+      <div class="kpi gr">
+        <div class="k-lbl">SLTA ke Atas (tercatat)</div>
+        <div class="k-val">88<span class="k-unit">%*</span></div>
+        <div class="k-delta cu">15 dari 17 personel terdokumentasi</div>
+        <div class="k-track"><div class="k-fill" style="width:88%;background:#0B8A60"></div></div>
+      </div>
+      <div class="kpi rd">
+        <div class="k-lbl">Sertifikasi BNSP / K3</div>
+        <div class="k-val">0<span class="k-unit">orang</span></div>
+        <div class="k-delta cd">Belum ada catatan sertifikasi</div>
+        <div class="k-track"><div class="k-fill" style="width:2%;background:#BC1E1E"></div></div>
+      </div>
+    </div>
+
+    <!-- ROW 1: Donut + Data Completeness -->
+    <div class="row2">
+      <div class="card">
+        <div class="card-t">Distribusi Tingkat Pendidikan Personel</div>
+        <div class="card-s">Mayoritas data kosong &mdash; hanya 18 dari 35 personel memiliki catatan pendidikan.</div>
+        <div class="leg">
+          <div class="li"><span class="ls" style="background:#0B8A60"></span>S1</div>
+          <div class="li"><span class="ls" style="background:#1358A4"></span>SMK</div>
+          <div class="li"><span class="ls" style="background:#5888D4"></span>SMA</div>
+          <div class="li"><span class="ls" style="background:#B6D2F0"></span>SMP</div>
+          <div class="li"><span class="ls" style="background:#A8BCD4"></span>Tidak Tercatat</div>
+        </div>
+        <div class="cw" style="height:300px"><canvas id="cEdu"></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="card-t">Indeks Kelengkapan Data SDM</div>
+        <div class="card-s">Identitas lengkap, namun kompetensi &amp; sertifikasi tertinggal jauh.</div>
+        <div class="pb-row"><div class="pb-l">Identitas (NIK)</div><div class="pb-trk"><div class="pb-fill" style="width:100%;background:#0B8A60"></div></div><div class="pb-v">100%</div></div>
+        <div class="pb-row"><div class="pb-l">Pendidikan</div><div class="pb-trk"><div class="pb-fill" style="width:51%;background:#C07808"></div></div><div class="pb-v">51%</div></div>
+        <div class="pb-row"><div class="pb-l">Jabatan / Penempatan</div><div class="pb-trk"><div class="pb-fill" style="width:51%;background:#C07808"></div></div><div class="pb-v">51%</div></div>
+        <div class="pb-row"><div class="pb-l">Pengalaman Kerja</div><div class="pb-trk"><div class="pb-fill" style="width:51%;background:#C07808"></div></div><div class="pb-v">51%</div></div>
+        <div class="pb-row"><div class="pb-l">Sertifikasi Profesi</div><div class="pb-trk"><div class="pb-fill" style="width:1%;background:#BC1E1E"></div></div><div class="pb-v">0%</div></div>
+        <div class="pb-row"><div class="pb-l">Pelatihan SOP</div><div class="pb-trk"><div class="pb-fill" style="width:1%;background:#BC1E1E"></div></div><div class="pb-v">0%</div></div>
+        <div style="margin-top:10px;font-size:10.5px;color:#446280;line-height:1.5;background:#FFFBF3;border-left:3px solid #C07808;border-radius:6px;padding:9px 12px;"><b style="color:#985200;">Catatan:</b> 17 personel (No. 18&ndash;35) hanya tercatat NIK &amp; namanya &mdash; tanpa kolom pendidikan, jabatan, dan pengalaman terisi.</div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Placement + Experience -->
+    <div class="row-eq2">
+      <div class="card">
+        <div class="card-t">Distribusi Penempatan &amp; Jabatan</div>
+        <div class="card-s">Tenaga front-line dominan; lapisan koordinator sangat tipis (2 orang).</div>
+        <div class="cw" style="height:290px"><canvas id="cPos"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Distribusi Pengalaman Kerja</div>
+        <div class="card-s">Konsentrasi pada bracket 5&ndash;9 tahun &mdash; diduga angka &ldquo;9&rdquo; sebagai placeholder.</div>
+        <div class="cw" style="height:290px"><canvas id="cExp"></canvas></div>
+      </div>
+    </div>
+
+    <!-- ROW 3: Gap analysis table -->
+    <div class="row-1">
+      <div class="card">
+        <div class="card-t">Profil Kompetitif vs Standar Industri Cleaning Service Profesional</div>
+        <div class="card-s">Penilaian kesiapan SDM untuk bersaing di segmen korporat, industri &amp; hospitality.</div>
+        <table class="t">
+          <thead>
+            <tr>
+              <th style="width:24%">Aspek SDM</th>
+              <th style="width:26%">Profil Saat Ini</th>
+              <th style="width:30%">Standar Industri CS Profesional</th>
+              <th class="c" style="width:10%">Gap</th>
+              <th class="c" style="width:10%">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw">Kelengkapan Database SDM</td>
+              <td>51% terdokumentasi (18/35)</td>
+              <td>100% personel tercatat lengkap</td>
+              <td class="c fw">-49%</td>
+              <td class="c"><span class="pill p-r">Kritis</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Pendidikan Minimal</td>
+              <td>SMA/SMK dominan (88%), 1 S1, 0 Diploma</td>
+              <td>SMK + Sertifikat Kompetensi terkait</td>
+              <td class="c fw">Sedang</td>
+              <td class="c"><span class="pill p-a">Perhatian</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Sertifikasi BNSP (BSK Bidang Kebersihan)</td>
+              <td>0 orang tersertifikasi</td>
+              <td>Seluruh staf front-line bersertifikat</td>
+              <td class="c fw">-100%</td>
+              <td class="c"><span class="pill p-r">Kritis</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Sertifikasi K3 (Keselamatan &amp; Kesehatan Kerja)</td>
+              <td>0 orang tersertifikasi</td>
+              <td>Min. Koordinator &amp; tim chemical handling</td>
+              <td class="c fw">-100%</td>
+              <td class="c"><span class="pill p-r">Kritis</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Pelatihan SOP Cleaning (per area)</td>
+              <td>Tidak tercatat / tidak terdokumentasi</td>
+              <td>Indoor, outdoor, hospitality, industrial</td>
+              <td class="c fw">Besar</td>
+              <td class="c"><span class="pill p-r">Kritis</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Lapisan Supervisor / Koordinator</td>
+              <td>2 Koordinator : ~16 staf (rasio 1:8)</td>
+              <td>Rasio ideal ~1:6 + supervisor spesialis area</td>
+              <td class="c fw">Sedang</td>
+              <td class="c"><span class="pill p-a">Perhatian</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Pengalaman Kerja</td>
+              <td>Rata-rata 10,4 thn (data perlu validasi)</td>
+              <td>&ge;3 thn + pelatihan berkala tercatat</td>
+              <td class="c fw">Kecil</td>
+              <td class="c"><span class="pill p-g">Memadai*</span></td>
+            </tr>
+            <tr>
+              <td class="fw">Awareness ISO 9001 / 14001</td>
+              <td>Tidak ada</td>
+              <td>Min. tingkat awareness seluruh staf kunci</td>
+              <td class="c fw">-100%</td>
+              <td class="c"><span class="pill p-r">Kritis</span></td>
+            </tr>
+            <tr class="tt">
+              <td colspan="3">Total Aspek Dinilai &mdash; 1 memadai, 2 perhatian, 5 kritis</td>
+              <td class="c">8</td>
+              <td class="c"><span class="pill p-a">Belum Siap Bersaing</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:8px;font-size:10px;color:#8AAAC2;">*Memadai secara angka, namun perlu validasi karena 56% entri pengalaman berisi nilai identik &ldquo;9 tahun&rdquo; yang diduga placeholder.</div>
+      </div>
+    </div>
+
+    <!-- STATUS BAR -->
+    <div class="sbar">
+      <span class="sbar-ttl">Key Takeaways</span>
+      <div class="sbar-list">
+        <div class="si wn"><span class="dot dwn"></span>17 personel (49%) tanpa data pendidikan, jabatan &amp; pengalaman</div>
+        <div class="si wn"><span class="dot dwn"></span>0 sertifikasi profesional (BNSP / K3) tercatat di seluruh unit</div>
+        <div class="si wn"><span class="dot dwn"></span>Hanya 2 Koordinator melayani ~16 staf front-line (1:8)</div>
+        <div class="si wn"><span class="dot dwn"></span>56% entri pengalaman identik &ldquo;9 tahun&rdquo; &mdash; indikasi data placeholder</div>
+        <div class="si ok"><span class="dot dok"></span>88% personel terdokumentasi berpendidikan SLTA ke atas</div>
+        <div class="si ok"><span class="dot dok"></span>Identitas (NIK) 100% lengkap untuk seluruh 35 personel</div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATION -->
+    <div class="rec">
+      <div class="rec-hdr">
+        <span class="rec-title">Rekomendasi &amp; Tindak Lanjut</span>
+        <span class="rec-sub">Peningkatan daya saing SDM Unit Cleaning Service</span>
+      </div>
+      <div class="rec-cols">
+
+        <div class="rec-col rc-op">
+          <div class="rec-col-hdr">Operasional</div>
+          <div class="rec-card">
+            <div class="rec-h">Lengkapi &amp; validasi database SDM hingga 100% dalam 30 hari</div>
+            <div class="rec-p">Audit seluruh 35 personel: 17 personel belum memiliki catatan pendidikan, jabatan, maupun pengalaman. Validasi anomali entri &ldquo;9 tahun&rdquo; pada 10 personel sebelum data digunakan sebagai dasar keputusan.</div>
+            <span class="rec-when">Segera</span>
+          </div>
+          <div class="rec-card">
+            <div class="rec-h">Wajibkan sertifikasi K3 &amp; BNSP (BSK) bagi staf front-line</div>
+            <div class="rec-p">Saat ini 0 sertifikasi tercatat. Sertifikat K3 dan BSK (Bidang Sektor Kebersihan) merupakan syarat utama prakualifikasi tender cleaning service korporat dan industri.</div>
+            <span class="rec-when">Jangka Pendek</span>
+          </div>
+        </div>
+
+        <div class="rec-col rc-st">
+          <div class="rec-col-hdr">Strategis</div>
+          <div class="rec-card">
+            <div class="rec-h">Bangun jenjang kompetensi &amp; lapisan supervisor untuk naik kelas</div>
+            <div class="rec-p">Hanya 2 Koordinator melayani ~16 staf (rasio 1:8). Rancang jenjang Junior &rarr; Senior CS &rarr; Supervisor, ditambah pelatihan SOP per area (indoor/outdoor/hospitality/industrial) dan awareness ISO 9001/14001 untuk memenangkan segmen premium.</div>
+            <span class="rec-when">Jangka Menengah</span>
+          </div>
+        </div>
+
+        <div class="rec-col rc-rk">
+          <div class="rec-col-hdr">Risiko</div>
+          <div class="rec-card">
+            <div class="rec-h">Mitigasi risiko kompetitif &amp; integritas data</div>
+            <div class="rec-p">Tanpa database SDM yang valid dan sertifikasi terdokumentasi, unit berisiko kalah dalam benchmarking penyedia jasa dan gagal prakualifikasi tender. Tetapkan deadline audit dan target sertifikasi minimal 60% staf dalam 6 bulan.</div>
+            <span class="rec-when">Monitor</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="ftr">
+      <span>Profil SDM &amp; Pendidikan Unit Cleaning Service &mdash; Koperasi Konsumen Karyawan Bandar Banten</span>
+      <span>Disiapkan: Juli 2026 &middot; Sumber: Daftar Personel Pelaksana Pekerjaan (35 personel)</span>
+    </div>
+  </div>
+</div>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family = "'Outfit', Arial, sans-serif";
+Chart.defaults.devicePixelRatio = window.devicePixelRatio * 2;
+Chart.defaults.plugins.datalabels = { display: false };
+
+const FMT = v => v.toLocaleString('id-ID');
+
+/* --- Donut: Education distribution --- */
+new Chart(document.getElementById('cEdu'), {
+  type: 'doughnut',
+  data: {
+    labels: ['S1 (Sarjana)','SMK','SMA','SMP','Tidak Tercatat'],
+    datasets: [{
+      data: [1, 7, 7, 2, 18],
+      backgroundColor: ['#0B8A60','#1358A4','#5888D4','#B6D2F0','#A8BCD4'],
+      borderWidth: 3, borderColor: '#fff', hoverOffset: 10,
+      datalabels: {
+        display: true, color: '#fff', font: { weight: 700, size: 12 }, textAlign: 'center',
+        formatter: (v, ctx) => {
+          const tot = ctx.dataset.data.reduce((a,b)=>a+b,0);
+          const pct = Math.round(v/tot*100);
+          return pct >= 6 ? pct + '%\n' + v : ''; // hide tiny slices label clutter
+        }
+      }
+    }]
+  },
+  options: {
+    cutout: '58%',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: c => {
+            const tot = c.dataset.data.reduce((a,b)=>a+b,0);
+            return ' ' + c.label + ': ' + c.parsed + ' orang (' + Math.round(c.parsed/tot*100) + '%)';
+          }
+        }
+      }
+    }
+  },
+  plugins: [{
+    id: 'clEdu',
+    afterDraw(chart) {
+      const { ctx, chartArea: { left, top, right, bottom } } = chart;
+      const cx = (left + right) / 2, cy = (top + bottom) / 2;
+      ctx.save(); ctx.textAlign = 'center';
+      ctx.fillStyle = '#9AB4CC'; ctx.font = '400 11px Outfit,Arial,sans-serif';
+      ctx.fillText('Total Personel', cx, cy - 12);
+      ctx.fillStyle = '#061628'; ctx.font = '700 24px Outfit,Arial,sans-serif';
+      ctx.fillText('35', cx, cy + 14);
+      ctx.fillStyle = '#7B98B5'; ctx.font = '500 9.5px Outfit,Arial,sans-serif';
+      ctx.fillText('orang', cx, cy + 30);
+      ctx.restore();
+    }
+  }]
+});
+
+/* --- Bar: Placement / Jabatan --- */
+new Chart(document.getElementById('cPos'), {
+  type: 'bar',
+  data: {
+    labels: [['CS Dalam','Gedung'], ['CS Lapangan','/ Luar GD'], ['CS Rumdin','(Guest House)'], ['Koordinator','CS'], ['Tidak','Tercatat']],
+    datasets: [{
+      label: 'Personel',
+      data: [11, 4, 1, 2, 17],
+      backgroundColor: ['#1358A4','#5888D4','#2478D8','#0B8A60','#A8BCD4'],
+      borderRadius: 5, borderSkipped: false,
+      barPercentage: 0.62, categoryPercentage: 0.88,
+      datalabels: {
+        display: true, align: 'top', anchor: 'end', offset: 2,
+        color: '#061628', font: { weight: 700, size: 10 },
+        backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+        padding: { top: 1, bottom: 1, left: 4, right: 4 },
+        formatter: v => v + ' orang'
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxRotation: 0, minRotation: 0, font: { size: 9.5 }, color: '#7B98B5' }, grid: { display: false } },
+      y: { beginAtZero: true, max: 21, ticks: { font: { size: 9.5 }, color: '#7B98B5' }, grid: { color: '#EAF1F9' } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => ' ' + c.parsed.y + ' orang' } }
+    }
+  }
+});
+
+/* --- Bar: Experience brackets --- */
+new Chart(document.getElementById('cExp'), {
+  type: 'bar',
+  data: {
+    labels: [['< 5 tahun'], ['5 - 9 tahun'], ['\u2265 10 tahun'], ['Tidak','Tercatat']],
+    datasets: [{
+      label: 'Personel',
+      data: [1, 14, 3, 17],
+      backgroundColor: ['#B6D2F0','#1E62C4','#061628','#A8BCD4'],
+      borderRadius: 5, borderSkipped: false,
+      barPercentage: 0.62, categoryPercentage: 0.88,
+      datalabels: {
+        display: true, align: 'top', anchor: 'end', offset: 2,
+        color: '#061628', font: { weight: 700, size: 10 },
+        backgroundColor: 'rgba(255,255,255,0.82)', borderRadius: 3,
+        padding: { top: 1, bottom: 1, left: 4, right: 4 },
+        formatter: v => v + ' orang'
+      }
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      x: { ticks: { maxRotation: 0, minRotation: 0, font: { size: 9.5 }, color: '#7B98B5' }, grid: { display: false } },
+      y: { beginAtZero: true, max: 21, ticks: { font: { size: 9.5 }, color: '#7B98B5' }, grid: { color: '#EAF1F9' } }
+    },
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: c => ' ' + c.parsed.y + ' orang' } }
+    }
+  }
+});
+
+/* --- Export --- */
+async function doExport() {
+  const btn = document.getElementById('exportBtn');
+  const bar = document.getElementById('progressBar');
+  btn.disabled = true; btn.textContent = 'Generating\u2026';
+  let p = 0;
+  const t = setInterval(() => { p = Math.min(p + 5, 85); bar.style.width = p + '%'; }, 120);
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  await new Promise(r => setTimeout(r, 200));
+  try {
+    const el = document.getElementById('page');
+    const canvas = await html2canvas(el, {
+      scale: 3, useCORS: true, allowTaint: true,
+      backgroundColor: '#E8EEF7', logging: false, imageTimeout: 0,
+      width: el.offsetWidth, height: el.offsetHeight,
+      windowWidth: el.offsetWidth, windowHeight: el.offsetHeight,
+      scrollX: 0, scrollY: 0, x: 0, y: 0
+    });
+    clearInterval(t); bar.style.width = '100%';
+    const a = document.createElement('a');
+    a.download = 'LAP2026_KopkarBandarBanten_SDM_PendidikanCS.png';
+    a.href = canvas.toDataURL('image/png', 1.0);
+    a.click();
+  } catch (e) { console.error(e); clearInterval(t); }
+  setTimeout(() => {
+    bar.style.width = '0'; btn.disabled = false;
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export High Quality PNG';
+  }, 800);
+}
+</script>
+
+</body>
+</html>
