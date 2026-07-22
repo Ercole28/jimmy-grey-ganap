@@ -11,6 +11,7 @@ interface ToolbarProps {
   loading: boolean;
   lastSynced: Date | null;
   exporting: boolean;
+  exportError: string | null;
   onExport: () => void;
 }
 
@@ -30,6 +31,7 @@ export function Toolbar({
   loading,
   lastSynced,
   exporting,
+  exportError,
   onExport,
 }: ToolbarProps) {
   const [copied, setCopied] = useState(false);
@@ -138,6 +140,7 @@ export function Toolbar({
             </svg>
             {exporting ? "Membuat PNG…" : "Export High Quality PNG"}
           </button>
+          {exportError && <span className="toolbar__export-error">{exportError}</span>}
         </div>
       </div>
 

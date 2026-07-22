@@ -4,6 +4,7 @@ export interface UseExportImage {
   targetRef: React.RefObject<HTMLDivElement | null>;
   exporting: boolean;
   progress: number;
+  error: string | null;
   exportPng: (fileName: string) => Promise<void>;
 }
 
@@ -29,10 +30,15 @@ const DESKTOP_VIEWPORT_HEIGHT = 1200;
  * desktop variant into the export even when the page itself is currently
  * showing the responsive mobile/tablet layout.
  */
+function delay(ms: number): Promise<void> {
+  return new Promise((r) => window.setTimeout(r, ms));
+}
+
 export function useExportImage(): UseExportImage {
   const targetRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   const exportPng = useCallback(
     async (fileName: string) => {
@@ -40,6 +46,7 @@ export function useExportImage(): UseExportImage {
       if (!el || exporting) return;
 
       setExporting(true);
+      setError(null);
       setProgress(0);
       const tick = window.setInterval(() => {
         setProgress((p) => Math.min(p + 5, 85));
@@ -55,30 +62,63 @@ export function useExportImage(): UseExportImage {
         requestAnimationFrame(() => requestAnimationFrame(r)),
       );
       await document.fonts.ready;
-      await new Promise((r) => window.setTimeout(r, 200));
+      await delay(200);
 
       try {
         // Lazily loaded — html2canvas is a sizeable dependency only needed
         // when the user actually exports, not on every initial page load.
         const { default: html2canvas } = await import("html2canvas");
-        const canvas = await html2canvas(el, {
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: "#e8eef7",
-          logging: false,
-          imageTimeout: 0,
-          windowWidth: DESKTOP_VIEWPORT_WIDTH,
-          windowHeight: DESKTOP_VIEWPORT_HEIGHT,
-          scrollX: 0,
-          scrollY: 0,
-        });
+
+        // html2canvas can occasionally hit a chart canvas mid-resize/remount
+        // (e.g. a Chart.js instance recreating itself right as the
+        // `.exporting` class change reflows the page) and throw
+        // "canvas ... width or height of 0" from deep inside its background
+        // image renderer. That's a transient snapshot-timing issue, not a
+        // real failure — retry once after everything has had more time to
+        // settle before treating it as a real error.
+        let canvas: HTMLCanvasElement;
+        try {
+          canvas = await html2canvas(el, {
+            scale: 3,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: "#e8eef7",
+            logging: false,
+            imageTimeout: 0,
+            windowWidth: DESKTOP_VIEWPORT_WIDTH,
+            windowHeight: DESKTOP_VIEWPORT_HEIGHT,
+            scrollX: 0,
+            scrollY: 0,
+          });
+        } catch (firstError) {
+          await delay(600);
+          try {
+            canvas = await html2canvas(el, {
+              scale: 3,
+              useCORS: true,
+              allowTaint: true,
+              backgroundColor: "#e8eef7",
+              logging: false,
+              imageTimeout: 0,
+              windowWidth: DESKTOP_VIEWPORT_WIDTH,
+              windowHeight: DESKTOP_VIEWPORT_HEIGHT,
+              scrollX: 0,
+              scrollY: 0,
+            });
+          } catch {
+            throw firstError;
+          }
+        }
+
         window.clearInterval(tick);
         setProgress(100);
         const a = document.createElement("a");
         a.download = `${fileName}.png`;
         a.href = canvas.toDataURL("image/png", 1.0);
         a.click();
+      } catch (err) {
+        console.error("Export failed:", err);
+        setError("Export gagal — coba lagi beberapa saat.");
       } finally {
         window.clearInterval(tick);
         el.classList.remove("exporting");
@@ -91,5 +131,5 @@ export function useExportImage(): UseExportImage {
     [exporting],
   );
 
-  return { targetRef, exporting, progress, exportPng };
+  return { targetRef, exporting, progress, error, exportPng };
 }

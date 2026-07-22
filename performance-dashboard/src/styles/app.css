@@ -410,6 +410,12 @@ body {
   transform: none;
 }
 
+.toolbar__export-error {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--status-red);
+}
+
 /* ---------- Export (mirrors reference's #progressBar + doExport()) ---------- */
 .export-progress {
   position: fixed;

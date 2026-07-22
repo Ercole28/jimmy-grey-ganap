@@ -21,7 +21,13 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabId>("ARUS");
   const [throughMonth, setThroughMonth] = useState(0);
   const didInit = useRef(false);
-  const { targetRef, exporting, progress, exportPng } = useExportImage();
+  const {
+    targetRef,
+    exporting,
+    progress,
+    error: exportError,
+    exportPng,
+  } = useExportImage();
 
   useEffect(() => {
     if (didInit.current) return;
@@ -105,6 +111,7 @@ function App() {
           loading={loading}
           lastSynced={lastSynced}
           exporting={exporting}
+          exportError={exportError}
           onExport={() => exportPng(reportFileName(activeTab))}
         />
 
