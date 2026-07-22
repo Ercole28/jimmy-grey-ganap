@@ -7,12 +7,27 @@ export interface UseExportImage {
   exportPng: (fileName: string) => Promise<void>;
 }
 
+// Wider than .app-shell's 1400px max-width (plus body's side padding), so
+// the simulated viewport below never triggers the app's own <=1024px /
+// <=640px responsive breakpoints — the export always renders the desktop
+// layout, regardless of the device it was triggered from.
+const DESKTOP_VIEWPORT_WIDTH = 1500;
+const DESKTOP_VIEWPORT_HEIGHT = 1200;
+
 /**
  * Captures `targetRef`'s element as a high-resolution PNG, matching the
  * reference reports' own "Export High Quality PNG" behavior (html2canvas at
  * scale 3). Elements marked `data-export-exclude` (and the toolbar/tab nav)
  * are hidden for the duration of the capture via the `.exporting` class —
  * see the .exporting rules in app.css.
+ *
+ * html2canvas renders through its own offscreen iframe clone, sized by
+ * `windowWidth`/`windowHeight` independently of the real browser viewport —
+ * so pinning those to a desktop size (and letting `width`/`height` be
+ * auto-derived from the clone rather than tied to the live element's
+ * current, possibly-mobile, offsetWidth/offsetHeight) is what forces the
+ * desktop variant into the export even when the page itself is currently
+ * showing the responsive mobile/tablet layout.
  */
 export function useExportImage(): UseExportImage {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -53,14 +68,10 @@ export function useExportImage(): UseExportImage {
           backgroundColor: "#e8eef7",
           logging: false,
           imageTimeout: 0,
-          width: el.offsetWidth,
-          height: el.offsetHeight,
-          windowWidth: el.offsetWidth,
-          windowHeight: el.offsetHeight,
+          windowWidth: DESKTOP_VIEWPORT_WIDTH,
+          windowHeight: DESKTOP_VIEWPORT_HEIGHT,
           scrollX: 0,
           scrollY: 0,
-          x: 0,
-          y: 0,
         });
         window.clearInterval(tick);
         setProgress(100);

@@ -8,6 +8,11 @@ body {
 .app-shell {
   width: 100%;
   max-width: 1400px;
+  min-width: 0; /* flex items default to a content-based auto min-width, which
+                   would otherwise force this (and the viewport) wider than
+                   100% whenever a descendant's own intrinsic content — a
+                   fixed-column grid, an unwrapped badge row — is wider than
+                   the current viewport. */
   background: var(--page-bg);
   border-radius: 18px;
   overflow: hidden;
@@ -944,8 +949,9 @@ body {
 }
 
 @media (max-width: 900px) {
+  /* Tablet: 3 equal columns -> 2. Phone breakpoint below forces this to 1. */
   .rec-cols {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr 1fr !important;
   }
 }
 
@@ -1239,9 +1245,12 @@ body {
 }
 
 @media (max-width: 900px) {
-  .row-eq2,
-  .row-eq3 {
+  .row-eq2 {
     grid-template-columns: 1fr !important;
+  }
+  /* Tablet: 3 equal columns -> 2. Phone breakpoint below forces this to 1. */
+  .row-eq3 {
+    grid-template-columns: 1fr 1fr !important;
   }
 }
 
@@ -1257,4 +1266,183 @@ body {
 .ftr span {
   font-size: 9.5px;
   color: rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================================================
+   Responsive — tablet (<=1024px) and phone (<=640px).
+
+   IMPORTANT: none of this applies during PNG export. The export always
+   renders through html2canvas's own simulated viewport (see
+   useExportImage.ts's `windowWidth`), which is fixed at a desktop width —
+   so these media queries simply never match while a capture is running,
+   regardless of the real device's screen size. No `.exporting`-scoped
+   override is needed here for that reason alone.
+   ========================================================================= */
+
+@media (max-width: 1024px) {
+  .hdr-bar,
+  .hdr-main,
+  .toolbar,
+  .app-body,
+  .ftr {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .tab-nav {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 12px 8px 0;
+  }
+
+  .hdr-bar,
+  .hdr-main,
+  .toolbar,
+  .app-body,
+  .ftr,
+  .tab-nav {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* ---- Header ---- */
+  .hdr-title {
+    font-size: 22px;
+    white-space: normal;
+  }
+
+  .hdr-sub {
+    font-size: 11px;
+  }
+
+  .bar-tagline {
+    display: none; /* logos + chips stay; the long tagline text is the first
+                       thing to go on a phone-width header */
+  }
+
+  .hdr-badges {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .hdr-badge {
+    flex: 1 1 calc(50% - 6px);
+    min-width: 0;
+    padding: 9px 10px;
+  }
+
+  .hdr-main {
+    gap: 14px;
+  }
+
+  /* ---- Tab nav — horizontal scroll instead of overflow/wrap ---- */
+  .tab-nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tab-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-nav__item {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ---- Toolbar — every control becomes a full-width row ---- */
+  .toolbar__row,
+  .toolbar__editrow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .toolbar__group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .toolbar__select-wrap {
+    width: 100%;
+  }
+
+  .toolbar__select {
+    width: 100%;
+  }
+
+  .toolbar__refresh,
+  .toolbar__export {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .toolbar__editactions {
+    width: 100%;
+  }
+
+  .toolbar__iconbtn {
+    flex: 1 1 0;
+    justify-content: center;
+  }
+
+  /* ---- Content: everything stacks to one column ---- */
+  .kpi-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .row2,
+  .row-2,
+  .row3,
+  .row-3,
+  .row-eq2,
+  .row-eq3,
+  .rec-cols {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dl,
+  .ins-g {
+    grid-template-columns: 1fr;
+  }
+
+  /* ---- Tables: scroll horizontally inside their own card rather than
+     breaking the page width or forcing every column to shrink illegibly. ---- */
+  .card {
+    overflow-x: auto;
+  }
+
+  .card,
+  .kpi,
+  .insight,
+  .sbar,
+  .rec-col {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .insight {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .insight-t {
+    width: auto;
+  }
+
+  .rec-hdr {
+    padding: 14px 18px;
+  }
+
+  .rec-title {
+    font-size: 17px;
+  }
 }

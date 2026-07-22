@@ -13,6 +13,12 @@ body {
 
 #root {
   min-height: 100vh;
+  width: 100%;
+  min-width: 0; /* #root is a flex item of body — without this it defaults to
+                   a content-based auto min-width, which forces #root (and
+                   everything inside, including .app-shell) wider than the
+                   viewport whenever any descendant's intrinsic content is
+                   wider than the current screen. */
   display: flex;
   flex-direction: column;
 }
