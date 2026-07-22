@@ -2,7 +2,7 @@ body {
   background: var(--canvas);
   display: flex;
   justify-content: center;
-  padding: 28px 16px 0;
+  padding: 28px 16px;
 }
 
 .app-shell {
@@ -1297,7 +1297,7 @@ body {
 
 @media (max-width: 640px) {
   body {
-    padding: 12px 8px 0;
+    padding: 12px 8px;
   }
 
   .hdr-bar,
