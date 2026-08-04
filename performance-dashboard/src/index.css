@@ -21,6 +21,13 @@ body {
                    wider than the current screen. */
   display: flex;
   flex-direction: column;
+  align-items: center; /* #root now always spans the full body width (needed
+                           for the min-width fix above), so body's own
+                           justify-content:center no longer has anything to
+                           center — .app-shell (a fixed-max-width child of
+                           this column-direction container) needs to be
+                           centered on ITS cross axis here instead, or it
+                           just sticks to the left on wide screens. */
 }
 
 h1,

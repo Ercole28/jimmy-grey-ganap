@@ -1,0 +1,3 @@
+- Top Padding upon Export
+- Legend on Pie or Donut Chart
+- Overlapping Chart Indicator
