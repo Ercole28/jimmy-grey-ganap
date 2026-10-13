@@ -104,9 +104,9 @@ HTML = f'''<!DOCTYPE html>
 <div class="hdr">
   <div class="hdr-bar">
     <div class="hdr-bar-left">
-      <div class="logo-wrapper"><img class="logo-pelindo" src="{PELINDO_B64}" alt="Pelindo"></div>
-      <div class="bar-sep"></div>
       <div class="logo-wrapper"><img class="logo-danantara" src="{DANANTARA_B64}" alt="Danantara Indonesia"></div>
+      <div class="bar-sep"></div>
+      <div class="logo-wrapper"><img class="logo-pelindo" src="{PELINDO_B64}" alt="Pelindo"></div>
       <div class="bar-sep"></div>
       <div class="bar-tagline">
         <strong>PT Pelabuhan Indonesia (Persero)</strong>

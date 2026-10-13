@@ -162,9 +162,9 @@ body { background:#cbd5e8; display:flex; flex-direction:column; align-items:cent
   <div class="hdr">
     <div class="hdr-bar">
       <div class="hdr-bar-left">
-        <div class="logo-wrapper"><img class="logo-pelindo" src="__PEL__" alt="Pelindo"></div>
-        <div class="bar-sep"></div>
         <div class="logo-wrapper"><img class="logo-danantara" src="__DAN__" alt="Danantara Indonesia"></div>
+        <div class="bar-sep"></div>
+        <div class="logo-wrapper"><img class="logo-pelindo" src="__PEL__" alt="Pelindo"></div>
         <div class="bar-sep"></div>
         <div class="bar-tagline">
           <strong>PT Pelabuhan Indonesia (Persero)</strong>

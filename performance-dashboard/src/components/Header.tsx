@@ -23,16 +23,16 @@ export function Header({
         <div className="hdr-bar-left">
           <div className="logo-wrapper">
             <img
-              src="/pelindo-logo.png"
-              alt="Pelindo"
+              src="/danantara-indonesia.png"
+              alt="Danantara Indonesia"
               className="logo-wrapper__logo"
             />
           </div>
           <span className="bar-sep" />
           <div className="logo-wrapper">
             <img
-              src="/danantara-indonesia.png"
-              alt="Danantara Indonesia"
+              src="/pelindo-logo.png"
+              alt="Pelindo"
               className="logo-wrapper__logo"
             />
           </div>
